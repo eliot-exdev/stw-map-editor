@@ -1,0 +1,3 @@
+[submodule "exdev-gfx"]
+	path = exdev-gfx
+	url = ../exdev-gfx
