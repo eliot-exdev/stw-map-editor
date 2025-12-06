@@ -10,5 +10,8 @@ add_executable(stw_map_editor
         src/main.c
 )
 target_include_directories(stw_map_editor
-    PRIVATE include
+        PRIVATE include
+)
+target_link_libraries(stw_map_editor
+        PRIVATE exdevgfx
 )
