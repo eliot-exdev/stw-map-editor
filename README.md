@@ -2,6 +2,12 @@
 
 Simple map editor for the strategy game [Settle the World](https://theotheoderich.itch.io/settle-the-world).
 
+## Copyright
+
+The stw-map-editor and exdev-gfx library are copyright by Andre "eliot" Geisler (andre@exdev.de).  
+The stw-map-editor uses assets from the game Settle the World.  
+These assets are copyright by Christian "theotheoderich" Wiegel.  
+
 ## Checkout
 
 ```shell
