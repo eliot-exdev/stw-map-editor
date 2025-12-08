@@ -40,11 +40,35 @@ int main(void) {
     }
 
     // map component
-    UIComponent_t *map_component = ui_component_create(2, 2, 586, 476);
+    UIComponent_t *map_component = ui_component_create(2, 2, 558, 476);
     ui_component_connect(&app.root, map_component);
 
     // tile view
-    UIComponent_t *tile_view = ui_scroll_container_create(590, 2, 48, 476, UI_SCROLLING_SUPPORT_VERTICAL);
+    UIScrollContainer_t *tile_view = ui_scroll_container_create(562, 2, 76, 476, UI_SCROLLING_SUPPORT_VERTICAL);
+    int i = 0;
+    int row = 0;
+    while (i < tiles.num) {
+        // left
+        Framebuffer8Bit_t *left_fb = framebuffer_8bit_copy(tiles.tiles + i);
+        UIIcon_t *left = ui_icon_create(2, row * TILE_HEIGHT + row * 2 + 2, left_fb);
+        ui_component_connect(tile_view, left);
+
+        // middle
+        if (i + 1 < tiles.num) {
+            Framebuffer8Bit_t *middle_fb = framebuffer_8bit_copy(tiles.tiles + i + 1);
+            UIIcon_t *middle = ui_icon_create(TILE_WIDTH + 6, row * TILE_HEIGHT + row * 2 + 2, middle_fb);
+            ui_component_connect(tile_view, middle);
+        }
+
+        // right
+        if (i + 2 < tiles.num) {
+            Framebuffer8Bit_t *right_fb = framebuffer_8bit_copy(tiles.tiles + i + 2);
+            UIIcon_t *right = ui_icon_create(2 * TILE_WIDTH + 10, row * TILE_HEIGHT + row * 2 + 2, right_fb);
+            ui_component_connect(tile_view, right);
+        }
+        row += 1;
+        i += 3;
+    }
     ui_component_connect(&app.root, tile_view);
 
     // run
