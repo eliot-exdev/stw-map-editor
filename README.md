@@ -28,10 +28,18 @@ These assets are copyright by Christian "theotheoderich" Wiegel.
 
 ## Build
 
-### Build on Mac Os X and Linux
+### Compile for Mac Os X and Linux
 ```shell
     mkdir build
     cd build
     cmake ../ -DCMAKE_BUILD_TYPE=Release
+    cmake --build . --parallel 4
+```
+
+### Cross compile for MorphOs on linux
+```shell
+    mkdir build-mos
+    cd build-mos
+    cmake ../ -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../exdev-gfx/cmake/morphos-ppc.toolchain
     cmake --build . --parallel 4
 ```
