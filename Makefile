@@ -20,4 +20,5 @@ all: stw_map_editor
 #--- clean ---#
 .PHONY: clean
 clean:
+	$(MAKE) -C exdev-gfx clean
 	$(RM) -f stw_map_editor_mos
