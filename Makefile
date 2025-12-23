@@ -20,6 +20,9 @@ exdev-gfx/exdev_gfx_ui_mos_gcc.a:
 exdev-gfx/exdev_gfx_aos_060.a:
 	$(MAKE) -C exdev-gfx exdev_gfx_aos_060.a
 
+exdev-gfx/exdev_gfx_aos_060_c2p.a:
+	$(MAKE) -C exdev-gfx exdev_gfx_aos_060_c2p.a
+
 exdev-gfx/exdev_gfx_ui_aos_060.a:
 	$(MAKE) -C exdev-gfx exdev_gfx_ui_aos_060.a
 
@@ -31,6 +34,9 @@ stw_map_editor_mos_gcc: src/main.c exdev-gfx/exdev_gfx_ui_mos_gcc.a exdev-gfx/ex
 	$(CC_GCC) -o ${@} ${INCLUDES_MOS} $(^) ${C_FLAGS_MOS_GCC} ${LD_FLAGS_MOS_GCC}
 
 stw_map_editor_aos_060: src/main.c exdev-gfx/exdev_gfx_ui_aos_060.a exdev-gfx/exdev_gfx_aos_060.a
+	$(CC) -o ${@} ${INCLUDES_MOS} src/main.c ${EXDEV_GFX_AOS_OBJECTS} ${EXDEV_GFX_UI_AOS_OBJECTS} ${C_FLAGS_060} ${LD_FLAGS_060}
+
+stw_map_editor_aos_060_c2p: src/main.c exdev-gfx/exdev_gfx_ui_aos_060.a exdev-gfx/exdev_gfx_aos_060_c2p.a
 	$(CC) -o ${@} ${INCLUDES_MOS} src/main.c ${EXDEV_GFX_AOS_OBJECTS} ${EXDEV_GFX_UI_AOS_OBJECTS} ${C_FLAGS_060} ${LD_FLAGS_060}
 
 stw_map_editor: stw_map_editor_mos_gcc stw_map_editor_aos_060
