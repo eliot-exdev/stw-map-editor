@@ -2,3 +2,5 @@ cmake-build-*
 .idea
 *.o
 *.a
+stw_map_editor_aos_060
+stw_map_edutor_mos_gcc
