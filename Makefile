@@ -10,7 +10,7 @@ C_FLAGS_060=+aos68k -c99 -fpu=68060 -cpu=68060 -speed -final -DNDEBUG -D__AMIGA_
 LD_FLAGS_060=-lm060
 INCLUDES_AOS=-Ilibrary/include -Ilibrary/easing/include
 
-#--- Libraries
+#--- Libraries ---#
 exdev-gfx/exdev_gfx_mos_gcc.a:
 	$(MAKE) -C exdev-gfx exdev_gfx_mos_gcc.a
 
