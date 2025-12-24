@@ -8,6 +8,7 @@ add_subdirectory(exdev-gfx)
 
 add_executable(stw_map_editor
         src/main.c
+        src/ui_map.c
 )
 target_include_directories(stw_map_editor
         PRIVATE include
