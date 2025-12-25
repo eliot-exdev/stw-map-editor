@@ -12,18 +12,15 @@ INCLUDES_AOS=-Ilibrary/include -Ilibrary/easing/include
 
 #--- Libraries ---#
 exdev-gfx/exdev_gfx_mos_gcc.a:
-	$(MAKE) -C exdev-gfx clean
 	$(MAKE) -C exdev-gfx exdev_gfx_mos_gcc.a
 
 exdev-gfx/exdev_gfx_ui_mos_gcc.a:
 	$(MAKE) -C exdev-gfx exdev_gfx_ui_mos_gcc.a
 
 exdev-gfx/exdev_gfx_aos_060.a:
-	$(MAKE) -C exdev-gfx clean
 	$(MAKE) -C exdev-gfx exdev_gfx_aos_060.a
 
 exdev-gfx/exdev_gfx_aos_060_c2p.a:
-	$(MAKE) -C exdev-gfx clean
 	$(MAKE) -C exdev-gfx exdev_gfx_aos_060_c2p.a
 
 exdev-gfx/exdev_gfx_ui_aos_060.a:
@@ -42,7 +39,7 @@ stw_map_editor_aos_060: src/main.c src/ui_map.c exdev-gfx/exdev_gfx_ui_aos_060.a
 stw_map_editor_aos_060_c2p: src/main.c exdev-gfx/exdev_gfx_ui_aos_060.a exdev-gfx/exdev_gfx_aos_060_c2p.a
 	$(CC) -o ${@} ${INCLUDES_MOS} src/main.c src/ui_map.c ${EXDEV_GFX_AOS_OBJECTS} ${EXDEV_GFX_UI_AOS_OBJECTS} ${C_FLAGS_060} ${LD_FLAGS_060} -LWork:workspace/c2plib/sdk -lc2p
 
-stw_map_editor: stw_map_editor_mos_gcc stw_map_editor_aos_060 stw_map_editor_aos_060
+stw_map_editor: stw_map_editor_mos_gcc stw_map_editor_aos_060 stw_map_editor_aos_060_c2p
 
 all: stw_map_editor
 
@@ -53,8 +50,8 @@ dist: stw_map_editor
 	mkdir ram:stw-map-editor
 	mkdir ram:stw-map-editor/assets
 	cp -av assets/maptiles_8bit.dat assets/maptiles_8bit.pal ram:stw-map-editor/assets
-	cp -av stw_map_editor_mos_gcc stw_map_editor_aos_060 stw_map_editor_aos_060 ram:stw-map-editor
-	lha a -r ram:stw_map_editor_aos_060.lha ram:stw_map_editor_aos_060
+	cp -av stw_map_editor_mos_gcc stw_map_editor_aos_060 stw_map_editor_aos_060_c2p ram:stw-map-editor
+	lha a -r ram:stw-map-editor.lha ram:stw-map-editor
 
 #--- clean ---#
 .PHONY: clean
