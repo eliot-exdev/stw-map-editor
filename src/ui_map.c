@@ -110,7 +110,6 @@ int ui_map_paint(UIMap_t *self, Framebuffer8Bit_t *fb, const int x_offset, const
 void ui_map_update(UIMap_t *self, const long time_elapsed, const Event_t *events, const int num_events) {
     assert(self);
 
-
     for (int i = 0; i < num_events; ++i) {
         if (events[i].type == EVENT_MOUSE) {
             if (events[i].mouse_event.button == MOUSE_BUTTON_1 && events[i].mouse_event.event == MOUSE_EVENT_BUTTON_PRESSED) {
@@ -132,15 +131,15 @@ void ui_map_update(UIMap_t *self, const long time_elapsed, const Event_t *events
                 ui_component_get_relative_position(&self->base, &x, &y);
 
                 if (x > self->x_last) {
-                    self->properties.x_pos += x - self->x_last;
+                    self->properties.x_pos -= x - self->x_last;
                 } else {
-                    self->properties.x_pos -= self->x_last - x;
+                    self->properties.x_pos += self->x_last - x;
                 }
 
                 if (y > self->y_last) {
-                    self->properties.y_pos += y - self->y_last;
+                    self->properties.y_pos -= y - self->y_last;
                 } else {
-                    self->properties.y_pos -= self->y_last - y;
+                    self->properties.y_pos += self->y_last - y;
                 }
 
                 self->x_last = x;
