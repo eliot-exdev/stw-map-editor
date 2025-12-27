@@ -113,20 +113,44 @@ void ui_map_update(UIMap_t *self, const long time_elapsed, const Event_t *events
 
     for (int i = 0; i < num_events; ++i) {
         if (events[i].type == EVENT_MOUSE) {
-            if (events[i].mouse_event.button == MOUSE_BUTTON_1 && events[i].mouse_event.event == MOUSE_EVENT_BUTTON_PRESSED) {
+            // mouse button right
+            if (events[i].mouse_event.button == MOUSE_BUTTON_1) {
+                if (events[i].mouse_event.event == MOUSE_EVENT_BUTTON_PRESSED) {
+                    if (ui_component_is_inside(&self->base, events[i].mouse_event.position_x, events[i].mouse_event.position_y)) {
+                        log_debug("ui_map_update dragged");
+                        int x = events[i].mouse_event.position_x;
+                        int y = events[i].mouse_event.position_y;
+                        ui_component_get_relative_position(&self->base, &x, &y);
+                        self->flags.dragged = 1;
+                        self->x_last = x;
+                        self->y_last = y;
+                    }
+                } else if (self->flags.dragged && events[i].mouse_event.event == MOUSE_EVENT_BUTTON_RELEASED) {
+                    log_debug("ui_map_update released");
+                    self->flags.dragged = 0;
+                }
+            }
+            // mouse button left
+            else if (events[i].mouse_event.button == MOUSE_BUTTON_0 && events[i].mouse_event.event == MOUSE_EVENT_BUTTON_PRESSED) {
                 if (ui_component_is_inside(&self->base, events[i].mouse_event.position_x, events[i].mouse_event.position_y)) {
-                    log_debug("ui_map_update dragged");
                     int x = events[i].mouse_event.position_x;
                     int y = events[i].mouse_event.position_y;
                     ui_component_get_relative_position(&self->base, &x, &y);
-                    self->flags.dragged = 1;
-                    self->x_last = x;
-                    self->y_last = y;
+                    x += self->properties.x_pos;
+                    y += self->properties.y_pos;
+
+                    // update tile
+                    int tile_at = (y * self->properties.x_num_tiles + x) / TILE_WIDTH;
+                    self->map[tile_at] = self->properties.current_tile_index;
+
+                    // render
+                    const Framebuffer8Bit_t *tile = &self->tiles->tiles[self->map[(y * self->properties.x_num_tiles + x) / TILE_WIDTH]];
+                    framebuffer_8bit_draw_framebuffer(self->fb_map, x - (x % TILE_WIDTH), y - (y % TILE_HEIGHT), tile);
+                    self->base.flags.dirty_flag = 1;
                 }
-            } else if (self->flags.dragged && events[i].mouse_event.button == MOUSE_BUTTON_1 && events[i].mouse_event.event == MOUSE_EVENT_BUTTON_RELEASED) {
-                log_debug("ui_map_update released");
-                self->flags.dragged = 0;
-            } else if (self->flags.dragged && events[i].mouse_event.event == MOUSE_EVENT_MOVED) {
+            }
+            // mouse moved
+            else if (self->flags.dragged && events[i].mouse_event.event == MOUSE_EVENT_MOVED) {
                 int x = events[i].mouse_event.position_x;
                 int y = events[i].mouse_event.position_y;
                 ui_component_get_relative_position(&self->base, &x, &y);

@@ -76,9 +76,9 @@ void ui_tile_on_click(UITile_t *self) {
         const UIIcon_t *icon = (UIIcon_t *) self->base.base.children.components[i];
         if (icon->flags.clicked) {
             *self->properties.current_tile_index = i;
-            log_info_fmt("new tile index: %d", i);
+            // log_info_fmt("new tile index: %d", i);
             return;
         }
     }
-    log_warning("could not find selected tile");
+    log_warning("could not find selected tile -  this should not happen!");
 }
