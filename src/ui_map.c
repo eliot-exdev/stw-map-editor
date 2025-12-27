@@ -15,7 +15,7 @@ void ui_map_init(UIMap_t *self, const int x, const int y, const int width, const
 
     ui_component_init(&self->base, x, y, width, height);
 
-    self->base.subtype = 1;
+    self->base.subtype = UI_MAP_SUBTYPE;
 
     self->base.functions.destroy_func = (void (*)(void *)) &ui_map_destroy;
     self->base.functions.paint_func = (int (*)(void *, Framebuffer8Bit_t *, int, int, int, int)) ui_map_paint;

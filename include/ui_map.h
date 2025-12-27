@@ -5,11 +5,7 @@
 #ifndef STW_MAP_EDITOR_UI_MAP_H
 #define STW_MAP_EDITOR_UI_MAP_H
 
-#include <exdevgfx/ui/ui.h>
-#include <exdevgfx/framebuffer_8bit.h>
-
-#define TILE_WIDTH 16
-#define TILE_HEIGHT 16
+#include "ui_definitions.h"
 
 struct UIMap {
     UIComponent_t base;
