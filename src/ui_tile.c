@@ -10,14 +10,12 @@
 #include <assert.h>
 #include <stdlib.h>
 
-void ui_tile_init(UITile_t *self, const int x, const int y, const int width, const int height, Tiles8bit_t *tiles) {
+void ui_tile_init(UITile_t *self, const int x, const int y, const int width, const int height, const Tiles8bit_t *tiles) {
     assert(self);
 
     ui_scroll_container_init(&self->base, x, y, width, height, UI_SCROLLING_SUPPORT_VERTICAL);
 
     self->base.base.subtype = UI_TILE_SUBTYPE;
-
-    self->tiles = tiles;
 
     // create icons for all tiles
     int i = 0;
@@ -49,7 +47,7 @@ void ui_tile_init(UITile_t *self, const int x, const int y, const int width, con
     }
 }
 
-UITile_t *ui_tile_create(const int x, const int y, const int width, const int height, Tiles8bit_t *tiles) {
+UITile_t *ui_tile_create(const int x, const int y, const int width, const int height, const Tiles8bit_t *tiles) {
     UITile_t *self = malloc(sizeof(UITile_t));
 
     ui_tile_init(self, x, y, width, height, tiles);
@@ -61,10 +59,6 @@ void ui_tile_destroy(UITile_t *self) {
     assert(self);
 
     ui_scroll_container_destroy(&self->base);
-
-    tiles_8bit_deinit(self->tiles);
-    free(self->tiles);
-    self->tiles = NULL;
 }
 
 void ui_tile_on_icon_click(UIIcon_t *icon) {
