@@ -41,7 +41,7 @@ int main(void) {
     ui_component_connect(&app.root, map_component);
 
     // tile view
-    UITile_t *tile_view = ui_tile_create(562, 2, 76, 476, tiles);
+    UITile_t *tile_view = ui_tile_create(562, 2, 76, 476, tiles, &map_component->properties.current_tile_index);
     ui_component_connect(&app.root, tile_view);
 
     // run

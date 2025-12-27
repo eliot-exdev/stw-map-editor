@@ -9,13 +9,16 @@
 
 struct UITile {
     UIScrollContainer_t base;
+    struct {
+        int *current_tile_index;
+    } properties;
 };
 
 typedef struct UITile UITile_t;
 
-void ui_tile_init(UITile_t *self, int x, int y, int width, int height, const Tiles8bit_t *tiles);
+void ui_tile_init(UITile_t *self, int x, int y, int width, int height, const Tiles8bit_t *tiles, int *current_tile_index);
 
-UITile_t *ui_tile_create(int x, int y, int width, int height, const Tiles8bit_t *tiles);
+UITile_t *ui_tile_create(int x, int y, int width, int height, const Tiles8bit_t *tiles, int *current_tile_index);
 
 void ui_tile_destroy(UITile_t *self);
 

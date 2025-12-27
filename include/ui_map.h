@@ -15,6 +15,7 @@ struct UIMap {
         int y_pos;
         int x_num_tiles;
         int y_num_tiles;
+        int current_tile_index;
     } properties;
 
     struct {

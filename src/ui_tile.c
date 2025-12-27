@@ -10,12 +10,13 @@
 #include <assert.h>
 #include <stdlib.h>
 
-void ui_tile_init(UITile_t *self, const int x, const int y, const int width, const int height, const Tiles8bit_t *tiles) {
+void ui_tile_init(UITile_t *self, const int x, const int y, const int width, const int height, const Tiles8bit_t *tiles, int *current_tile_index) {
     assert(self);
 
     ui_scroll_container_init(&self->base, x, y, width, height, UI_SCROLLING_SUPPORT_VERTICAL);
 
     self->base.base.subtype = UI_TILE_SUBTYPE;
+    self->properties.current_tile_index = current_tile_index;
 
     // create icons for all tiles
     int i = 0;
@@ -47,10 +48,10 @@ void ui_tile_init(UITile_t *self, const int x, const int y, const int width, con
     }
 }
 
-UITile_t *ui_tile_create(const int x, const int y, const int width, const int height, const Tiles8bit_t *tiles) {
+UITile_t *ui_tile_create(const int x, const int y, const int width, const int height, const Tiles8bit_t *tiles, int *current_tile_index) {
     UITile_t *self = malloc(sizeof(UITile_t));
 
-    ui_tile_init(self, x, y, width, height, tiles);
+    ui_tile_init(self, x, y, width, height, tiles, current_tile_index);
 
     return self;
 }
@@ -71,5 +72,13 @@ void ui_tile_on_icon_click(UIIcon_t *icon) {
 void ui_tile_on_click(UITile_t *self) {
     assert(self);
 
-    log_info("click");
+    for (int i = 0; i < self->base.base.children.size; ++i) {
+        const UIIcon_t *icon = (UIIcon_t *) self->base.base.children.components[i];
+        if (icon->flags.clicked) {
+            *self->properties.current_tile_index = i;
+            log_info_fmt("new tile index: %d", i);
+            return;
+        }
+    }
+    log_warning("could not find selected tile");
 }

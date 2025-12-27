@@ -26,6 +26,7 @@ void ui_map_init(UIMap_t *self, const int x, const int y, const int width, const
     self->properties.y_pos = 0;
     self->properties.x_num_tiles = 100;
     self->properties.y_num_tiles = 100;
+    self->properties.current_tile_index = 6;// water
     self->flags.dragged = 0;
 
     self->tiles = tiles;
@@ -71,7 +72,7 @@ void ui_map_prepare(UIMap_t *self) {
     // init tiles with water
     for (int x = 0; x < self->properties.x_num_tiles; x++) {
         for (int y = 0; y < self->properties.y_num_tiles; y++) {
-            self->map[y * self->properties.x_num_tiles + x] = 6;
+            self->map[y * self->properties.x_num_tiles + x] = self->properties.current_tile_index;
         }
     }
 
