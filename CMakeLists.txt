@@ -11,6 +11,11 @@ add_executable(stw_map_editor
         src/ui_map.c
         src/ui_tile.c
 )
+if (LOW_RESOLUTION)
+    target_compile_definitions(stw_map_editor PRIVATE LOW_RESOLUTION)
+    message(STATUS "enabled lores")
+endif ()
+
 target_include_directories(stw_map_editor
         PRIVATE include
 )

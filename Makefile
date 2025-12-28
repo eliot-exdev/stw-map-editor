@@ -37,7 +37,7 @@ stw_map_editor_aos_060: src/main.c src/ui_map.c src/ui_tile.c exdev-gfx/exdev_gf
 	$(CC) -o ${@} ${INCLUDES_MOS} src/main.c src/ui_map.c src/ui_tile.c ${EXDEV_GFX_AOS_OBJECTS} ${EXDEV_GFX_UI_AOS_OBJECTS} ${C_FLAGS_060} ${LD_FLAGS_060}
 
 stw_map_editor_aos_060_c2p: src/main.c src/ui_map.c src/ui_tile.c exdev-gfx/exdev_gfx_ui_aos_060.a exdev-gfx/exdev_gfx_aos_060_c2p.a
-	$(CC) -o ${@} ${INCLUDES_MOS} src/main.c src/ui_map.c src/ui_tile.c ${EXDEV_GFX_AOS_OBJECTS} ${EXDEV_GFX_UI_AOS_OBJECTS} ${C_FLAGS_060} ${LD_FLAGS_060} -LWork:workspace/c2plib/sdk -lc2p
+	$(CC) -o ${@} ${INCLUDES_MOS} src/main.c src/ui_map.c src/ui_tile.c ${EXDEV_GFX_AOS_OBJECTS} ${EXDEV_GFX_UI_AOS_OBJECTS} ${C_FLAGS_060} -DLOW_RESOLUTION ${LD_FLAGS_060} -LWork:workspace/c2plib/sdk -lc2p
 
 stw_map_editor: stw_map_editor_mos_gcc stw_map_editor_aos_060 stw_map_editor_aos_060_c2p
 

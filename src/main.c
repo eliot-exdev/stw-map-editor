@@ -29,7 +29,7 @@ int main(void) {
 
     // setup application
     UIApplication_t app;
-    ui_application_init(&app, WIDTH, HEIGHT);
+    ui_application_init(&app, UI_WIDTH, UI_HEIGHT);
     res = palette_8bit_read_from_dat(&app.palette, "assets/maptiles_8bit.pal");
     if (res) {
         log_warning("could not read assets/maptiles_8bit.pal");
@@ -37,11 +37,11 @@ int main(void) {
     }
 
     // map component
-    UIMap_t *map_component = ui_map_create(2, 2, 558, 476, tiles);
+    UIMap_t *map_component = ui_map_create(UI_BORDER_SIZE, UI_BORDER_SIZE, UI_MAP_WIDTH, UI_MAP_HEIGHT, tiles);
     ui_component_connect(&app.root, map_component);
 
     // tile view
-    UITile_t *tile_view = ui_tile_create(562, 2, 76, 476, tiles, &map_component->properties.current_tile_index);
+    UITile_t *tile_view = ui_tile_create(UI_TILE_X_POS, UI_BORDER_SIZE, UI_TILE_WIDTH, UI_TILE_HEIGHT, tiles, &map_component->properties.current_tile_index);
     ui_component_connect(&app.root, tile_view);
 
     // run
