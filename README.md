@@ -13,10 +13,12 @@ These assets are copyright by Christian "theotheoderich" Wiegel.
 - Implement a map editor for "Settle the World"
 - Support load, modify and store maps 
 - Support different target platforms
-  - Amiga OS 3.x (68k)
+  - AmigaOs 3.x (68k, RTG and AGA)
   - MorphOs 3.x (ppc)
-  - Mac Os X (arm64)
+  - MacOs X (arm64)
   - Ubuntu Linux (amd64, arm64)
+- Implement in C99
+- Few dependencies as possible
 
 ## Checkout
 
@@ -26,9 +28,15 @@ These assets are copyright by Christian "theotheoderich" Wiegel.
     git submodule update --init
 ```
 
+## Dependencies
+
+- [vbcc](http://sun.hasenbraten.de/vbcc) and NDK (for AmigaOs build)
+- gcc and SDK (for MorphOs build)
+- [c2p library](https://aminet.net/package/dev/misc/c2plib) (for AGA)
+
 ## Build
 
-### Compile for Mac Os X and Linux
+### Compile for MacOs X and Linux
 ```shell
     mkdir build
     cd build
