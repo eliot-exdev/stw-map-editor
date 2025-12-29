@@ -122,8 +122,8 @@ void ui_map_update(UIMap_t *self, const long time_elapsed, const Event_t *events
                         int y = events[i].mouse_event.position_y;
                         ui_component_get_relative_position(&self->base, &x, &y);
                         self->flags.dragged = 1;
-                        self->x_last = x;
-                        self->y_last = y;
+                        self->x_last = x - 2;
+                        self->y_last = y - 2;
                     }
                 } else if (self->flags.dragged && events[i].mouse_event.event == MOUSE_EVENT_BUTTON_RELEASED) {
                     log_debug("ui_map_update released");
@@ -136,15 +136,15 @@ void ui_map_update(UIMap_t *self, const long time_elapsed, const Event_t *events
                     int x = events[i].mouse_event.position_x;
                     int y = events[i].mouse_event.position_y;
                     ui_component_get_relative_position(&self->base, &x, &y);
-                    x += self->properties.x_pos;
-                    y += self->properties.y_pos;
+                    x += self->properties.x_pos - 2;
+                    y += self->properties.y_pos - 2;
 
                     // update tile
-                    int tile_at = (y * self->properties.x_num_tiles + x) / TILE_WIDTH;
+                    const int tile_at = y / TILE_HEIGHT * self->properties.x_num_tiles + x / TILE_WIDTH;
                     self->map[tile_at] = self->properties.current_tile_index;
 
                     // render
-                    const Framebuffer8Bit_t *tile = &self->tiles->tiles[self->map[(y * self->properties.x_num_tiles + x) / TILE_WIDTH]];
+                    const Framebuffer8Bit_t *tile = &self->tiles->tiles[self->map[tile_at]];
                     framebuffer_8bit_draw_framebuffer(self->fb_map, x - (x % TILE_WIDTH), y - (y % TILE_HEIGHT), tile);
                     self->base.flags.dirty_flag = 1;
                 }
