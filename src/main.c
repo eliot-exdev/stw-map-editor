@@ -18,14 +18,38 @@
 #ifdef __VBCC__
 __entry
 #endif
-unsigned char versiontag[] = "\0$VER: " VERSION;
+        unsigned char versiontag[] = "\0$VER: " VERSION;
 #endif
+
+static void print_help() {
+    printf("stw_map_editor [ARGUMENTS]...\n"
+           "arguments:\n"
+           " -h, --help              print help message and exit\n"
+           " -w, --world <number>    select world 1, 2, 3, 4 or 5 (default 1)\n");
+}
+
+static void print_version() {
+    printf(VERSION "\n");
+}
+
+static void parse_args(int argc, char **argv) {
+    if (args_find_option(argc, argv, 'h', "help")) {
+        print_help();
+        exit(0);
+    }
+    if (args_find_option(argc, argv, 'v', "version")) {
+        print_version();
+        exit(0);
+    }
+}
 
 #if defined(__MORPHOS__) || defined(__AMIGAOS__)
-unsigned long __stack = (16384); // 16 kb
+unsigned long __stack = (16384);// 16 kb
 #endif
 
-int main(void) {
+int main(int argc, char **argv) {
+    parse_args(argc, argv);
+
     int res = exdev_base_init();
     if (res) {
         log_warning("could not init exdevgfx");
@@ -61,7 +85,7 @@ int main(void) {
 
     // run
     ui_application_prepare(&app);
-    ui_application_run(&app, UPDATE_INTERVAL);
+    ui_application_run(&app, "stw_map_editor", UPDATE_INTERVAL);
 
     // cleanup
     ui_application_destroy(&app);
