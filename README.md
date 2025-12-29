@@ -1,4 +1,4 @@
-# settle the world - map editor
+# Settle the World - Map Editor
 
 Simple map editor for the Amiga strategy game [Settle the World](https://theotheoderich.itch.io/settle-the-world).
 
