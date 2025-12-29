@@ -30,8 +30,8 @@ These assets are copyright by Christian "theotheoderich" Wiegel.
 
 ## Dependencies
 
-- [vbcc](http://sun.hasenbraten.de/vbcc) and NDK (for AmigaOs build)
-- gcc and SDK (for MorphOs build)
+- [vbcc](http://sun.hasenbraten.de/vbcc) and [NDK](https://www.hyperion-entertainment.com/index.php/downloads?view=download&layout=form&file=126) (for AmigaOs build)
+- [GCC and SDK](https://www.morphos-team.net/files/sdk-20230510.lha) (for MorphOs build)
 - [c2p library](https://aminet.net/package/dev/misc/c2plib) (for AGA)
 
 ## Build
