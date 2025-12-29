@@ -7,8 +7,23 @@
 
 #include <exdevgfx/exdev_base.h>
 #include <exdevgfx/logger.h>
+#include <exdevgfx/args.h>
 
 #include <stdlib.h>
+#include <stdio.h>
+
+#define VERSION "stw_map_editor 0.1 (29.12.2025)"
+
+#ifndef __linux__
+#ifdef __VBCC__
+__entry
+#endif
+unsigned char versiontag[] = "\0$VER: " VERSION;
+#endif
+
+#if defined(__MORPHOS__) || defined(__AMIGAOS__)
+unsigned long __stack = (16384); // 16 kb
+#endif
 
 int main(void) {
     int res = exdev_base_init();
