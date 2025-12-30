@@ -7,6 +7,8 @@
 #include "settle_the_world_util.h"
 
 #include <exdevgfx/exdev_base.h>
+
+#define EXDEVGFX2_LOG_LEVEL 2
 #include <exdevgfx/logger.h>
 #include <exdevgfx/args.h>
 
@@ -57,9 +59,12 @@ int main(int argc, char **argv) {
         return res;
     }
 
+    log_info("--> read tiles");
     Tiles8bit_t *tiles = stw_read_tiles();
+    log_info("<-- read tiles");
 
     // setup application
+    log_info("--> setup ui");
     UIApplication_t app;
     ui_application_init(&app, UI_WIDTH, UI_HEIGHT);
     res = palette_8bit_read_from_dat(&app.palette, "assets/maptiles_8bit.pal");
@@ -76,13 +81,19 @@ int main(int argc, char **argv) {
     UITile_t *tile_view = ui_tile_create(UI_TILE_X_POS, UI_BORDER_SIZE, UI_TILE_WIDTH, UI_TILE_HEIGHT, tiles, &map_component->properties.current_tile_index);
     ui_component_connect(&app.root, tile_view);
 
-    // run
     ui_application_prepare(&app);
+    log_info("<-- setup ui");
+
+    // run
+    log_info("--> run");
     ui_application_run(&app, "stw_map_editor", UPDATE_INTERVAL);
+    log_info("<-- run");
 
     // cleanup
+    log_info("--> cleanup");
     ui_application_destroy(&app);
     exdev_base_deinit();
+    log_info("<-- cleanup");
 
     return 0;
 }

@@ -32,7 +32,6 @@ static int VALID_TILES[] = {
 static int VALID_TILES_NUM = 163;
 
 Tiles8bit_t *stw_read_tiles() {
-    log_info("--> read_tiles()");
     int res = 0;
 
     // read framebuffer
@@ -40,7 +39,6 @@ Tiles8bit_t *stw_read_tiles() {
     res = framebuffer_8bit_read_from_dat(&fb, "assets/maptiles_8bit.dat");
     if (res) {
         log_warning("could not read assets/maptiles_8bit.dat");
-        log_info("<-- read_tiles()!");
         return NULL;
     }
 
@@ -59,6 +57,5 @@ Tiles8bit_t *stw_read_tiles() {
     // cleanup
     tiles_8bit_deinit(&all_tiles);
 
-    log_info("<-- read_tiles()");
     return tiles;
 }
