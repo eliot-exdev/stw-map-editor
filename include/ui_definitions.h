@@ -11,11 +11,11 @@
 #define UI_WIDTH 320
 #define UI_HEIGHT 256
 #define UI_BORDER_SIZE 2
-#define UI_MAP_WIDTH 239
+#define UI_MAP_WIDTH 241
 #define UI_MAP_HEIGHT 252
 #define UI_TILE_WIDTH 74
 #define UI_TILE_HEIGHT 252
-#define UI_TILE_X_POS 242
+#define UI_TILE_X_POS 244
 #else
 #define UI_WIDTH 640
 #define UI_HEIGHT 480
