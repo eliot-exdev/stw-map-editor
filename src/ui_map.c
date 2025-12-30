@@ -26,7 +26,7 @@ void ui_map_init(UIMap_t *self, const int x, const int y, const int width, const
     self->properties.y_pos = 0;
     self->properties.x_num_tiles = 160; // TODO: make this configurable
     self->properties.y_num_tiles = 128; // TODO: make this configurable
-    self->properties.current_tile_index = 6;// water
+    self->properties.current_tile_index = 0;// water
     self->flags.dragged = 0;
 
     self->tiles = tiles;

@@ -4,6 +4,7 @@
 
 #include "ui_map.h"
 #include "ui_tile.h"
+#include "settle_the_world_util.h"
 
 #include <exdevgfx/exdev_base.h>
 #include <exdevgfx/logger.h>
@@ -55,16 +56,8 @@ int main(int argc, char **argv) {
         log_warning("could not init exdevgfx");
         return res;
     }
-    // load tile map
-    Framebuffer8Bit_t fb;
-    res = framebuffer_8bit_read_from_dat(&fb, "assets/maptiles_8bit.dat");
-    if (res) {
-        log_warning("could not read assets/maptiles_8bit.dat");
-        return res;
-    }
-    Tiles8bit_t *tiles = malloc(sizeof(Tiles8bit_t));
-    tiles_8bit_init_from_framebuffer(tiles, &fb, TILE_WIDTH, TILE_HEIGHT);
-    framebuffer_8bit_deinit(&fb);
+
+    Tiles8bit_t *tiles = stw_read_tiles();
 
     // setup application
     UIApplication_t app;
