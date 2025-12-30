@@ -32,7 +32,7 @@ static int VALID_TILES[] = {
 static int VALID_TILES_NUM = 163;
 
 Tiles8bit_t *stw_read_tiles() {
-    log_info("--> read_tiles() ...");
+    log_info("--> read_tiles()");
     int res = 0;
 
     // read framebuffer
@@ -59,6 +59,6 @@ Tiles8bit_t *stw_read_tiles() {
     // cleanup
     tiles_8bit_deinit(&all_tiles);
 
-    log_info("<-- read_tiles()!");
+    log_info("<-- read_tiles()");
     return tiles;
 }
