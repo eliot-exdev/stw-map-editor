@@ -73,8 +73,12 @@ int main(int argc, char **argv) {
         return res;
     }
 
+    // status
+    UIComponent_t *status = ui_component_create(UI_BORDER_SIZE, UI_BORDER_SIZE, UI_STATUS_WIDTH, UI_STATUS_HEIGHT);
+    ui_component_connect(&app.root, status);
+
     // map component
-    UIMap_t *map_component = ui_map_create(UI_BORDER_SIZE, UI_BORDER_SIZE, UI_MAP_WIDTH, UI_MAP_HEIGHT, tiles);
+    UIMap_t *map_component = ui_map_create(UI_BORDER_SIZE, UI_MAP_Y_POS, UI_MAP_WIDTH, UI_MAP_HEIGHT, tiles);
     ui_component_connect(&app.root, map_component);
 
     // tile view
