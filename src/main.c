@@ -61,7 +61,8 @@ int main(int argc, char **argv) {
     STWMapEditor_t editor; // this is our usr_ptr
 
     log_info("--> read tiles");
-    Tiles8bit_t *tiles = stw_read_tiles();
+    Tiles8bit_t tiles;
+    stw_read_tiles(&tiles);
     log_info("<-- read tiles");
 
     // setup application
@@ -75,15 +76,15 @@ int main(int argc, char **argv) {
     }
 
     // status
-    editor.status = ui_status_create(UI_BORDER_SIZE, UI_BORDER_SIZE, UI_STATUS_WIDTH, UI_STATUS_HEIGHT, tiles);
+    editor.status = ui_status_create(UI_BORDER_SIZE, UI_BORDER_SIZE, UI_STATUS_WIDTH, UI_STATUS_HEIGHT, &tiles);
     ui_component_connect(&app.root, editor.status);
 
     // map component
-    editor.map = ui_map_create(UI_BORDER_SIZE, UI_MAP_Y_POS, UI_MAP_WIDTH, UI_MAP_HEIGHT, tiles);
+    editor.map = ui_map_create(UI_BORDER_SIZE, UI_MAP_Y_POS, UI_MAP_WIDTH, UI_MAP_HEIGHT, &tiles);
     ui_component_connect(&app.root, editor.map);
 
     // tile view
-    editor.tile = ui_tile_create(UI_TILE_X_POS, UI_BORDER_SIZE, UI_TILE_WIDTH, UI_TILE_HEIGHT, tiles);
+    editor.tile = ui_tile_create(UI_TILE_X_POS, UI_BORDER_SIZE, UI_TILE_WIDTH, UI_TILE_HEIGHT, &tiles);
     ui_component_connect(&app.root, editor.tile);
 
     ui_application_prepare(&app);
@@ -97,6 +98,7 @@ int main(int argc, char **argv) {
     // cleanup
     log_info("--> cleanup");
     ui_application_destroy(&app);
+    tiles_8bit_deinit(&tiles);
     exdev_base_deinit();
     log_info("<-- cleanup");
 

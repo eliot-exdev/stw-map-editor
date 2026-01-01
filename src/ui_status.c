@@ -17,7 +17,7 @@ void ui_status_init(UIStatus_t *self, const int x, const int y, const int width,
     self->properties.current_tile_index = 0;// water
     self->tiles = tiles;
 
-    self->current_tile = ui_icon_create(2, 2, tiles->tiles);
+    self->current_tile = ui_icon_create(2, 2, framebuffer_8bit_copy(tiles->tiles));
     self->current_tile->properties.clickable = 0;
     ui_component_connect(self, self->current_tile);
 }
@@ -32,6 +32,8 @@ UIStatus_t *ui_status_create(const int x, const int y, const int width, const in
 
 void ui_status_destroy(UIStatus_t *self) {
     assert(self);
+
+    self->tiles = NULL;
 
     ui_component_destroy(&self->base);
 }

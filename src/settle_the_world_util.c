@@ -31,7 +31,7 @@ static int VALID_TILES[] = {
 };
 static int VALID_TILES_NUM = 163;
 
-Tiles8bit_t *stw_read_tiles() {
+void stw_read_tiles(Tiles8bit_t *tiles) {
     int res = 0;
 
     // read framebuffer
@@ -39,7 +39,7 @@ Tiles8bit_t *stw_read_tiles() {
     res = framebuffer_8bit_read_from_dat(&fb, "assets/maptiles_8bit.dat");
     if (res) {
         log_warning("could not read assets/maptiles_8bit.dat");
-        return NULL;
+        return;
     }
 
     // get all tiles
@@ -48,7 +48,6 @@ Tiles8bit_t *stw_read_tiles() {
     framebuffer_8bit_deinit(&fb);
 
     // extract valid tiles
-    Tiles8bit_t *tiles = malloc(sizeof(Tiles8bit_t));
     tiles_8bit_init(tiles, VALID_TILES_NUM, TILE_WIDTH, TILE_HEIGHT);
     for (int i = 0; i < VALID_TILES_NUM; i++) {
         framebuffer_8bit_copy_to(all_tiles.tiles + VALID_TILES[i], tiles->tiles + i);
@@ -56,6 +55,4 @@ Tiles8bit_t *stw_read_tiles() {
 
     // cleanup
     tiles_8bit_deinit(&all_tiles);
-
-    return tiles;
 }

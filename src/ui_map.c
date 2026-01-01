@@ -50,8 +50,6 @@ UIMap_t *ui_map_create(const int x, const int y, const int width, const int heig
 void ui_map_destroy(UIMap_t *self) {
     assert(self);
 
-    tiles_8bit_deinit(self->tiles);
-    free(self->tiles);
     self->tiles = NULL;
 
     free(self->map);

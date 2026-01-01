@@ -7,6 +7,6 @@
 
 #include <exdevgfx/framebuffer_8bit.h>
 
-Tiles8bit_t *stw_read_tiles();
+void stw_read_tiles(Tiles8bit_t *tiles);
 
 #endif//STW_MAP_EDITOR_SETTLE_THE_WORLD_UTIL_H
