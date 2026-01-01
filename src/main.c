@@ -2,8 +2,7 @@
  * Copyright 2025 Andre Geisler (andre@exdev.de)
  */
 
-#include "ui_map.h"
-#include "ui_tile.h"
+#include "settle_the_world_map_editor.h"
 #include "settle_the_world_util.h"
 
 #include <exdevgfx/exdev_base.h>
@@ -59,6 +58,8 @@ int main(int argc, char **argv) {
         return res;
     }
 
+    STWMapEditor_t editor; // this is our usr_ptr
+
     log_info("--> read tiles");
     Tiles8bit_t *tiles = stw_read_tiles();
     log_info("<-- read tiles");
@@ -66,7 +67,7 @@ int main(int argc, char **argv) {
     // setup application
     log_info("--> setup ui");
     UIApplication_t app;
-    ui_application_init(&app, UI_WIDTH, UI_HEIGHT);
+    ui_application_init(&app, UI_WIDTH, UI_HEIGHT, &editor);
     res = palette_8bit_read_from_dat(&app.palette, "assets/maptiles_8bit.pal");
     if (res) {
         log_warning("could not read assets/maptiles_8bit.pal");
@@ -74,16 +75,16 @@ int main(int argc, char **argv) {
     }
 
     // status
-    UIComponent_t *status = ui_component_create(UI_BORDER_SIZE, UI_BORDER_SIZE, UI_STATUS_WIDTH, UI_STATUS_HEIGHT);
-    ui_component_connect(&app.root, status);
+    editor.status = ui_status_create(UI_BORDER_SIZE, UI_BORDER_SIZE, UI_STATUS_WIDTH, UI_STATUS_HEIGHT, tiles);
+    ui_component_connect(&app.root, editor.status);
 
     // map component
-    UIMap_t *map_component = ui_map_create(UI_BORDER_SIZE, UI_MAP_Y_POS, UI_MAP_WIDTH, UI_MAP_HEIGHT, tiles);
-    ui_component_connect(&app.root, map_component);
+    editor.map = ui_map_create(UI_BORDER_SIZE, UI_MAP_Y_POS, UI_MAP_WIDTH, UI_MAP_HEIGHT, tiles);
+    ui_component_connect(&app.root, editor.map);
 
     // tile view
-    UITile_t *tile_view = ui_tile_create(UI_TILE_X_POS, UI_BORDER_SIZE, UI_TILE_WIDTH, UI_TILE_HEIGHT, tiles, &map_component->properties.current_tile_index);
-    ui_component_connect(&app.root, tile_view);
+    editor.tile = ui_tile_create(UI_TILE_X_POS, UI_BORDER_SIZE, UI_TILE_WIDTH, UI_TILE_HEIGHT, tiles);
+    ui_component_connect(&app.root, editor.tile);
 
     ui_application_prepare(&app);
     log_info("<-- setup ui");

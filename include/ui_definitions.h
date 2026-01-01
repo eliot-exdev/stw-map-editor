@@ -15,11 +15,11 @@
 #define UI_BORDER_SIZE 2
 
 #define UI_STATUS_WIDTH 241
-#define UI_STATUS_HEIGHT 20
+#define UI_STATUS_HEIGHT 22
 
 #define UI_MAP_WIDTH 241
-#define UI_MAP_HEIGHT 231
-#define UI_MAP_Y_POS 23
+#define UI_MAP_HEIGHT 229
+#define UI_MAP_Y_POS 25
 
 #define UI_TILE_WIDTH 74
 #define UI_TILE_HEIGHT 252
@@ -31,11 +31,11 @@
 #define UI_BORDER_SIZE 2
 
 #define UI_STATUS_WIDTH 561
-#define UI_STATUS_HEIGHT 20
+#define UI_STATUS_HEIGHT 22
 
 #define UI_MAP_WIDTH 561
-#define UI_MAP_HEIGHT 455
-#define UI_MAP_Y_POS 23
+#define UI_MAP_HEIGHT 453
+#define UI_MAP_Y_POS 25
 
 #define UI_TILE_WIDTH 74
 #define UI_TILE_HEIGHT 476
@@ -49,5 +49,6 @@
 
 #define UI_MAP_SUBTYPE 1
 #define UI_TILE_SUBTYPE 2
+#define UI_STATUS_SUBTYPE 3
 
 #endif//STW_MAP_EDITOR_UI_DEFINITIONS_H

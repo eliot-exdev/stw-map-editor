@@ -10,6 +10,7 @@ add_executable(stw_map_editor
         src/main.c
         src/ui_map.c
         src/ui_tile.c
+        src/ui_status.c
         src/settle_the_world_util.c
 )
 if (LOW_RESOLUTION)

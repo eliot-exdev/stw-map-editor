@@ -45,6 +45,8 @@ void ui_map_prepare(UIMap_t *self);
 
 int ui_map_paint(UIMap_t *self, Framebuffer8Bit_t *fb, int x_offset, int y_offset, int width, int height);
 
-void ui_map_update(UIMap_t *self, long time_elapsed, const Event_t *events, int num_events);
+void ui_map_update(UIMap_t *self, long time_elapsed, const Event_t *events, int num_events, void *usr_ptr);
+
+void ui_map_update_current_tile_index(UIMap_t *self, int current_tile_index);
 
 #endif //STW_MAP_EDITOR_UI_MAP_H

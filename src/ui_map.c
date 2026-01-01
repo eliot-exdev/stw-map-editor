@@ -19,13 +19,13 @@ void ui_map_init(UIMap_t *self, const int x, const int y, const int width, const
 
     self->base.functions.destroy_func = (void (*)(void *)) &ui_map_destroy;
     self->base.functions.paint_func = (int (*)(void *, Framebuffer8Bit_t *, int, int, int, int)) ui_map_paint;
-    self->base.functions.update_func = (void (*)(void *, long, const Event_t *, int)) ui_map_update;
+    self->base.functions.update_func = (void (*)(void *, long, const Event_t *, int, void *)) ui_map_update;
     self->base.functions.prepare_func = (void (*)(void *)) ui_map_prepare;
 
     self->properties.x_pos = 0;
     self->properties.y_pos = 0;
-    self->properties.x_num_tiles = 160; // TODO: make this configurable
-    self->properties.y_num_tiles = 128; // TODO: make this configurable
+    self->properties.x_num_tiles = 160;     // TODO: make this configurable
+    self->properties.y_num_tiles = 128;     // TODO: make this configurable
     self->properties.current_tile_index = 0;// water
     self->flags.dragged = 0;
 
@@ -108,7 +108,7 @@ int ui_map_paint(UIMap_t *self, Framebuffer8Bit_t *fb, const int x_offset, const
     return res;
 }
 
-void ui_map_update(UIMap_t *self, const long time_elapsed, const Event_t *events, const int num_events) {
+void ui_map_update(UIMap_t *self, const long time_elapsed, const Event_t *events, const int num_events, void *usr_ptr) {
     assert(self);
 
     for (int i = 0; i < num_events; ++i) {
@@ -186,4 +186,10 @@ void ui_map_update(UIMap_t *self, const long time_elapsed, const Event_t *events
             }
         }
     }
+}
+
+void ui_map_update_current_tile_index(UIMap_t *self, const int current_tile_index) {
+    assert(self);
+
+    self->properties.current_tile_index = current_tile_index;
 }
