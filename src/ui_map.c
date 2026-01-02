@@ -185,14 +185,14 @@ void ui_map_update(UIMap_t *self, const long time_elapsed, const Event_t *events
 
                     if (self->properties.x_pos < 0) {
                         self->properties.x_pos = 0;
-                    } else if (self->properties.x_pos > self->fb_map->width - self->base.properties.width - 4) {
-                        self->properties.x_pos = self->fb_map->width - self->base.properties.width - 4;
+                    } else if (self->properties.x_pos > self->fb_map->width - self->base.properties.width + 4) {
+                        self->properties.x_pos = self->fb_map->width - self->base.properties.width + 4;
                     }
 
                     if (self->properties.y_pos < 0) {
                         self->properties.y_pos = 0;
-                    } else if (self->properties.y_pos > self->fb_map->height - self->base.properties.height - 4) {
-                        self->properties.y_pos = self->fb_map->height - self->base.properties.height - 4;
+                    } else if (self->properties.y_pos > self->fb_map->height - self->base.properties.height + 4) {
+                        self->properties.y_pos = self->fb_map->height - self->base.properties.height + 4;
                     }
                     self->base.flags.dirty_flag = 1;
                     log_debug_fmt("x=%d, y=%d", self->properties.x_pos, self->properties.y_pos);
