@@ -20,6 +20,11 @@ void ui_status_init(UIStatus_t *self, const int x, const int y, const int width,
     self->current_tile = ui_icon_create(2, 2, framebuffer_8bit_copy(tiles->tiles));
     self->current_tile->properties.clickable = 0;
     ui_component_connect(self, self->current_tile);
+
+    font_init_mia_1(&self->font);
+
+    self->current_tile_coordinates = ui_text_create(2 + self->current_tile->base.properties.width + 2, 2, 50, self->current_tile->base.properties.height, "000 000", &self->font);
+    ui_component_connect(self, self->current_tile_coordinates);
 }
 
 UIStatus_t *ui_status_create(const int x, const int y, const int width, const int height, Tiles8bit_t *tiles) {
@@ -33,9 +38,10 @@ UIStatus_t *ui_status_create(const int x, const int y, const int width, const in
 void ui_status_destroy(UIStatus_t *self) {
     assert(self);
 
-    self->tiles = NULL;
-
     ui_component_destroy(&self->base);
+
+    self->tiles = NULL;
+    font_deinit(&self->font);
 }
 
 void ui_status_update_current_tile_index(UIStatus_t *self, const int current_tile_index) {

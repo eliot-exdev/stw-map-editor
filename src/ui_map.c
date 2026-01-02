@@ -5,9 +5,13 @@
 #include "ui_map.h"
 
 #define EXDEVGFX2_LOG_LEVEL 2
+#include "settle_the_world_map_editor.h"
+
+
 #include <exdevgfx/logger.h>
 #include <assert.h>
 #include <stdlib.h>
+#include <string.h>
 
 void ui_map_init(UIMap_t *self, const int x, const int y, const int width, const int height, Tiles8bit_t *tiles) {
     assert(self);
@@ -148,39 +152,51 @@ void ui_map_update(UIMap_t *self, const long time_elapsed, const Event_t *events
                 }
             }
             // mouse moved
-            else if (self->flags.dragged && events[i].mouse_event.event == MOUSE_EVENT_MOVED) {
+            else if (events[i].mouse_event.event == MOUSE_EVENT_MOVED) {
                 int x = events[i].mouse_event.position_x - 2;
                 int y = events[i].mouse_event.position_y - 2;
                 ui_component_get_relative_position(&self->base, &x, &y);
 
-                if (x > self->x_last) {
-                    self->properties.x_pos -= x - self->x_last;
-                } else {
-                    self->properties.x_pos += self->x_last - x;
-                }
+                STWMapEditor_t *editor = (STWMapEditor_t *) usr_ptr;
+                const int tile_x = (self->properties.x_pos + x) / TILE_WIDTH;
+                const int tile_y = (self->properties.y_pos + y) / TILE_HEIGHT;
+                char *text = malloc(10);
+                memset(text, 0, 10);
+                sprintf(text, "%03d %03d", tile_x, tile_y);
+                ui_text_update_text(editor->status->current_tile_coordinates, text);
+                free(text);
 
-                if (y > self->y_last) {
-                    self->properties.y_pos -= y - self->y_last;
-                } else {
-                    self->properties.y_pos += self->y_last - y;
-                }
+                // move map
+                if (self->flags.dragged) {
+                    if (x > self->x_last) {
+                        self->properties.x_pos -= x - self->x_last;
+                    } else {
+                        self->properties.x_pos += self->x_last - x;
+                    }
 
-                self->x_last = x;
-                self->y_last = y;
+                    if (y > self->y_last) {
+                        self->properties.y_pos -= y - self->y_last;
+                    } else {
+                        self->properties.y_pos += self->y_last - y;
+                    }
 
-                if (self->properties.x_pos < 0) {
-                    self->properties.x_pos = 0;
-                } else if (self->properties.x_pos > self->fb_map->width - self->base.properties.width - 4) {
-                    self->properties.x_pos = self->fb_map->width - self->base.properties.width - 4;
-                }
+                    self->x_last = x;
+                    self->y_last = y;
 
-                if (self->properties.y_pos < 0) {
-                    self->properties.y_pos = 0;
-                } else if (self->properties.y_pos > self->fb_map->height - self->base.properties.height - 4) {
-                    self->properties.y_pos = self->fb_map->height - self->base.properties.height - 4;
+                    if (self->properties.x_pos < 0) {
+                        self->properties.x_pos = 0;
+                    } else if (self->properties.x_pos > self->fb_map->width - self->base.properties.width - 4) {
+                        self->properties.x_pos = self->fb_map->width - self->base.properties.width - 4;
+                    }
+
+                    if (self->properties.y_pos < 0) {
+                        self->properties.y_pos = 0;
+                    } else if (self->properties.y_pos > self->fb_map->height - self->base.properties.height - 4) {
+                        self->properties.y_pos = self->fb_map->height - self->base.properties.height - 4;
+                    }
+                    self->base.flags.dirty_flag = 1;
+                    log_debug_fmt("x=%d, y=%d", self->properties.x_pos, self->properties.y_pos);
                 }
-                self->base.flags.dirty_flag = 1;
-                log_debug_fmt("x=%d, y=%d", self->properties.x_pos, self->properties.y_pos);
             }
         }
     }

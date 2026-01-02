@@ -13,6 +13,8 @@ struct UIStatus {
     } properties;
     Tiles8bit_t *tiles;
     UIIcon_t *current_tile;
+    Font_t font;
+    UIText_t *current_tile_coordinates;
 };
 
 typedef struct UIStatus UIStatus_t;
