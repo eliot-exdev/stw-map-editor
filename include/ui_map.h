@@ -7,15 +7,15 @@
 
 #include "ui_definitions.h"
 
+#define MAP_SIZE_X 160
+#define MAP_SIZE_Y 128
 struct UIMap {
     UIComponent_t base;
 
     struct {
         int x_pos;
         int y_pos;
-        int x_num_tiles;
-        int y_num_tiles;
-        int current_tile_index;
+        unsigned char current_tile_index;
     } properties;
 
     struct {
@@ -24,7 +24,7 @@ struct UIMap {
 
     Tiles8bit_t *tiles;
 
-    int *map;
+    unsigned char map[MAP_SIZE_Y][MAP_SIZE_X];
 
     Framebuffer8Bit_t *fb_map;
 
@@ -47,6 +47,6 @@ int ui_map_paint(UIMap_t *self, Framebuffer8Bit_t *fb, int x_offset, int y_offse
 
 void ui_map_update(UIMap_t *self, long time_elapsed, const Event_t *events, int num_events, void *usr_ptr);
 
-void ui_map_update_current_tile_index(UIMap_t *self, int current_tile_index);
+void ui_map_update_current_tile_index(UIMap_t *self, unsigned char current_tile_index);
 
-#endif //STW_MAP_EDITOR_UI_MAP_H
+#endif//STW_MAP_EDITOR_UI_MAP_H

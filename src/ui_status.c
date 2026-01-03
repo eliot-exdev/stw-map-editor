@@ -44,7 +44,7 @@ void ui_status_destroy(UIStatus_t *self) {
     font_deinit(&self->font);
 }
 
-void ui_status_update_current_tile_index(UIStatus_t *self, const int current_tile_index) {
+void ui_status_update_current_tile_index(UIStatus_t *self, const unsigned char current_tile_index) {
     assert(self);
 
     if (current_tile_index != self->properties.current_tile_index) {

@@ -28,17 +28,13 @@ void ui_map_init(UIMap_t *self, const int x, const int y, const int width, const
 
     self->properties.x_pos = 0;
     self->properties.y_pos = 0;
-    self->properties.x_num_tiles = 160;     // TODO: make this configurable
-    self->properties.y_num_tiles = 128;     // TODO: make this configurable
     self->properties.current_tile_index = 0;// water
     self->flags.dragged = 0;
 
     self->tiles = tiles;
 
-    self->map = malloc(sizeof(int) * self->properties.x_num_tiles * self->properties.y_num_tiles);
-
     self->fb_map = malloc(sizeof(Framebuffer8Bit_t));
-    framebuffer_8bit_init(self->fb_map, self->properties.x_num_tiles * TILE_WIDTH, self->properties.y_num_tiles * TILE_HEIGHT);
+    framebuffer_8bit_init(self->fb_map, MAP_SIZE_X * TILE_WIDTH, MAP_SIZE_Y * TILE_HEIGHT);
     framebuffer_8bit_fill(self->fb_map, self->base.properties.background_color);
 
     self->x_last = 0;
@@ -56,9 +52,6 @@ void ui_map_destroy(UIMap_t *self) {
 
     self->tiles = NULL;
 
-    free(self->map);
-    self->map = NULL;
-
     framebuffer_8bit_deinit(self->fb_map);
     free(self->fb_map);
     self->fb_map = NULL;
@@ -72,16 +65,16 @@ void ui_map_prepare(UIMap_t *self) {
     ui_component_prepare(&self->base);
 
     // init tiles with water
-    for (int x = 0; x < self->properties.x_num_tiles; x++) {
-        for (int y = 0; y < self->properties.y_num_tiles; y++) {
-            self->map[y * self->properties.x_num_tiles + x] = self->properties.current_tile_index;
+    for (int y = 0; y < MAP_SIZE_Y; y++) {
+        for (int x = 0; x < MAP_SIZE_X; x++) {
+            self->map[y][x] = self->properties.current_tile_index;
         }
     }
 
     // fill map with water
-    for (int x = 0; x < self->properties.x_num_tiles; x++) {
-        for (int y = 0; y < self->properties.y_num_tiles; y++) {
-            const Framebuffer8Bit_t *tile = &self->tiles->tiles[self->map[y * self->properties.x_num_tiles + x]];
+    for (int y = 0; y < MAP_SIZE_Y; y++) {
+        for (int x = 0; x < MAP_SIZE_X; x++) {
+            const Framebuffer8Bit_t *tile = &self->tiles->tiles[self->map[y][x]];
             framebuffer_8bit_draw_framebuffer(self->fb_map, x * TILE_WIDTH, y * TILE_HEIGHT, tile);
         }
     }
@@ -138,16 +131,15 @@ void ui_map_update(UIMap_t *self, const long time_elapsed, const Event_t *events
                     int x = events[i].mouse_event.position_x - 2;
                     int y = events[i].mouse_event.position_y - 2;
                     ui_component_get_relative_position(&self->base, &x, &y);
-                    x += self->properties.x_pos;
-                    y += self->properties.y_pos;
+                    x = (self->properties.x_pos + x) / TILE_WIDTH;
+                    y = (self->properties.y_pos + y) / TILE_HEIGHT;
 
                     // update tile
-                    const int tile_at = y / TILE_HEIGHT * self->properties.x_num_tiles + x / TILE_WIDTH;
-                    self->map[tile_at] = self->properties.current_tile_index;
+                    self->map[y][x] = self->properties.current_tile_index;
 
                     // render
-                    const Framebuffer8Bit_t *tile = &self->tiles->tiles[self->map[tile_at]];
-                    framebuffer_8bit_draw_framebuffer(self->fb_map, x - (x % TILE_WIDTH), y - (y % TILE_HEIGHT), tile);
+                    const Framebuffer8Bit_t *tile = &self->tiles->tiles[self->map[y][x]];
+                    framebuffer_8bit_draw_framebuffer(self->fb_map, x * TILE_WIDTH, y * TILE_HEIGHT, tile);
                     self->base.flags.dirty_flag = 1;
                 }
             }
@@ -202,7 +194,7 @@ void ui_map_update(UIMap_t *self, const long time_elapsed, const Event_t *events
     }
 }
 
-void ui_map_update_current_tile_index(UIMap_t *self, const int current_tile_index) {
+void ui_map_update_current_tile_index(UIMap_t *self, const unsigned char current_tile_index) {
     assert(self);
 
     self->properties.current_tile_index = current_tile_index;

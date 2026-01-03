@@ -46,7 +46,7 @@ static void parse_args(int argc, char **argv) {
 }
 
 #if defined(__MORPHOS__) || defined(__AMIGAOS__)
-unsigned long __stack = (16384);// 16 kb
+unsigned long __stack = (32768);// 32 kb
 #endif
 
 int main(int argc, char **argv) {
