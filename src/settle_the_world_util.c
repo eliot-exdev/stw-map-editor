@@ -8,8 +8,6 @@
 #define EXDEVGFX2_LOG_LEVEL 2
 #include <exdevgfx/logger.h>
 
-#include <stdlib.h>
-
 static int VALID_TILES[] = {
         // row num
         6, 7, 8, 12, 13, 14, 15, 16, 17, 18, 19,                                                 // 0 11
