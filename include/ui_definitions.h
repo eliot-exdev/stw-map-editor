@@ -42,7 +42,7 @@
 #define UI_TILE_X_POS 564
 #endif
 
-#define UPDATE_INTERVAL 50// ms
+#define UPDATE_INTERVAL 60// ms
 
 #define TILE_WIDTH 16
 #define TILE_HEIGHT 16
