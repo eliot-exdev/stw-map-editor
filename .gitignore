@@ -3,4 +3,6 @@ cmake-build-*
 *.o
 *.a
 stw_map_editor_aos_060
-stw_map_edutor_mos_gcc
+stw_map_editor_aos_060_c2p
+stw_map_editor_mos_gcc
+
