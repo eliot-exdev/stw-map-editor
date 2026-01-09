@@ -144,19 +144,10 @@ void ui_map_update(UIMap_t *self, const long time_elapsed, const Event_t *events
                 }
             }
             // mouse moved
-            else if (events[i].mouse_event.event == MOUSE_EVENT_MOVED) {
+            else if (events[i].mouse_event.event == MOUSE_EVENT_MOVED  && (ui_component_is_inside(&self->base, events[i].mouse_event.position_x, events[i].mouse_event.position_y))) {
                 int x = events[i].mouse_event.position_x - 2;
                 int y = events[i].mouse_event.position_y - 2;
                 ui_component_get_relative_position(&self->base, &x, &y);
-
-                STWMapEditor_t *editor = (STWMapEditor_t *) usr_ptr;
-                const int tile_x = (self->properties.x_pos + x) / TILE_WIDTH;
-                const int tile_y = (self->properties.y_pos + y) / TILE_HEIGHT;
-                char *text = malloc(10);
-                memset(text, 0, 10);
-                sprintf(text, "%03d %03d", tile_x, tile_y);
-                ui_text_update_text(editor->status->current_tile_coordinates, text);
-                free(text);
 
                 // move map
                 if (self->flags.dragged) {
@@ -188,6 +179,15 @@ void ui_map_update(UIMap_t *self, const long time_elapsed, const Event_t *events
                     }
                     self->base.flags.dirty_flag = 1;
                     log_debug_fmt("x=%d, y=%d", self->properties.x_pos, self->properties.y_pos);
+                } else {
+                    STWMapEditor_t *editor = (STWMapEditor_t *) usr_ptr;
+                    const int tile_x = (self->properties.x_pos + x) / TILE_WIDTH;
+                    const int tile_y = (self->properties.y_pos + y) / TILE_HEIGHT;
+                    char *text = malloc(10);
+                    memset(text, 0, 10);
+                    sprintf(text, "%03d %03d", tile_x, tile_y);
+                    ui_text_update_text(editor->status->current_tile_coordinates, text);
+                    free(text);
                 }
             }
         }
