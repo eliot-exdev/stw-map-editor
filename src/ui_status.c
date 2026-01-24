@@ -51,7 +51,6 @@ void ui_status_update_current_tile_index(UIStatus_t *self, const unsigned char c
     if (current_tile_index != self->properties.current_tile_index) {
         self->properties.current_tile_index = current_tile_index;
         framebuffer_8bit_copy_to(self->tiles->tiles + current_tile_index, self->current_tile->icon);
-        self->current_tile->base.flags.dirty_flag = 1;
-        self->base.flags.dirty_flag = 1;
+        ui_component_set_dirty(&self->base);
     }
 }
