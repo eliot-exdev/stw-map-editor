@@ -185,7 +185,7 @@ void ui_map_update(UIMap_t *self, const long time_elapsed, const Event_t *events
                     const int tile_y = (self->properties.y_pos + y) / TILE_HEIGHT;
                     char *text = malloc(10);
                     memset(text, 0, 10);
-                    sprintf(text, "%03d %03d", tile_x, tile_y);
+                    sprintf(text, "X: %03d Y: %03d", tile_x, tile_y);
                     ui_text_update_text(editor->status->current_tile_coordinates, text);
                     free(text);
                 }

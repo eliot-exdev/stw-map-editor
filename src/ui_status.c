@@ -21,9 +21,10 @@ void ui_status_init(UIStatus_t *self, const int x, const int y, const int width,
     self->current_tile->properties.clickable = 0;
     ui_component_connect(self, self->current_tile);
 
-    font_init_mia_1(&self->font);
+    font_init(&self->font, FONT_TYPE_TOPAZ_8);
 
-    self->current_tile_coordinates = ui_text_create(2 + self->current_tile->base.properties.width + 2, 2, 50, self->current_tile->base.properties.height, "000 000", &self->font);
+    self->current_tile_coordinates = ui_text_create(2 + self->current_tile->base.properties.width + 2, 2, 150, self->current_tile->base.properties.height, "X: 000 Y: 000", &self->font);
+    self->current_tile_coordinates->base.flags.draw_border = 0;
     ui_component_connect(self, self->current_tile_coordinates);
 }
 
