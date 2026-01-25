@@ -6,9 +6,8 @@
 #define STW_MAP_EDITOR_UI_MAP_H
 
 #include "ui_definitions.h"
+#include "settle_the_world_util.h"
 
-#define MAP_SIZE_X 160
-#define MAP_SIZE_Y 128
 struct UIMap {
     UIComponent_t base;
 

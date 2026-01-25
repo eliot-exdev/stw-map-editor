@@ -13,6 +13,7 @@ struct stw_map_editor {
     UIMap_t *map;
     UITile_t *tile;
     UIStatus_t *status;
+    const char *map_path;
 };
 
 typedef struct stw_map_editor STWMapEditor_t;

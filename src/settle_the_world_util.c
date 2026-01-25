@@ -8,6 +8,10 @@
 #define EXDEVGFX2_LOG_LEVEL 2
 #include <exdevgfx/logger.h>
 
+#include <assert.h>
+#include <stdio.h>
+#include <inttypes.h>
+
 static int VALID_TILES[] = {
         // row num
         6, 7, 8, 12, 13, 14, 15, 16, 17, 18, 19,                                                 // 0 11
@@ -53,4 +57,94 @@ void stw_read_tiles(Tiles8bit_t *tiles) {
 
     // cleanup
     tiles_8bit_deinit(&all_tiles);
+}
+
+enum MAP_TILE_IDS {
+    MAP_TILE_ID_OCEAN = 0,
+    MAP_TILE_ID_GRASS = 1,
+    MAP_TILE_ID_BEACH = 2,
+    MAP_TILE_ID_PRAIRIE = 3,
+    MAP_TILE_ID_DESERT = 4,
+    MAP_TILE_ID_DRYLAND = 5,
+    MAP_TILE_ID_WETLAND = 6,
+    MAP_TILE_ID_SWAMP = 7,
+    MAP_TILE_ID_SOIL = 8,
+    MAP_TILE_ID_COLDLAND = 9,
+    MAP_TILE_ID_TUNDRA = 10,
+    MAP_TILE_ID_ICELAND = 11,
+    MAP_TILE_ID_PLAINS = 12,
+    MAP_TILE_ID_SAVANNAH = 13,
+    MAP_TILE_ID_SALTPONDS = 14,
+    MAP_TILE_ID_CLAYPIT = 15,
+    MAP_TILE_ID_LMOUNTAIN = 16,
+    MAP_TILE_ID_IRONHILLS = 17,
+    MAP_TILE_ID_MMOUNTAIN = 18,
+    MAP_TILE_ID_MARBLEMOUNTAIN = 19,
+    MAP_TILE_ID_HMOUNTAIN = 20,
+    MAP_TILE_ID_TMOUNTAIN = 21,
+    MAP_TILE_ID_LAKE = 22,
+    MAP_TILE_ID_GRASSFOREST = 23,
+    MAP_TILE_ID_PRAIRIEFOREST = 24,
+    MAP_TILE_ID_DESERTFOREST = 25,
+    MAP_TILE_ID_DRYLANDFOREST = 26,
+    MAP_TILE_ID_WETLANDFOREST = 27,
+    MAP_TILE_ID_SWAMPFOREST = 28,
+    MAP_TILE_ID_COLDLANDFOREST = 29,
+    MAP_TILE_ID_LMOUNTAINFOREST = 32,
+    MAP_TILE_ID_MMOUNTAINFOREST = 33,
+    MAP_TILE_ID_TROPICALFOREST = 34
+};
+
+struct MapInfo {
+    uint8_t id;
+    uint8_t object_id;
+    uint16_t style_id;
+    uint16_t unit;
+    uint16_t city;
+    uint8_t variance;
+    uint8_t village;
+    uint8_t road;
+    uint8_t visible;
+    uint8_t unit_visible;
+    uint8_t dirty;
+    uint8_t continent;
+    uint8_t obstacle;
+};
+typedef struct MapInfo MapInfo_t;
+
+static int check_id(const uint8_t id) {
+    return id < 35;
+}
+static int check_variance(const uint8_t variance) {
+    return variance > 0 && variance < 4;
+}
+
+int stw_read_map(const char *path) {
+    assert(path);
+
+    FILE *fp = fopen(path, "r");
+    if (!fp) {
+        log_warning_fmt("could not read map from: %s", path);
+        return 1;
+    }
+    log_info_fmt("reading map from: %s", path);
+
+    MapInfo_t map_info;
+    for (int i = 0; i < MAP_SIZE_TOTAL; i++) {
+        const size_t num = fread(&map_info, sizeof(MapInfo_t), 1, fp);
+        if (num != 1) {
+            log_warning_fmt("could not read maol number: %d", i);
+            fclose(fp);
+            return 1;
+        }
+        if (!check_id(map_info.id)) {
+            log_warning_fmt("invalid map id found: %d", i);
+        }
+        if (!check_variance(map_info.variance)) {
+            log_warning_fmt("invalid variance found: %d", i);
+        }
+    }
+
+    fclose(fp);
+    return 0;
 }

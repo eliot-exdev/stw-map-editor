@@ -144,7 +144,7 @@ void ui_map_update(UIMap_t *self, const long time_elapsed, const Event_t *events
                 }
             }
             // mouse moved
-            else if (events[i].mouse_event.event == MOUSE_EVENT_MOVED  && (ui_component_is_inside(&self->base, events[i].mouse_event.position_x, events[i].mouse_event.position_y))) {
+            else if (events[i].mouse_event.event == MOUSE_EVENT_MOVED && (ui_component_is_inside(&self->base, events[i].mouse_event.position_x, events[i].mouse_event.position_y))) {
                 int x = events[i].mouse_event.position_x - 2;
                 int y = events[i].mouse_event.position_y - 2;
                 ui_component_get_relative_position(&self->base, &x, &y);

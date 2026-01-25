@@ -58,7 +58,11 @@ int main(int argc, char **argv) {
         return res;
     }
 
-    STWMapEditor_t editor; // this is our usr_ptr
+    STWMapEditor_t editor;// this is our usr_ptr
+    if (argc > 0) {
+        editor.map_path = argv[1];
+        log_info_fmt("map path: %s", editor.map_path);
+    }
 
     log_info("--> read tiles");
     Tiles8bit_t tiles;
@@ -89,6 +93,11 @@ int main(int argc, char **argv) {
 
     ui_application_prepare(&app);
     log_info("<-- setup ui");
+
+    if (editor.map_path) {
+        res = stw_read_map(editor.map_path);
+        log_info_fmt("result read map: %d", res);
+    }
 
     // run
     log_info("--> run");
