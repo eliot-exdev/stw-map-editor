@@ -40,9 +40,9 @@ UIMap_t *ui_map_create(int x, int y, int width, int height, Tiles8bit_t *tiles);
 
 void ui_map_destroy(UIMap_t *self);
 
-void ui_map_prepare(UIMap_t *self);
+void ui_map_prepare(UIMap_t *self, void *usr_ptr);
 
-int ui_map_paint(UIMap_t *self, Framebuffer8Bit_t *fb, int x_offset, int y_offset, int width, int height);
+int ui_map_paint(UIMap_t *self, Framebuffer8Bit_t *fb, int x_offset, int y_offset, int width, int height, void *usr_ptr);
 
 void ui_map_update(UIMap_t *self, long time_elapsed, const Event_t *events, int num_events, void *usr_ptr);
 

@@ -22,9 +22,9 @@ void ui_map_init(UIMap_t *self, const int x, const int y, const int width, const
     self->base.subtype = UI_MAP_SUBTYPE;
 
     self->base.functions.destroy_func = (void (*)(void *)) &ui_map_destroy;
-    self->base.functions.paint_func = (int (*)(void *, Framebuffer8Bit_t *, int, int, int, int)) ui_map_paint;
+    self->base.functions.paint_func = (int (*)(void *, Framebuffer8Bit_t *, int, int, int, int, void*)) ui_map_paint;
     self->base.functions.update_func = (void (*)(void *, long, const Event_t *, int, void *)) ui_map_update;
-    self->base.functions.prepare_func = (void (*)(void *)) ui_map_prepare;
+    self->base.functions.prepare_func = (void (*)(void *, void *)) ui_map_prepare;
 
     self->properties.x_pos = 0;
     self->properties.y_pos = 0;
@@ -59,10 +59,10 @@ void ui_map_destroy(UIMap_t *self) {
     ui_component_destroy(&self->base);
 }
 
-void ui_map_prepare(UIMap_t *self) {
+void ui_map_prepare(UIMap_t *self, void *usr_ptr) {
     assert(self);
 
-    ui_component_prepare(&self->base);
+    ui_component_prepare(&self->base, usr_ptr);
 
     // init tiles with water
     for (int y = 0; y < MAP_SIZE_Y; y++) {
@@ -80,10 +80,10 @@ void ui_map_prepare(UIMap_t *self) {
     }
 }
 
-int ui_map_paint(UIMap_t *self, Framebuffer8Bit_t *fb, const int x_offset, const int y_offset, const int width, const int height) {
+int ui_map_paint(UIMap_t *self, Framebuffer8Bit_t *fb, const int x_offset, const int y_offset, const int width, const int height, void *usr_ptr) {
     assert(self);
     assert(fb);
-    int res = ui_component_paint(&self->base, fb, x_offset, y_offset, width, height);
+    int res = ui_component_paint(&self->base, fb, x_offset, y_offset, width, height, usr_ptr);
 
     if (res || self->base.flags.dirty_flag) {
         const int x = self->base.properties.x + x_offset;
