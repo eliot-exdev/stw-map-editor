@@ -190,8 +190,8 @@ void ui_map_update(UIMap_t *self, const long time_elapsed, const Event_t *events
                     STWMapEditor_t *editor = (STWMapEditor_t *) usr_ptr;
                     const int tile_x = (self->properties.x_pos + x) / TILE_WIDTH;
                     const int tile_y = (self->properties.y_pos + y) / TILE_HEIGHT;
-                    char *text = malloc(10);
-                    memset(text, 0, 10);
+                    char *text = malloc(20);
+                    memset(text, 0, 20);
                     sprintf(text, "X: %03d Y: %03d", tile_x, tile_y);
                     ui_text_update_text(editor->status->current_tile_coordinates, text);
                     free(text);
