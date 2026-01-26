@@ -59,9 +59,11 @@ int main(int argc, char **argv) {
     }
 
     STWMapEditor_t editor;// this is our usr_ptr
-    if (argc > 0) {
+    if (argc > 1) {
         editor.map_path = argv[1];
         log_info_fmt("map path: %s", editor.map_path);
+    } else {
+        editor.map_path = NULL;
     }
 
     log_info("--> read tiles");
