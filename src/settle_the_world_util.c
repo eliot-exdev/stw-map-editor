@@ -119,7 +119,79 @@ static int check_variance(const uint8_t variance) {
     return variance > 0 && variance < 4;
 }
 
-int stw_read_map(const char *path) {
+static unsigned char to_tile_id(const enum MAP_TILE_IDS id, const unsigned char variance) {
+    switch (id) {
+        case MAP_TILE_ID_OCEAN:
+            return 0 + variance;
+        case MAP_TILE_ID_GRASS:
+            return 11 + variance;
+        case MAP_TILE_ID_BEACH:
+            break;
+        case MAP_TILE_ID_PRAIRIE:
+            return 24 + variance;
+        case MAP_TILE_ID_DESERT:
+            return 47 + variance;
+        case MAP_TILE_ID_DRYLAND:
+            break;
+        case MAP_TILE_ID_WETLAND:
+            break;
+        case MAP_TILE_ID_SWAMP:
+            break;
+        case MAP_TILE_ID_SOIL:
+            break;
+        case MAP_TILE_ID_COLDLAND:
+            break;
+        case MAP_TILE_ID_TUNDRA:
+            break;
+        case MAP_TILE_ID_ICELAND:
+            break;
+        case MAP_TILE_ID_PLAINS:
+            break;
+        case MAP_TILE_ID_SAVANNAH:
+            break;
+        case MAP_TILE_ID_SALTPONDS:
+            break;
+        case MAP_TILE_ID_CLAYPIT:
+            break;
+        case MAP_TILE_ID_LMOUNTAIN:
+            break;
+        case MAP_TILE_ID_IRONHILLS:
+            break;
+        case MAP_TILE_ID_MMOUNTAIN:
+            break;
+        case MAP_TILE_ID_MARBLEMOUNTAIN:
+            break;
+        case MAP_TILE_ID_HMOUNTAIN:
+            break;
+        case MAP_TILE_ID_TMOUNTAIN:
+            break;
+        case MAP_TILE_ID_LAKE:
+            break;
+        case MAP_TILE_ID_GRASSFOREST:
+            break;
+        case MAP_TILE_ID_PRAIRIEFOREST:
+            break;
+        case MAP_TILE_ID_DESERTFOREST:
+            break;
+        case MAP_TILE_ID_DRYLANDFOREST:
+            break;
+        case MAP_TILE_ID_WETLANDFOREST:
+            break;
+        case MAP_TILE_ID_SWAMPFOREST:
+            break;
+        case MAP_TILE_ID_COLDLANDFOREST:
+            break;
+        case MAP_TILE_ID_LMOUNTAINFOREST:
+            break;
+        case MAP_TILE_ID_MMOUNTAINFOREST:
+            break;
+        case MAP_TILE_ID_TROPICALFOREST:
+            break;
+    }
+    return 0;
+}
+
+int stw_read_map(const char *path, unsigned char map[MAP_SIZE_Y][MAP_SIZE_X]) {
     assert(path);
 
     FILE *fp = fopen(path, "r");
@@ -137,12 +209,19 @@ int stw_read_map(const char *path) {
             fclose(fp);
             return 1;
         }
+
         if (!check_id(map_info.id)) {
             log_warning_fmt("invalid map id found: %d", i);
         }
+
         if (!check_variance(map_info.variance)) {
             log_warning_fmt("invalid variance found: %d", i);
         }
+        map_info.variance -= 1;
+
+        const int y = i / MAP_SIZE_X;
+        const int x = i % MAP_SIZE_X;
+        map[y][x] = to_tile_id(map_info.id, map_info.variance);
     }
 
     fclose(fp);

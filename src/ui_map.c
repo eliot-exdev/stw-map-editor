@@ -22,7 +22,7 @@ void ui_map_init(UIMap_t *self, const int x, const int y, const int width, const
     self->base.subtype = UI_MAP_SUBTYPE;
 
     self->base.functions.destroy_func = (void (*)(void *)) &ui_map_destroy;
-    self->base.functions.paint_func = (int (*)(void *, Framebuffer8Bit_t *, int, int, int, int, void*)) ui_map_paint;
+    self->base.functions.paint_func = (int (*)(void *, Framebuffer8Bit_t *, int, int, int, int, void *)) ui_map_paint;
     self->base.functions.update_func = (void (*)(void *, long, const Event_t *, int, void *)) ui_map_update;
     self->base.functions.prepare_func = (void (*)(void *, void *)) ui_map_prepare;
 
@@ -71,7 +71,14 @@ void ui_map_prepare(UIMap_t *self, void *usr_ptr) {
         }
     }
 
-    // fill map with water
+    // read map from file
+    const STWMapEditor_t *editor = usr_ptr;
+    if (editor->map_path) {
+        if (stw_read_map(editor->map_path, self->map)) {
+            log_warning_fmt("failed to read map from: %s", editor->map_path);
+        }
+    }
+    // draw tiles
     for (int y = 0; y < MAP_SIZE_Y; y++) {
         for (int x = 0; x < MAP_SIZE_X; x++) {
             const Framebuffer8Bit_t *tile = &self->tiles->tiles[self->map[y][x]];

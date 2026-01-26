@@ -13,6 +13,6 @@
 
 void stw_read_tiles(Tiles8bit_t *tiles);
 
-int stw_read_map(const char* path);
+int stw_read_map(const char* path, unsigned char map[MAP_SIZE_Y][MAP_SIZE_X]);
 
 #endif//STW_MAP_EDITOR_SETTLE_THE_WORLD_UTIL_H

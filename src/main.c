@@ -96,11 +96,6 @@ int main(int argc, char **argv) {
     ui_application_prepare(&app);
     log_info("<-- setup ui");
 
-    if (editor.map_path) {
-        res = stw_read_map(editor.map_path);
-        log_info_fmt("result read map: %d", res);
-    }
-
     // run
     log_info("--> run");
     ui_application_run(&app, "stw_map_editor", UPDATE_INTERVAL);
