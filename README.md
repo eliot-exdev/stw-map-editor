@@ -20,6 +20,14 @@ These assets are copyright by Christian "theotheoderich" Wiegel.
 - Implement in C99
 - Few dependencies as possible
 
+## Screenshots
+
+Amiga 4000T RTG:  
+![hires](screenshots/settle_the_world_map_editor-hires.png)
+
+Amiga 1200 AGA:  
+![lores](screenshots/settle_the_world_map_editor-lores.png)
+
 ## Checkout
 
 ```shell
