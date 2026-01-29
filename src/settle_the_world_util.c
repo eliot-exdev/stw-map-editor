@@ -13,25 +13,13 @@
 #include <inttypes.h>
 
 static int VALID_TILES[] = {
-        // row num
-        6, 7, 8, 12, 13, 14, 15, 16, 17, 18, 19,                                                 // 0 11
-        26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 39,                                      // 1 13
-        46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59,                                  // 2 14
-        66, 67, 68, 69, 70, 71, 77, 78, 79,                                                      // 3 9
-        86, 87, 88, 89, 90, 91, 97, 99,                                                          // 4 8
-        106, 107, 108, 117, 118, 119,                                                            // 5 6
-        120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 134, 135, 136, 137, 138, 139,// 6 18
-        140, 141, 142, 143, 144, 145, 154, 155, 156, 157, 158, 159,                              // 7 12
-        160, 161, 162, 163, 164, 165, 172, 173, 174, 175, 176, 177, 178, 179,                    // 8 14
-        180, 181, 182, 183, 184, 185, 192, 193, 194, 195, 196, 197, 198, 199,                    // 9 14
-        200, 201, 202, 203, 204, 205, 212, 213, 214, 215, 216, 217, 218, 219,                    // 10 14
-        220, 221, 222, 223, 224, 225,                                                            // 11 6
-        240, 241, 242, 243, 244, 245,                                                            // 12 6
-        260, 261, 262, 263, 264, 265,                                                            // 13 6
-        280, 281, 282, 283, 284, 285,                                                            // 14 6
-        300, 301, 302, 303, 304, 305                                                             // 15 6
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,          // row 1
+        20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39,// row 2
+        40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59,// row 3
+        60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79,// row 4
+        80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95                 // row 5
 };
-static int VALID_TILES_NUM = 163;
+static int VALID_TILES_NUM = 96;
 
 void stw_read_tiles(Tiles8bit_t *tiles) {
     int res = 0;
@@ -62,7 +50,7 @@ void stw_read_tiles(Tiles8bit_t *tiles) {
 enum MAP_TILE_IDS {
     MAP_TILE_ID_OCEAN = 0,
     MAP_TILE_ID_GRASS = 1,
-    MAP_TILE_ID_BEACH = 2,
+    // MAP_TILE_ID_BEACH = 2,
     MAP_TILE_ID_PRAIRIE = 3,
     MAP_TILE_ID_DESERT = 4,
     MAP_TILE_ID_DRYLAND = 5,
@@ -124,69 +112,67 @@ static unsigned char to_tile_id(const enum MAP_TILE_IDS id, const unsigned char 
         case MAP_TILE_ID_OCEAN:
             return 0 + variance;
         case MAP_TILE_ID_GRASS:
-            return 11 + variance;
-        case MAP_TILE_ID_BEACH:
-            break;
+            return 3 + variance;
         case MAP_TILE_ID_PRAIRIE:
-            return 24 + variance;
+            return 6 + variance;
         case MAP_TILE_ID_DESERT:
-            return 47 + variance;
+            return 9 + variance;
         case MAP_TILE_ID_DRYLAND:
-            break;
+            return 12 + variance;
         case MAP_TILE_ID_WETLAND:
-            break;
+            return 15 + variance;
         case MAP_TILE_ID_SWAMP:
-            break;
+            return 18 + variance;
         case MAP_TILE_ID_SOIL:
-            break;
+            return 21 + variance;
         case MAP_TILE_ID_COLDLAND:
-            break;
+            return 24 + variance;
         case MAP_TILE_ID_TUNDRA:
-            break;
+            return 27 + variance;
         case MAP_TILE_ID_ICELAND:
-            break;
+            return 30 + variance;
         case MAP_TILE_ID_PLAINS:
-            break;
+            return 33 + variance;
         case MAP_TILE_ID_SAVANNAH:
-            break;
+            return 36 + variance;
         case MAP_TILE_ID_SALTPONDS:
-            break;
+            return 39 + variance;
         case MAP_TILE_ID_CLAYPIT:
-            break;
+            return 42 + variance;
         case MAP_TILE_ID_LMOUNTAIN:
-            break;
+            return 45 + variance;
         case MAP_TILE_ID_IRONHILLS:
-            break;
+            return 48 + variance;
         case MAP_TILE_ID_MMOUNTAIN:
-            break;
+            return 51 + variance;
         case MAP_TILE_ID_MARBLEMOUNTAIN:
-            break;
+            return 54 + variance;
         case MAP_TILE_ID_HMOUNTAIN:
-            break;
+            return 57 + variance;
         case MAP_TILE_ID_TMOUNTAIN:
-            break;
+            return 60 + variance;
         case MAP_TILE_ID_LAKE:
-            break;
+            return 63 + variance;
         case MAP_TILE_ID_GRASSFOREST:
-            break;
+            return 66 + variance;
         case MAP_TILE_ID_PRAIRIEFOREST:
-            break;
+            return 69 + variance;
         case MAP_TILE_ID_DESERTFOREST:
-            break;
+            return 72 + variance;
         case MAP_TILE_ID_DRYLANDFOREST:
-            break;
+            return 75 + variance;
         case MAP_TILE_ID_WETLANDFOREST:
-            break;
+            return 78 + variance;
         case MAP_TILE_ID_SWAMPFOREST:
-            break;
+            return 81 + variance;
         case MAP_TILE_ID_COLDLANDFOREST:
-            break;
+            return 84 + variance;
         case MAP_TILE_ID_LMOUNTAINFOREST:
-            break;
+            return 87 + variance;
         case MAP_TILE_ID_MMOUNTAINFOREST:
-            break;
+            return 90 + variance;
         case MAP_TILE_ID_TROPICALFOREST:
-            break;
+            return 93 + variance;
     }
     return 0;
 }
