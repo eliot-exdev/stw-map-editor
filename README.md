@@ -28,6 +28,10 @@ Amiga 4000T RTG:
 Amiga 1200 AGA:  
 ![lores](screenshots/settle_the_world_map_editor-lores.png)
 
+## Usage
+
+see: [stw_map_editor.readme](dist/stw_map_editor.readme)
+
 ## Checkout
 
 ```shell
