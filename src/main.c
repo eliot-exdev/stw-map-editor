@@ -23,11 +23,14 @@ __entry
         unsigned char versiontag[] = "\0$VER: " VERSION;
 #endif
 
+static STWMapEditor_t editor;// this is our usr_ptr
+
 static void print_help() {
     printf("stw_map_editor [ARGUMENTS]...\n"
            "arguments:\n"
-           " -h, --help              print help message and exit\n"
-           " -w, --world <number>    select world 1, 2, 3, 4 or 5 (default 1)\n");
+           " -m, --map <path to map>  give a path to an existing map\n"
+           " -h, --help               print help message and exit\n"
+           " -v, --version            show version and exit\n");
 }
 
 static void print_version() {
@@ -43,6 +46,10 @@ static void parse_args(int argc, char **argv) {
         print_version();
         exit(0);
     }
+    const char *ptr = NULL;
+    if ((ptr = args_get_option_parameter(argc, argv, 'm', "map")) != NULL) {
+        editor.map_path = ptr;
+    }
 }
 
 #if defined(__MORPHOS__) || defined(__AMIGAOS__)
@@ -50,20 +57,14 @@ unsigned long __stack = (32768);// 32 kb
 #endif
 
 int main(int argc, char **argv) {
+    editor.map_path = NULL;
+
     parse_args(argc, argv);
 
     int res = exdev_base_init();
     if (res) {
         log_warning("could not init exdevgfx");
         return res;
-    }
-
-    STWMapEditor_t editor;// this is our usr_ptr
-    if (argc > 1) {
-        editor.map_path = argv[1];
-        log_info_fmt("map path: %s", editor.map_path);
-    } else {
-        editor.map_path = NULL;
     }
 
     log_info("--> read tiles");
