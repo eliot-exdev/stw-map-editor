@@ -50,7 +50,8 @@ dist: stw_map_editor
 	mkdir ram:stw-map-editor/maps
 	cp -av assets/maptiles_8bit.dat assets/maptiles_8bit.pal ram:stw-map-editor/assets
 	cp -av stw_map_editor_mos_gcc stw_map_editor_aos_060 stw_map_editor_aos_060_c2p ram:stw-map-editor
-	cp maps/*.map ram:stw-map-editor/maps
+	cp maps/*.map ram:stw-map-editor/maps/
+	cp dist/stw_map_editor.readme ram:stw_map_editor/
 	lha a -r ram:stw-map-editor.lha ram:stw-map-editor
 
 #--- clean ---#

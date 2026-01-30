@@ -1,0 +1,40 @@
+Short:        Settle The World Map Editor
+Kurz:         Settle The World Map Editor
+Uploader:     eliot@exdev.de (Andre Geisler)
+Author:       eliot@exdev.de (Andre Geisler)
+Type:         game/edit
+Requires:     dev/misc/c2plib.lha
+Version:      0.1.0
+Architecture: m68k-amigaos >= 3.1.4; ppc-morphos
+Distribution: Aminet
+URL:          https://github.com/eliot-exdev/stw-map-editor
+
+Simple map editor for the Amiga strategy game Settle The World
+(see: https://theotheoderich.itch.io/settle-the-world).
+
+# Requirements
+
+* MorphOs:
+  Any MorphOs system should work.
+  Tested it on a Mac Mini G4 Silent Upgrade with MorphOs 3.14.
+  You will need a 640x480x8 screen mode.
+* AmigaOs:
+  Tested on: Amiga 4000T, 060, Cybervision 64/3D, Aos 3.2.3
+             Amiga 1200, 060, AGA, Aos 3.2.3.
+  AGA requires c2p.library from aminet (see https://aminet.net/dev/misc/c2plib.lha).
+
+# Usage
+
+TODO
+
+## Program arguments
+
+stw_map_editor [ARGUMENTS]...
+arguments:
+-h, --help              print help message and exit
+-m --map <path to map>  load map in path
+-v, --version           print version
+
+# History
+- 0.1.1 2026-xx-yy
+  - first initial release
