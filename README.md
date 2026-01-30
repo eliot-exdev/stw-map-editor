@@ -4,8 +4,8 @@ Simple map editor for the Amiga strategy game [Settle the World](https://theothe
 
 ## Copyright notice
 
-The stw-map-editor and exdev-gfx library are copyright by Andre "eliot" Geisler (andre@exdev.de).  
-The stw-map-editor uses assets from the game Settle the World.  
+The stw_map_editor and exdev-gfx library are copyright by Andre "eliot" Geisler (andre@exdev.de).  
+The stw_map_editor uses assets from the game Settle the World.  
 These assets are copyright by Christian "theotheoderich" Wiegel.  
 
 ## Goals
