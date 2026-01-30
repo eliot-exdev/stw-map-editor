@@ -21,7 +21,7 @@ void ui_tile_init(UITile_t *self, const int x, const int y, const int width, con
     // create icons for all tiles
     int i = 0;
     int row = 0;
-    while (i < tiles->num) {
+    while (i < MAP_TILES_NUM) {
         // left
         Framebuffer8Bit_t *left_fb = framebuffer_8bit_copy(tiles->tiles + i);
         UIIcon_t *left = ui_icon_create(0, row * (TILE_HEIGHT + 4), left_fb);
