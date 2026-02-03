@@ -177,6 +177,60 @@ static unsigned char to_tile_id(const enum MAP_TILE_IDS id, const unsigned char 
     return 0;
 }
 
+int is_ocean_tile(const int id) {
+    return id == MAP_TILE_ID_OCEAN || id == MAP_TILE_ID_OCEAN + 1 || id == MAP_TILE_ID_OCEAN + 2;
+}
+
+uint8_t get_shore_tile_id_straight(const int id, const uint8_t sum) {
+    switch (sum) {
+        case 1:
+            return 106;
+        case 2:
+            return 127;
+        case 3:
+            return 107;
+        case 4:
+            return 146;
+        case 5:
+            return 102;
+        case 6:
+            return 147;
+        case 7:
+            return 103;
+        case 8:
+            return 125;
+        case 9:
+            return 105;
+        case 10:
+            return 120;
+        case 11:
+            return 100;
+        case 12:
+            return 145;
+        case 13:
+            return 101;
+        case 14:
+            return 140;
+        case 15:
+            return 104;
+    }
+    return id;
+}
+
+uint8_t get_shore_tile_id_angular(const int id, const uint8_t sum) {
+    switch (sum) {
+        case 16:
+            return 153;
+        case 32:
+            return 154;
+        case 64:
+            return 111;
+        case 128:
+            return 112;
+    }
+    return id;
+}
+
 int stw_read_map(const char *path, unsigned char map[MAP_SIZE_Y][MAP_SIZE_X]) {
     assert(path);
 
