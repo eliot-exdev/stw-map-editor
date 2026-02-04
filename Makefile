@@ -48,7 +48,7 @@ dist: stw_map_editor
 	mkdir ram:stw-map-editor
 	mkdir ram:stw-map-editor/assets
 	mkdir ram:stw-map-editor/maps
-	cp -av assets/maptiles_8bit.dat assets/maptiles_8bit.pal ram:stw-map-editor/assets
+	cp -av assets/tiles_8bit.dat assets/tiles_8bit.pal ram:stw-map-editor/assets
 	cp -av stw_map_editor_mos_gcc stw_map_editor_aos_060 stw_map_editor_aos_060_c2p ram:stw-map-editor
 	cp maps/*.map ram:stw-map-editor/maps/
 	cp dist/stw_map_editor.readme ram:stw_map_editor/
