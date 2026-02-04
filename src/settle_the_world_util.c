@@ -12,22 +12,14 @@
 #include <stdio.h>
 #include <inttypes.h>
 
-// static int VALID_TILES[] = {
-//         0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,          // row 1
-//         20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39,// row 2
-//         40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59,// row 3
-//         60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79,// row 4
-//         80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95                 // row 5
-// };
-
 void stw_read_tiles(Tiles8bit_t *tiles) {
     int res = 0;
 
     // read framebuffer
     Framebuffer8Bit_t fb;
-    res = framebuffer_8bit_read_from_dat(&fb, "assets/maptiles_8bit.dat");
+    res = framebuffer_8bit_read_from_dat(&fb, "assets/tiles_8bit.dat");
     if (res) {
-        log_warning("could not read assets/maptiles_8bit.dat");
+        log_warning("could not read assets/tiles_8bit.dat");
         return;
     }
 
@@ -227,6 +219,28 @@ uint8_t get_shore_tile_id_angular(const int id, const uint8_t sum) {
             return 111;
         case 128:
             return 112;
+        case 48:
+            return 157;
+        case 96:
+            return 158;
+        case 192:
+            return 163;
+        case 144:
+            return 156;
+        case 160:
+            return 132;
+        case 80:
+            return 131;
+        case 208:
+            return 119;
+        case 176:
+            return 159;
+        case 240:
+            return 139;
+        case 224:
+            return 165;
+        case 112:
+            return 164;
     }
     return id;
 }

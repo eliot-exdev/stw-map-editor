@@ -76,7 +76,7 @@ static void draw_tile(UIMap_t *self, const int x, const int y, const uint8_t id)
 
         uint8_t new_id = get_shore_tile_id_straight(id, sum);
         if (new_id != id) {
-            tile = &self->tiles->tiles[get_shore_tile_id_straight(new_id, sum)];
+            tile = &self->tiles->tiles[new_id];
         } else {
             // look angular
             sum = 0;
@@ -86,7 +86,7 @@ static void draw_tile(UIMap_t *self, const int x, const int y, const uint8_t id)
             sum += is_ocean_tile(self->map[y - 1][x - 1]) ? 0 : 128;
             new_id = get_shore_tile_id_angular(id, sum);
             if (new_id != id) {
-                tile = &self->tiles->tiles[get_shore_tile_id_straight(new_id, sum)];
+                tile = &self->tiles->tiles[new_id];
             }
         }
         framebuffer_8bit_draw_framebuffer(self->fb_map, x * TILE_WIDTH, y * TILE_HEIGHT, tile);

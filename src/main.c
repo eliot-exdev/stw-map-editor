@@ -76,9 +76,9 @@ int main(int argc, char **argv) {
     log_info("--> setup ui");
     UIApplication_t app;
     ui_application_init(&app, UI_WIDTH, UI_HEIGHT, &editor);
-    res = palette_8bit_read_from_dat(&app.palette, "assets/maptiles_8bit.pal");
+    res = palette_8bit_read_from_dat(&app.palette, "assets/tiles_8bit.pal");
     if (res) {
-        log_warning("could not read assets/maptiles_8bit.pal");
+        log_warning("could not read assets/tiles_8bit.pal");
         return res;
     }
 

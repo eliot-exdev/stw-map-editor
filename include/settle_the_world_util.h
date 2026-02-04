@@ -11,7 +11,7 @@
 #define MAP_SIZE_Y 128
 #define MAP_SIZE_TOTAL 20480
 #define MAP_TILES_NUM 96
-#define MAP_TILES_COAST_NUM 67
+#define MAP_TILES_COAST_NUM 70
 
 void stw_read_tiles(Tiles8bit_t *tiles);
 
