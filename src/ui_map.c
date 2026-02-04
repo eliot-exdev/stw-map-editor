@@ -177,9 +177,13 @@ void ui_map_update(UIMap_t *self, const long time_elapsed, const Event_t *events
                     // update tile
                     self->map[y][x] = self->properties.current_tile_index;
 
-                    // render
-                    const Framebuffer8Bit_t *tile = &self->tiles->tiles[self->map[y][x]];
-                    framebuffer_8bit_draw_framebuffer(self->fb_map, x * TILE_WIDTH, y * TILE_HEIGHT, tile);
+                    // render 3*3 tiles around current pos
+                    for (int yy = 0; yy < 3; ++yy) {
+                        for (int xx = 0; xx < 3; ++xx) {
+                            draw_tile(self, x - 1 + xx, y - 1 + yy,self->map[y-1+yy][x-1+xx]);
+                        }
+                    }
+
                     self->base.flags.dirty_flag = 1;
                 }
             }
