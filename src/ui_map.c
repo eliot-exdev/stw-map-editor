@@ -188,6 +188,8 @@ void ui_map_update(UIMap_t *self, const long time_elapsed, const Event_t *events
                     }
 
                     self->base.flags.dirty_flag = 1;
+                    STWMapEditor_t *editor = (STWMapEditor_t *) usr_ptr;
+                    ui_component_set_enable(&editor->status->save->base, 1);
                 }
             }
             // mouse moved

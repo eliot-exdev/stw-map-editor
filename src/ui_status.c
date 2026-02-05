@@ -3,8 +3,20 @@
  */
 #include "ui_status.h"
 
+#include "settle_the_world_util.h"
+#include "exdevgfx/logger.h"
+
 #include <assert.h>
 #include <stdlib.h>
+
+static void on_save_clicked(struct UIIcon *self, void *usr_ptr) {
+    assert(self);
+    assert(usr_ptr);
+
+    if (self->flags.clicked) {
+        log_warning("save currently not implemented!");
+    }
+}
 
 void ui_status_init(UIStatus_t *self, const int x, const int y, const int width, const int height, Tiles8bit_t *tiles) {
     assert(self);
@@ -17,7 +29,7 @@ void ui_status_init(UIStatus_t *self, const int x, const int y, const int width,
     self->properties.current_tile_index = 0;// water
     self->tiles = tiles;
 
-    self->current_tile = ui_icon_create(2, 2, framebuffer_8bit_copy(tiles->tiles));
+    self->current_tile = ui_icon_create(2, 2, framebuffer_8bit_copy(tiles->tiles), NULL);
     self->current_tile->properties.clickable = 0;
     ui_component_connect(self, self->current_tile);
 
@@ -26,6 +38,11 @@ void ui_status_init(UIStatus_t *self, const int x, const int y, const int width,
     self->current_tile_coordinates = ui_text_create(2 + self->current_tile->base.properties.width + 2, 2, 150, self->current_tile->base.properties.height, "X: 000 Y: 000", &self->font);
     self->current_tile_coordinates->base.flags.draw_border = 0;
     ui_component_connect(self, self->current_tile_coordinates);
+
+    self->save = ui_icon_create(width - 20, 2, framebuffer_8bit_copy(tiles->tiles + TILES_TOTAL_NUM - 2), framebuffer_8bit_copy(tiles->tiles + TILES_TOTAL_NUM - 1));
+    self->save->base.flags.enabled_flag = 0;
+    self->save->functions.on_clicked = on_save_clicked;
+    ui_component_connect(self, self->save);
 }
 
 UIStatus_t *ui_status_create(const int x, const int y, const int width, const int height, Tiles8bit_t *tiles) {
@@ -50,7 +67,7 @@ void ui_status_update_current_tile_index(UIStatus_t *self, const unsigned char c
 
     if (current_tile_index != self->properties.current_tile_index) {
         self->properties.current_tile_index = current_tile_index;
-        framebuffer_8bit_copy_to(self->tiles->tiles + current_tile_index, self->current_tile->icon);
+        framebuffer_8bit_copy_to(self->tiles->tiles + current_tile_index, self->current_tile->icon_enabled);
         ui_component_set_dirty(&self->base);
     }
 }

@@ -29,9 +29,8 @@ void stw_read_tiles(Tiles8bit_t *tiles) {
     framebuffer_8bit_deinit(&fb);
 
     // extract valid tiles
-    const int total = MAP_TILES_NUM + MAP_TILES_COAST_NUM;
-    tiles_8bit_init(tiles, total, TILE_WIDTH, TILE_HEIGHT);
-    for (int i = 0; i < total; i++) {
+    tiles_8bit_init(tiles, TILES_TOTAL_NUM, TILE_WIDTH, TILE_HEIGHT);
+    for (int i = 0; i < TILES_TOTAL_NUM; i++) {
         framebuffer_8bit_copy_to(all_tiles.tiles + i, tiles->tiles + i);
     }
 
