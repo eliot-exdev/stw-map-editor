@@ -67,7 +67,6 @@ static void draw_tile(UIMap_t *self, const int x, const int y, const uint8_t id)
     } else if (x < SHORE_BORDER || y < SHORE_BORDER || x >= MAP_SIZE_X - SHORE_BORDER || y >= MAP_SIZE_Y - SHORE_BORDER) {
         framebuffer_8bit_draw_framebuffer(self->fb_map, x * TILE_WIDTH, y * TILE_HEIGHT, tile);
     } else {
-
         // look straight
         uint8_t sum = is_ocean_tile(self->map[y - 1][x]) ? 0 : 1;
         sum += is_ocean_tile(self->map[y][x + 1]) ? 0 : 2;
@@ -174,13 +173,17 @@ void ui_map_update(UIMap_t *self, const long time_elapsed, const Event_t *events
                     x = (self->properties.x_pos + x) / TILE_WIDTH;
                     y = (self->properties.y_pos + y) / TILE_HEIGHT;
 
+                    if (x < SHORE_BORDER + 1 || y < SHORE_BORDER + 1 || x >= MAP_SIZE_X - SHORE_BORDER - 1 || y >= MAP_SIZE_Y - SHORE_BORDER - 1) {
+                        continue;
+                    }
+
                     // update tile
                     self->map[y][x] = self->properties.current_tile_index;
 
                     // render 3*3 tiles around current pos
                     for (int yy = 0; yy < 3; ++yy) {
                         for (int xx = 0; xx < 3; ++xx) {
-                            draw_tile(self, x - 1 + xx, y - 1 + yy,self->map[y-1+yy][x-1+xx]);
+                            draw_tile(self, x - 1 + xx, y - 1 + yy, self->map[y - 1 + yy][x - 1 + xx]);
                         }
                     }
 
