@@ -3,7 +3,10 @@
  */
 #include "ui_status.h"
 
+#include "settle_the_world_map_editor.h"
 #include "settle_the_world_util.h"
+
+#define EXDEVGFX2_LOG_LEVEL 2
 #include "exdevgfx/logger.h"
 
 #include <assert.h>
@@ -14,7 +17,13 @@ static void on_save_clicked(struct UIIcon *self, void *usr_ptr) {
     assert(usr_ptr);
 
     if (self->flags.clicked) {
-        log_warning("save currently not implemented!");
+        STWMapEditor_t *editor = (STWMapEditor_t *) usr_ptr;
+        const int res = stw_write_map(editor->map_path, editor->map->map);
+        if (res) {
+            log_warning("could not write map!");
+        } else {
+            log_info("successfully wrote map!");
+        }
     }
 }
 

@@ -11,6 +11,8 @@
 #include <assert.h>
 #include <stdio.h>
 #include <inttypes.h>
+#include <string.h>
+
 
 void stw_read_tiles(Tiles8bit_t *tiles) {
     int res = 0;
@@ -90,6 +92,398 @@ struct MapInfo {
     uint8_t obstacle;
 };
 typedef struct MapInfo MapInfo_t;
+
+static void update_map_info(MapInfo_t *info, const uint8_t id) {
+    switch (id) {
+        case 0:
+            info->id = 0;
+            info->variance = 0;
+            break;
+        case 1:
+            info->id = 0;
+            info->variance = 1;
+            break;
+        case 2:
+            info->id = 0;
+            info->variance = 2;
+            break;
+        case 3:
+            info->id = 1;
+            info->variance = 0;
+            break;
+        case 4:
+            info->id = 1;
+            info->variance = 1;
+            break;
+        case 5:
+            info->id = 1;
+            info->variance = 2;
+            break;
+        case 6:
+            info->id = 3;
+            info->variance = 0;
+            break;
+        case 7:
+            info->id = 3;
+            info->variance = 1;
+            break;
+        case 8:
+            info->id = 3;
+            info->variance = 2;
+            break;
+        case 9:
+            info->id = 4;
+            info->variance = 0;
+            break;
+        case 10:
+            info->id = 4;
+            info->variance = 1;
+            break;
+        case 11:
+            info->id = 4;
+            info->variance = 2;
+            break;
+        case 12:
+            info->id = 5;
+            info->variance = 0;
+            break;
+        case 13:
+            info->id = 5;
+            info->variance = 1;
+            break;
+        case 14:
+            info->id = 5;
+            info->variance = 2;
+            break;
+        case 15:
+            info->id = 6;
+            info->variance = 0;
+            break;
+        case 16:
+            info->id = 6;
+            info->variance = 1;
+            break;
+        case 17:
+            info->id = 6;
+            info->variance = 2;
+            break;
+        case 18:
+            info->id = 7;
+            info->variance = 0;
+            break;
+        case 19:
+            info->id = 7;
+            info->variance = 1;
+            break;
+        case 20:
+            info->id = 7;
+            info->variance = 2;
+            break;
+        case 21:
+            info->id = 8;
+            info->variance = 0;
+            break;
+        case 22:
+            info->id = 8;
+            info->variance = 1;
+            break;
+        case 23:
+            info->id = 8;
+            info->variance = 2;
+            break;
+        case 24:
+            info->id = 9;
+            info->variance = 0;
+            break;
+        case 25:
+            info->id = 9;
+            info->variance = 1;
+            break;
+        case 26:
+            info->id = 9;
+            info->variance = 2;
+            break;
+        case 27:
+            info->id = 10;
+            info->variance = 0;
+            break;
+        case 28:
+            info->id = 10;
+            info->variance = 1;
+            break;
+        case 29:
+            info->id = 10;
+            info->variance = 2;
+            break;
+        case 30:
+            info->id = 11;
+            info->variance = 0;
+            break;
+        case 31:
+            info->id = 11;
+            info->variance = 1;
+            break;
+        case 32:
+            info->id = 11;
+            info->variance = 2;
+            break;
+        case 33:
+            info->id = 12;
+            info->variance = 0;
+            break;
+        case 34:
+            info->id = 12;
+            info->variance = 1;
+            break;
+        case 35:
+            info->id = 12;
+            info->variance = 2;
+            break;
+        case 36:
+            info->id = 13;
+            info->variance = 0;
+            break;
+        case 37:
+            info->id = 13;
+            info->variance = 1;
+            break;
+        case 38:
+            info->id = 13;
+            info->variance = 2;
+            break;
+        case 39:
+            info->id = 14;
+            info->variance = 0;
+            break;
+        case 40:
+            info->id = 14;
+            info->variance = 1;
+            break;
+        case 41:
+            info->id = 14;
+            info->variance = 2;
+            break;
+        case 42:
+            info->id = 15;
+            info->variance = 0;
+            break;
+        case 43:
+            info->id = 15;
+            info->variance = 1;
+            break;
+        case 44:
+            info->id = 15;
+            info->variance = 2;
+            break;
+        case 45:
+            info->id = 16;
+            info->variance = 0;
+            break;
+        case 46:
+            info->id = 16;
+            info->variance = 1;
+            break;
+        case 47:
+            info->id = 16;
+            info->variance = 2;
+            break;
+        case 48:
+            info->id = 17;
+            info->variance = 0;
+            break;
+        case 49:
+            info->id = 17;
+            info->variance = 1;
+            break;
+        case 50:
+            info->id = 17;
+            info->variance = 2;
+            break;
+        case 51:
+            info->id = 18;
+            info->variance = 0;
+            break;
+        case 52:
+            info->id = 18;
+            info->variance = 1;
+            break;
+        case 53:
+            info->id = 18;
+            info->variance = 2;
+            break;
+        case 54:
+            info->id = 19;
+            info->variance = 0;
+            break;
+        case 55:
+            info->id = 19;
+            info->variance = 1;
+            break;
+        case 56:
+            info->id = 19;
+            info->variance = 2;
+            break;
+        case 57:
+            info->id = 20;
+            info->variance = 0;
+            break;
+        case 58:
+            info->id = 20;
+            info->variance = 1;
+            break;
+        case 59:
+            info->id = 20;
+            info->variance = 2;
+            break;
+        case 60:
+            info->id = 21;
+            info->variance = 0;
+            break;
+        case 61:
+            info->id = 21;
+            info->variance = 1;
+            break;
+        case 62:
+            info->id = 21;
+            info->variance = 2;
+            break;
+        case 63:
+            info->id = 22;
+            info->variance = 0;
+            break;
+        case 64:
+            info->id = 22;
+            info->variance = 1;
+            break;
+        case 65:
+            info->id = 22;
+            info->variance = 2;
+            break;
+        case 66:
+            info->id = 23;
+            info->variance = 0;
+            break;
+        case 67:
+            info->id = 23;
+            info->variance = 1;
+            break;
+        case 68:
+            info->id = 23;
+            info->variance = 2;
+            break;
+        case 69:
+            info->id = 24;
+            info->variance = 0;
+            break;
+        case 70:
+            info->id = 24;
+            info->variance = 1;
+            break;
+        case 71:
+            info->id = 24;
+            info->variance = 2;
+            break;
+        case 72:
+            info->id = 25;
+            info->variance = 0;
+            break;
+        case 73:
+            info->id = 25;
+            info->variance = 1;
+            break;
+        case 74:
+            info->id = 25;
+            info->variance = 2;
+            break;
+        case 75:
+            info->id = 26;
+            info->variance = 0;
+            break;
+        case 76:
+            info->id = 26;
+            info->variance = 1;
+            break;
+        case 77:
+            info->id = 26;
+            info->variance = 2;
+            break;
+        case 78:
+            info->id = 27;
+            info->variance = 0;
+            break;
+        case 79:
+            info->id = 27;
+            info->variance = 1;
+            break;
+        case 80:
+            info->id = 27;
+            info->variance = 2;
+            break;
+        case 81:
+            info->id = 28;
+            info->variance = 0;
+            break;
+        case 82:
+            info->id = 28;
+            info->variance = 1;
+            break;
+        case 83:
+            info->id = 28;
+            info->variance = 2;
+            break;
+        case 84:
+            info->id = 29;
+            info->variance = 0;
+            break;
+        case 85:
+            info->id = 29;
+            info->variance = 1;
+            break;
+        case 86:
+            info->id = 29;
+            info->variance = 2;
+            break;
+        case 87:
+            info->id = 32;
+            info->variance = 0;
+            break;
+        case 88:
+            info->id = 32;
+            info->variance = 1;
+            break;
+        case 89:
+            info->id = 32;
+            info->variance = 2;
+            break;
+        case 90:
+            info->id = 33;
+            info->variance = 0;
+            break;
+        case 91:
+            info->id = 33;
+            info->variance = 1;
+            break;
+        case 92:
+            info->id = 33;
+            info->variance = 2;
+            break;
+        case 93:
+            info->id = 34;
+            info->variance = 0;
+            break;
+        case 94:
+            info->id = 34;
+            info->variance = 1;
+            break;
+        case 95:
+            info->id = 34;
+            info->variance = 2;
+            break;
+        default:
+            log_warning_fmt("could not convert id: %d to MapInfo", id);
+            break;
+    }
+}
 
 static int check_id(const uint8_t id) {
     return id < 35;
@@ -244,8 +638,70 @@ uint8_t get_shore_tile_id_angular(const int id, const uint8_t sum) {
     return id;
 }
 
+int stw_write_map(const char *orig_path, unsigned char map[MAP_SIZE_Y][MAP_SIZE_X]) {
+    assert(orig_path);
+    assert(map);
+
+    // open in file
+    FILE *in = fopen(orig_path, "r");
+    if (!in) {
+        log_warning_fmt("could not open map from path: %s", orig_path);
+        return 1;
+    }
+
+    // open out file
+    char dst_path[256];
+    memset(dst_path, '0', 256);
+    sprintf(dst_path, "%s.mod", orig_path);
+    FILE *out = fopen(dst_path, "w");
+    if (!out) {
+        log_warning_fmt("could not open map from path: %s", dst_path);
+        return 2;
+    }
+    log_info_fmt("writing map to: %s", dst_path);
+
+    MapInfo_t map_info;
+    int x = 0;
+    int y = 0;
+
+    for (int i = 0; i < MAP_SIZE_TOTAL; i++) {
+        // read
+        const size_t r_num = fread(&map_info, sizeof(MapInfo_t), 1, in);
+        if (r_num != 1) {
+            log_warning_fmt("could not read map info number: %d", i);
+            fclose(in);
+            fclose(out);
+            return 3;
+        }
+
+        // update
+        update_map_info(&map_info, map[y][x]);
+
+        // write
+        const size_t w_num = fwrite(&map_info, sizeof(MapInfo_t), 1, out);
+        if (w_num != 1) {
+            log_warning_fmt("could not write map info number: %d", i);
+            fclose(in);
+            fclose(out);
+            return 4;
+        }
+
+        // update x & y
+        ++x;
+        if (x == MAP_SIZE_X) {
+            ++y;
+            x = 0;
+        }
+    }
+
+    fclose(in);
+    fclose(out);
+    return 0;
+}
+
 int stw_read_map(const char *path, unsigned char map[MAP_SIZE_Y][MAP_SIZE_X]) {
     assert(path);
+    assert(map);
 
     FILE *fp = fopen(path, "r");
     if (!fp) {
@@ -258,7 +714,7 @@ int stw_read_map(const char *path, unsigned char map[MAP_SIZE_Y][MAP_SIZE_X]) {
     for (int i = 0; i < MAP_SIZE_TOTAL; i++) {
         const size_t num = fread(&map_info, sizeof(MapInfo_t), 1, fp);
         if (num != 1) {
-            log_warning_fmt("could not read maol number: %d", i);
+            log_warning_fmt("could not read map info number: %d", i);
             fclose(fp);
             return 1;
         }
