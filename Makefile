@@ -52,7 +52,7 @@ stw_map_editor_aos_060_c2p: src/main.c src/ui_map.c src/ui_tile.c src/settle_the
 stw_map_editor_aos_030_fpu_c2p: src/main.c src/ui_map.c src/ui_tile.c src/settle_the_world_util.c src/ui_status.c exdev-gfx/exdev_gfx_ui_aos_060.lib exdev-gfx/exdev_gfx_aos_060_c2p.lib
 	$(CC) -o ${@} ${INCLUDES_AOS} $(^) ${C_FLAGS_030_FPU} -DLOW_RESOLUTION ${LD_FLAGS_030_FPU} -LWork:workspace/c2plib/sdk -lc2p
 
-stw_map_editor: stw_map_editor_mos_gcc stw_map_editor_aos_060 stw_map_editor_aos_060_c2p
+stw_map_editor: stw_map_editor_mos_gcc stw_map_editor_aos_060 stw_map_editor_aos_060_c2p stw_map_editor_aos_030_fpu_c2p
 
 all: stw_map_editor
 
@@ -73,4 +73,4 @@ dist: stw_map_editor
 .PHONY: clean
 clean:
 	$(MAKE) -C exdev-gfx clean
-	$(RM) -f stw_map_editor_mos_gcc stw_map_editor_aos_060 stw_map_editor_aos_060_c2p
+	$(RM) -f stw_map_editor_mos_gcc stw_map_editor_aos_060 stw_map_editor_aos_060_c2p stw_map_editor_aos_030_fpu_c2p
