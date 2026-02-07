@@ -97,387 +97,387 @@ static void update_map_info(MapInfo_t *info, const uint8_t id) {
     switch (id) {
         case 0:
             info->id = 0;
-            info->variance = 0;
+            info->variance = 1;
             break;
         case 1:
             info->id = 0;
-            info->variance = 1;
+            info->variance = 2;
             break;
         case 2:
             info->id = 0;
-            info->variance = 2;
+            info->variance = 3;
             break;
         case 3:
             info->id = 1;
-            info->variance = 0;
+            info->variance = 1;
             break;
         case 4:
             info->id = 1;
-            info->variance = 1;
+            info->variance = 2;
             break;
         case 5:
             info->id = 1;
-            info->variance = 2;
+            info->variance = 3;
             break;
         case 6:
             info->id = 3;
-            info->variance = 0;
+            info->variance = 1;
             break;
         case 7:
             info->id = 3;
-            info->variance = 1;
+            info->variance = 2;
             break;
         case 8:
             info->id = 3;
-            info->variance = 2;
+            info->variance = 3;
             break;
         case 9:
             info->id = 4;
-            info->variance = 0;
+            info->variance = 1;
             break;
         case 10:
             info->id = 4;
-            info->variance = 1;
+            info->variance = 2;
             break;
         case 11:
             info->id = 4;
-            info->variance = 2;
+            info->variance = 3;
             break;
         case 12:
             info->id = 5;
-            info->variance = 0;
+            info->variance = 1;
             break;
         case 13:
             info->id = 5;
-            info->variance = 1;
+            info->variance = 2;
             break;
         case 14:
             info->id = 5;
-            info->variance = 2;
+            info->variance = 3;
             break;
         case 15:
             info->id = 6;
-            info->variance = 0;
+            info->variance = 1;
             break;
         case 16:
             info->id = 6;
-            info->variance = 1;
+            info->variance = 2;
             break;
         case 17:
             info->id = 6;
-            info->variance = 2;
+            info->variance = 3;
             break;
         case 18:
             info->id = 7;
-            info->variance = 0;
+            info->variance = 1;
             break;
         case 19:
             info->id = 7;
-            info->variance = 1;
+            info->variance = 2;
             break;
         case 20:
             info->id = 7;
-            info->variance = 2;
+            info->variance = 3;
             break;
         case 21:
             info->id = 8;
-            info->variance = 0;
+            info->variance = 1;
             break;
         case 22:
             info->id = 8;
-            info->variance = 1;
+            info->variance = 2;
             break;
         case 23:
             info->id = 8;
-            info->variance = 2;
+            info->variance = 3;
             break;
         case 24:
             info->id = 9;
-            info->variance = 0;
+            info->variance = 1;
             break;
         case 25:
             info->id = 9;
-            info->variance = 1;
+            info->variance = 2;
             break;
         case 26:
             info->id = 9;
-            info->variance = 2;
+            info->variance = 3;
             break;
         case 27:
             info->id = 10;
-            info->variance = 0;
+            info->variance = 1;
             break;
         case 28:
             info->id = 10;
-            info->variance = 1;
+            info->variance = 2;
             break;
         case 29:
             info->id = 10;
-            info->variance = 2;
+            info->variance = 3;
             break;
         case 30:
             info->id = 11;
-            info->variance = 0;
+            info->variance = 1;
             break;
         case 31:
             info->id = 11;
-            info->variance = 1;
+            info->variance = 2;
             break;
         case 32:
             info->id = 11;
-            info->variance = 2;
+            info->variance = 3;
             break;
         case 33:
             info->id = 12;
-            info->variance = 0;
+            info->variance = 1;
             break;
         case 34:
             info->id = 12;
-            info->variance = 1;
+            info->variance = 2;
             break;
         case 35:
             info->id = 12;
-            info->variance = 2;
+            info->variance = 3;
             break;
         case 36:
             info->id = 13;
-            info->variance = 0;
+            info->variance = 1;
             break;
         case 37:
             info->id = 13;
-            info->variance = 1;
+            info->variance = 2;
             break;
         case 38:
             info->id = 13;
-            info->variance = 2;
+            info->variance = 3;
             break;
         case 39:
             info->id = 14;
-            info->variance = 0;
+            info->variance = 1;
             break;
         case 40:
             info->id = 14;
-            info->variance = 1;
+            info->variance = 2;
             break;
         case 41:
             info->id = 14;
-            info->variance = 2;
+            info->variance = 3;
             break;
         case 42:
             info->id = 15;
-            info->variance = 0;
+            info->variance = 1;
             break;
         case 43:
             info->id = 15;
-            info->variance = 1;
+            info->variance = 2;
             break;
         case 44:
             info->id = 15;
-            info->variance = 2;
+            info->variance = 3;
             break;
         case 45:
             info->id = 16;
-            info->variance = 0;
+            info->variance = 1;
             break;
         case 46:
             info->id = 16;
-            info->variance = 1;
+            info->variance = 2;
             break;
         case 47:
             info->id = 16;
-            info->variance = 2;
+            info->variance = 3;
             break;
         case 48:
             info->id = 17;
-            info->variance = 0;
+            info->variance = 1;
             break;
         case 49:
             info->id = 17;
-            info->variance = 1;
+            info->variance = 2;
             break;
         case 50:
             info->id = 17;
-            info->variance = 2;
+            info->variance = 3;
             break;
         case 51:
             info->id = 18;
-            info->variance = 0;
+            info->variance = 1;
             break;
         case 52:
             info->id = 18;
-            info->variance = 1;
+            info->variance = 2;
             break;
         case 53:
             info->id = 18;
-            info->variance = 2;
+            info->variance = 3;
             break;
         case 54:
             info->id = 19;
-            info->variance = 0;
+            info->variance = 1;
             break;
         case 55:
             info->id = 19;
-            info->variance = 1;
+            info->variance = 2;
             break;
         case 56:
             info->id = 19;
-            info->variance = 2;
+            info->variance = 3;
             break;
         case 57:
             info->id = 20;
-            info->variance = 0;
+            info->variance = 1;
             break;
         case 58:
             info->id = 20;
-            info->variance = 1;
+            info->variance = 2;
             break;
         case 59:
             info->id = 20;
-            info->variance = 2;
+            info->variance = 3;
             break;
         case 60:
             info->id = 21;
-            info->variance = 0;
+            info->variance = 1;
             break;
         case 61:
             info->id = 21;
-            info->variance = 1;
+            info->variance = 2;
             break;
         case 62:
             info->id = 21;
-            info->variance = 2;
+            info->variance = 3;
             break;
         case 63:
             info->id = 22;
-            info->variance = 0;
+            info->variance = 1;
             break;
         case 64:
             info->id = 22;
-            info->variance = 1;
+            info->variance = 2;
             break;
         case 65:
             info->id = 22;
-            info->variance = 2;
+            info->variance = 3;
             break;
         case 66:
             info->id = 23;
-            info->variance = 0;
+            info->variance = 1;
             break;
         case 67:
             info->id = 23;
-            info->variance = 1;
+            info->variance = 2;
             break;
         case 68:
             info->id = 23;
-            info->variance = 2;
+            info->variance = 3;
             break;
         case 69:
             info->id = 24;
-            info->variance = 0;
+            info->variance = 1;
             break;
         case 70:
             info->id = 24;
-            info->variance = 1;
+            info->variance = 2;
             break;
         case 71:
             info->id = 24;
-            info->variance = 2;
+            info->variance = 3;
             break;
         case 72:
             info->id = 25;
-            info->variance = 0;
+            info->variance = 1;
             break;
         case 73:
             info->id = 25;
-            info->variance = 1;
+            info->variance = 2;
             break;
         case 74:
             info->id = 25;
-            info->variance = 2;
+            info->variance = 3;
             break;
         case 75:
             info->id = 26;
-            info->variance = 0;
+            info->variance = 1;
             break;
         case 76:
             info->id = 26;
-            info->variance = 1;
+            info->variance = 2;
             break;
         case 77:
             info->id = 26;
-            info->variance = 2;
+            info->variance = 3;
             break;
         case 78:
             info->id = 27;
-            info->variance = 0;
+            info->variance = 1;
             break;
         case 79:
             info->id = 27;
-            info->variance = 1;
+            info->variance = 2;
             break;
         case 80:
             info->id = 27;
-            info->variance = 2;
+            info->variance = 3;
             break;
         case 81:
             info->id = 28;
-            info->variance = 0;
+            info->variance = 1;
             break;
         case 82:
             info->id = 28;
-            info->variance = 1;
+            info->variance = 2;
             break;
         case 83:
             info->id = 28;
-            info->variance = 2;
+            info->variance = 3;
             break;
         case 84:
             info->id = 29;
-            info->variance = 0;
+            info->variance = 1;
             break;
         case 85:
             info->id = 29;
-            info->variance = 1;
+            info->variance = 2;
             break;
         case 86:
             info->id = 29;
-            info->variance = 2;
+            info->variance = 3;
             break;
         case 87:
             info->id = 32;
-            info->variance = 0;
+            info->variance = 1;
             break;
         case 88:
             info->id = 32;
-            info->variance = 1;
+            info->variance = 2;
             break;
         case 89:
             info->id = 32;
-            info->variance = 2;
+            info->variance = 3;
             break;
         case 90:
             info->id = 33;
-            info->variance = 0;
+            info->variance = 1;
             break;
         case 91:
             info->id = 33;
-            info->variance = 1;
+            info->variance = 2;
             break;
         case 92:
             info->id = 33;
-            info->variance = 2;
+            info->variance = 3;
             break;
         case 93:
             info->id = 34;
-            info->variance = 0;
+            info->variance = 1;
             break;
         case 94:
             info->id = 34;
-            info->variance = 1;
+            info->variance = 2;
             break;
         case 95:
             info->id = 34;
-            info->variance = 2;
+            info->variance = 3;
             break;
         default:
             log_warning_fmt("could not convert id: %d to MapInfo", id);
