@@ -480,7 +480,7 @@ static void update_map_info(MapInfo_t *info, const uint8_t id) {
             info->variance = 3;
             break;
         default:
-            log_warning_fmt("could not convert id: %d to MapInfo", id);
+            log_warning_fmt("could not convert id: %d to MapInfo", (int) id);
             break;
     }
 }
