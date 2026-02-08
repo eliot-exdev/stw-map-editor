@@ -13,7 +13,6 @@
 #include <inttypes.h>
 #include <string.h>
 
-
 void stw_read_tiles(Tiles8bit_t *tiles) {
     int res = 0;
 
@@ -696,6 +695,12 @@ int stw_write_map(const char *orig_path, unsigned char map[MAP_SIZE_Y][MAP_SIZE_
 
     fclose(in);
     fclose(out);
+
+    if (strstr(orig_path, ".mod")) {
+        log_info("moving files");
+        remove(orig_path);
+        rename(dst_path, orig_path);
+    }
     return 0;
 }
 
