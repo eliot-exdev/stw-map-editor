@@ -63,3 +63,11 @@ see: [stw_map_editor.readme](dist/stw_map_editor.readme)
     cmake ../ -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=../exdev-gfx/cmake/morphos-ppc.toolchain
     cmake --build . --parallel 4
 ```
+
+## Todo
+
+- Implement continuous drawing
+- Add "Exit" button
+- Implement "Variance" button/functionality
+- Implement "Undo/Redo" button/functionality
+- Finish stw_map_editor.readme
