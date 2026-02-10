@@ -8,6 +8,12 @@
 #include "ui_definitions.h"
 #include "settle_the_world_util.h"
 
+enum DRAG_MODE {
+    DRAG_NONE,
+    DRAG_MOVE,
+    DRAG_TILE
+};
+
 struct UIMap {
     UIComponent_t base;
 
@@ -18,7 +24,7 @@ struct UIMap {
     } properties;
 
     struct {
-        int dragged;
+        enum DRAG_MODE dragged;
     } flags;
 
     Tiles8bit_t *tiles;
@@ -28,8 +34,9 @@ struct UIMap {
     Framebuffer8Bit_t *fb_map;
 
     int x_last;
-
     int y_last;
+    int x_last_tile;
+    int y_last_tile;
 };
 
 typedef struct UIMap UIMap_t;

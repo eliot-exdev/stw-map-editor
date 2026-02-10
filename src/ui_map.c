@@ -29,7 +29,7 @@ void ui_map_init(UIMap_t *self, const int x, const int y, const int width, const
     self->properties.x_pos = 0;
     self->properties.y_pos = 0;
     self->properties.current_tile_index = 0;// water
-    self->flags.dragged = 0;
+    self->flags.dragged = DRAG_NONE;
 
     self->tiles = tiles;
 
@@ -39,6 +39,8 @@ void ui_map_init(UIMap_t *self, const int x, const int y, const int width, const
 
     self->x_last = 0;
     self->y_last = 0;
+    self->x_last_tile = 0;
+    self->y_last_tile = 0;
 }
 
 UIMap_t *ui_map_create(const int x, const int y, const int width, const int height, Tiles8bit_t *tiles) {
@@ -155,41 +157,49 @@ void ui_map_update(UIMap_t *self, const long time_elapsed, const Event_t *events
                         int x = events[i].mouse_event.position_x - 2;
                         int y = events[i].mouse_event.position_y - 2;
                         ui_component_get_relative_position(&self->base, &x, &y);
-                        self->flags.dragged = 1;
+                        self->flags.dragged = DRAG_MOVE;
                         self->x_last = x;
                         self->y_last = y;
                     }
-                } else if (self->flags.dragged && events[i].mouse_event.event == MOUSE_EVENT_BUTTON_RELEASED) {
-                    log_debug("ui_map_update released");
-                    self->flags.dragged = 0;
+                } else if (self->flags.dragged == DRAG_MOVE && events[i].mouse_event.event == MOUSE_EVENT_BUTTON_RELEASED) {
+                    self->flags.dragged = DRAG_NONE;
                 }
             }
             // mouse button left
-            else if (events[i].mouse_event.button == MOUSE_BUTTON_0 && events[i].mouse_event.event == MOUSE_EVENT_BUTTON_PRESSED) {
-                if (ui_component_is_inside(&self->base, events[i].mouse_event.position_x, events[i].mouse_event.position_y)) {
-                    int x = events[i].mouse_event.position_x - 2;
-                    int y = events[i].mouse_event.position_y - 2;
-                    ui_component_get_relative_position(&self->base, &x, &y);
-                    x = (self->properties.x_pos + x) / TILE_WIDTH;
-                    y = (self->properties.y_pos + y) / TILE_HEIGHT;
+            else if (events[i].mouse_event.button == MOUSE_BUTTON_0) {
+                if (events[i].mouse_event.event == MOUSE_EVENT_BUTTON_PRESSED) {
+                    if (ui_component_is_inside(&self->base, events[i].mouse_event.position_x, events[i].mouse_event.position_y)) {
+                        self->flags.dragged = DRAG_TILE;
 
-                    if (x < SHORE_BORDER + 1 || y < SHORE_BORDER + 1 || x >= MAP_SIZE_X - SHORE_BORDER - 1 || y >= MAP_SIZE_Y - SHORE_BORDER - 1) {
-                        continue;
-                    }
+                        int x = events[i].mouse_event.position_x - 2;
+                        int y = events[i].mouse_event.position_y - 2;
+                        ui_component_get_relative_position(&self->base, &x, &y);
+                        x = (self->properties.x_pos + x) / TILE_WIDTH;
+                        y = (self->properties.y_pos + y) / TILE_HEIGHT;
 
-                    // update tile
-                    self->map[y][x] = self->properties.current_tile_index;
-
-                    // render 3*3 tiles around current pos
-                    for (int yy = 0; yy < 3; ++yy) {
-                        for (int xx = 0; xx < 3; ++xx) {
-                            draw_tile(self, x - 1 + xx, y - 1 + yy, self->map[y - 1 + yy][x - 1 + xx]);
+                        if (x < SHORE_BORDER + 1 || y < SHORE_BORDER + 1 || x >= MAP_SIZE_X - SHORE_BORDER - 1 || y >= MAP_SIZE_Y - SHORE_BORDER - 1) {
+                            continue;
                         }
-                    }
 
-                    self->base.flags.dirty_flag = 1;
-                    STWMapEditor_t *editor = (STWMapEditor_t *) usr_ptr;
-                    ui_component_set_enable(&editor->status->save->base, 1);
+                        // update tile
+                        if (self->map[y][x] == self->properties.current_tile_index) {
+                            continue;
+                        }
+                        self->map[y][x] = self->properties.current_tile_index;
+
+                        // render 3*3 tiles around current pos
+                        for (int yy = 0; yy < 3; ++yy) {
+                            for (int xx = 0; xx < 3; ++xx) {
+                                draw_tile(self, x - 1 + xx, y - 1 + yy, self->map[y - 1 + yy][x - 1 + xx]);
+                            }
+                        }
+
+                        self->base.flags.dirty_flag = 1;
+                        STWMapEditor_t *editor = (STWMapEditor_t *) usr_ptr;
+                        ui_component_set_enable(&editor->status->save->base, 1);
+                    }
+                } else if (self->flags.dragged == DRAG_TILE && events[i].mouse_event.event == MOUSE_EVENT_BUTTON_RELEASED) {
+                    self->flags.dragged = DRAG_NONE;
                 }
             }
             // mouse moved
@@ -199,7 +209,7 @@ void ui_map_update(UIMap_t *self, const long time_elapsed, const Event_t *events
                 ui_component_get_relative_position(&self->base, &x, &y);
 
                 // move map
-                if (self->flags.dragged) {
+                if (self->flags.dragged == DRAG_MOVE) {
                     if (x > self->x_last) {
                         self->properties.x_pos -= x - self->x_last;
                     } else {
@@ -228,15 +238,41 @@ void ui_map_update(UIMap_t *self, const long time_elapsed, const Event_t *events
                     }
                     self->base.flags.dirty_flag = 1;
                     log_debug_fmt("x=%d, y=%d", self->properties.x_pos, self->properties.y_pos);
-                } else {
-                    STWMapEditor_t *editor = (STWMapEditor_t *) usr_ptr;
+                } else if (self->flags.dragged == DRAG_TILE) {
                     const int tile_x = (self->properties.x_pos + x) / TILE_WIDTH;
                     const int tile_y = (self->properties.y_pos + y) / TILE_HEIGHT;
-                    char *text = malloc(20);
+
+                    if (tile_x < SHORE_BORDER + 1 || tile_y < SHORE_BORDER + 1 || tile_x >= MAP_SIZE_X - SHORE_BORDER - 1 || tile_y >= MAP_SIZE_Y - SHORE_BORDER - 1) {
+                        continue;
+                    }
+
+                    // update tile
+                    if (self->map[tile_y][tile_x] == self->properties.current_tile_index) {
+                        continue;
+                    }
+                    self->map[tile_y][tile_x] = self->properties.current_tile_index;
+
+                    // render 3*3 tiles around current pos
+                    for (int yy = 0; yy < 3; ++yy) {
+                        for (int xx = 0; xx < 3; ++xx) {
+                            draw_tile(self, tile_x - 1 + xx, tile_y - 1 + yy, self->map[tile_y - 1 + yy][tile_x - 1 + xx]);
+                        }
+                    }
+
+                    self->base.flags.dirty_flag = 1;
+                }
+
+                STWMapEditor_t *editor = (STWMapEditor_t *) usr_ptr;
+                const int tile_x = (self->properties.x_pos + x) / TILE_WIDTH;
+                const int tile_y = (self->properties.y_pos + y) / TILE_HEIGHT;
+
+                if (tile_x != self->x_last_tile || tile_y != self->y_last_tile) {
+                    char text[20];
                     memset(text, 0, 20);
                     sprintf(text, "X: %03d Y: %03d", tile_x, tile_y);
                     ui_text_update_text(editor->status->current_tile_coordinates, text);
-                    free(text);
+                    self->x_last_tile = tile_x;
+                    self->y_last_tile = tile_y;
                 }
             }
         }

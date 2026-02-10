@@ -66,7 +66,6 @@ see: [stw_map_editor.readme](dist/stw_map_editor.readme)
 
 ## Todo
 
-- Implement continuous drawing
 - Add "Exit" button
 - Implement "Variance" button/functionality
 - Implement "Undo/Redo" button/functionality
