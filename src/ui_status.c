@@ -62,7 +62,7 @@ void ui_status_init(UIStatus_t *self, const int x, const int y, const int width,
     self->quit->functions.on_clicked = on_quit_clicked;
     ui_component_connect(self, self->quit);
 
-    self->save = ui_icon_create(width - 40, 2, framebuffer_8bit_copy(tiles->tiles + TILES_TOTAL_NUM - 3), framebuffer_8bit_copy(tiles->tiles + TILES_TOTAL_NUM - 2));
+    self->save = ui_icon_create(width - 39, 2, framebuffer_8bit_copy(tiles->tiles + TILES_TOTAL_NUM - 3), framebuffer_8bit_copy(tiles->tiles + TILES_TOTAL_NUM - 2));
     self->save->base.flags.enabled_flag = 0;
     self->save->functions.on_clicked = on_save_clicked;
     ui_component_connect(self, self->save);
