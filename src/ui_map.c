@@ -23,7 +23,7 @@ void ui_map_init(UIMap_t *self, const int x, const int y, const int width, const
 
     self->base.functions.destroy_func = (void (*)(void *)) &ui_map_destroy;
     self->base.functions.paint_func = (int (*)(void *, Framebuffer8Bit_t *, int, int, int, int, void *)) ui_map_paint;
-    self->base.functions.update_func = (void (*)(void *, long, const Event_t *, int, void *)) ui_map_update;
+    self->base.functions.update_func = (void (*)(void *, long, const Event_t *, int, UIApplication_t *app, void *)) ui_map_update;
     self->base.functions.prepare_func = (void (*)(void *, void *)) ui_map_prepare;
 
     self->properties.x_pos = 0;
@@ -144,7 +144,7 @@ int ui_map_paint(UIMap_t *self, Framebuffer8Bit_t *fb, const int x_offset, const
     return res;
 }
 
-void ui_map_update(UIMap_t *self, const long time_elapsed, const Event_t *events, const int num_events, void *usr_ptr) {
+void ui_map_update(UIMap_t *self, const long time_elapsed, const Event_t *events, const int num_events, UIApplication_t *app,void *usr_ptr) {
     assert(self);
 
     for (int i = 0; i < num_events; ++i) {

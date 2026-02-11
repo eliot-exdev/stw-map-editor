@@ -12,15 +12,17 @@
 #include <assert.h>
 #include <stdlib.h>
 
-static void on_quit_clicked(struct UIIcon *self, void *usr_ptr) {
+static void on_quit_clicked(struct UIIcon *self, UIApplication_t *app, void *usr_ptr) {
     assert(self);
-    assert(usr_ptr);
+    assert(app);
+
     if (self->flags.clicked) {
-        log_warning("quit not implemented!");
+        log_info("quit clicked");
+        ui_application_quit(app);
     }
 }
 
-static void on_save_clicked(struct UIIcon *self, void *usr_ptr) {
+static void on_save_clicked(struct UIIcon *self, UIApplication_t *app, void *usr_ptr) {
     assert(self);
     assert(usr_ptr);
 

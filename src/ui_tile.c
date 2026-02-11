@@ -62,14 +62,14 @@ void ui_tile_destroy(UITile_t *self) {
     ui_scroll_container_destroy(&self->base);
 }
 
-void ui_tile_on_icon_click(UIIcon_t *icon, void *usr_ptr) {
+void ui_tile_on_icon_click(UIIcon_t *icon, UIApplication_t *app, void *usr_ptr) {
     assert(icon);
     if (icon->flags.clicked) {
-        ui_tile_on_click((UITile_t *) icon->base.parent, usr_ptr);
+        ui_tile_on_click((UITile_t *) icon->base.parent, app,usr_ptr);
     }
 }
 
-void ui_tile_on_click(UITile_t *self, void *usr_ptr) {
+void ui_tile_on_click(UITile_t *self, UIApplication_t *app, void *usr_ptr) {
     assert(self);
 
     for (int i = 0; i < self->base.base.children.size; ++i) {

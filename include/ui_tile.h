@@ -19,8 +19,8 @@ UITile_t *ui_tile_create(int x, int y, int width, int height, const Tiles8bit_t 
 
 void ui_tile_destroy(UITile_t *self);
 
-void ui_tile_on_icon_click(UIIcon_t *icon, void *usr_ptr);
+void ui_tile_on_icon_click(UIIcon_t *icon, UIApplication_t *app, void *usr_ptr);
 
-void ui_tile_on_click(UITile_t *self, void *usr_ptr);
+void ui_tile_on_click(UITile_t *self, UIApplication_t *app, void *usr_ptr);
 
 #endif//STW_MAP_EDITOR_UI_TILE_H
