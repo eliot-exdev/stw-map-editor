@@ -17,6 +17,7 @@ struct UIStatus {
     UIText_t *current_tile_coordinates;
     UIIcon_t *quit;
     UIIcon_t *save;
+    UIIcon_t *variance;
 };
 
 typedef struct UIStatus UIStatus_t;

@@ -12,7 +12,7 @@
 #define MAP_SIZE_TOTAL 20480
 #define TILES_MAP_NUM 96
 #define TILES_MAP_COAST_NUM 70
-#define TILES_ICON_NUM 3
+#define TILES_ICON_NUM 4
 #define TILES_TOTAL_NUM (TILES_MAP_NUM + TILES_MAP_COAST_NUM + TILES_ICON_NUM)
 void stw_read_tiles(Tiles8bit_t *tiles);
 

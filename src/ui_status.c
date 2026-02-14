@@ -22,6 +22,13 @@ static void on_quit_clicked(struct UIIcon *self, UIApplication_t *app, void *usr
     }
 }
 
+static void on_variance_clicked(struct UIIcon *self, UIApplication_t *app, void *usr_ptr) {
+    assert(self);
+    if (self->flags.clicked) {
+        log_warning("variance clicked - not implemented!");
+    }
+}
+
 static void on_save_clicked(struct UIIcon *self, UIApplication_t *app, void *usr_ptr) {
     assert(self);
     assert(usr_ptr);
@@ -58,14 +65,18 @@ void ui_status_init(UIStatus_t *self, const int x, const int y, const int width,
     self->current_tile_coordinates->base.flags.draw_border = 0;
     ui_component_connect(self, self->current_tile_coordinates);
 
-    self->quit = ui_icon_create(width - 20, 2, framebuffer_8bit_copy(tiles->tiles + TILES_TOTAL_NUM - 1), NULL);
+    self->quit = ui_icon_create(width - 20, 2, framebuffer_8bit_copy(tiles->tiles + TILES_TOTAL_NUM - 2), NULL);
     self->quit->functions.on_clicked = on_quit_clicked;
     ui_component_connect(self, self->quit);
 
-    self->save = ui_icon_create(width - 39, 2, framebuffer_8bit_copy(tiles->tiles + TILES_TOTAL_NUM - 3), framebuffer_8bit_copy(tiles->tiles + TILES_TOTAL_NUM - 2));
+    self->save = ui_icon_create(width - 39, 2, framebuffer_8bit_copy(tiles->tiles + TILES_TOTAL_NUM - 4), framebuffer_8bit_copy(tiles->tiles + TILES_TOTAL_NUM - 3));
     self->save->base.flags.enabled_flag = 0;
     self->save->functions.on_clicked = on_save_clicked;
     ui_component_connect(self, self->save);
+
+    self->variance = ui_icon_create(width - 58, 2, framebuffer_8bit_copy(tiles->tiles + TILES_TOTAL_NUM - 1), NULL);
+    self->variance->functions.on_clicked = on_variance_clicked;
+    ui_component_connect(self, self->variance);
 }
 
 UIStatus_t *ui_status_create(const int x, const int y, const int width, const int height, Tiles8bit_t *tiles) {
