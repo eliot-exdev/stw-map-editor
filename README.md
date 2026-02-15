@@ -66,6 +66,6 @@ see: [stw_map_editor.readme](dist/stw_map_editor.readme)
 
 ## Todo
 
-- Implement "Variance" button/functionality
-- Implement "Undo/Redo" button/functionality
 - Finish stw_map_editor.readme
+- Fix 030 build
+- Implement "Undo/Redo" button/functionality
