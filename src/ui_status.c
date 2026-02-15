@@ -66,15 +66,18 @@ void ui_status_init(UIStatus_t *self, const int x, const int y, const int width,
     ui_component_connect(self, self->current_tile_coordinates);
 
     self->quit = ui_icon_create(width - 20, 2, framebuffer_8bit_copy(tiles->tiles + TILES_TOTAL_NUM - 2), NULL);
+    self->quit->properties.alpha = PEN_INDEX_CYAN + 8;
     self->quit->functions.on_clicked = on_quit_clicked;
     ui_component_connect(self, self->quit);
 
     self->save = ui_icon_create(width - 39, 2, framebuffer_8bit_copy(tiles->tiles + TILES_TOTAL_NUM - 4), framebuffer_8bit_copy(tiles->tiles + TILES_TOTAL_NUM - 3));
     self->save->base.flags.enabled_flag = 0;
+    self->save->properties.alpha = PEN_INDEX_CYAN + 8;
     self->save->functions.on_clicked = on_save_clicked;
     ui_component_connect(self, self->save);
 
     self->variance = ui_icon_create(width - 58, 2, framebuffer_8bit_copy(tiles->tiles + TILES_TOTAL_NUM - 1), NULL);
+    self->variance->properties.alpha = PEN_INDEX_CYAN + 8;
     self->variance->functions.on_clicked = on_variance_clicked;
     ui_component_connect(self, self->variance);
 }
