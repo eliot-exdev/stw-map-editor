@@ -30,6 +30,7 @@ static void on_variance_clicked(struct UIIcon *self, UIApplication_t *app, void 
         stw_randomize_tile_variants(editor->map->map);
         ui_map_render_complete_map(editor->map);
         ui_component_set_dirty(&editor->map->base);
+        ui_component_set_enable(&editor->status->save->base, 1);
         log_info("variance finished");
     }
 }
