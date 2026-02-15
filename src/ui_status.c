@@ -25,7 +25,12 @@ static void on_quit_clicked(struct UIIcon *self, UIApplication_t *app, void *usr
 static void on_variance_clicked(struct UIIcon *self, UIApplication_t *app, void *usr_ptr) {
     assert(self);
     if (self->flags.clicked) {
-        log_warning("variance clicked - not implemented!");
+        log_info("variance started");
+        STWMapEditor_t *editor = (STWMapEditor_t *) usr_ptr;
+        stw_randomize_tile_variants(editor->map->map);
+        ui_map_render_complete_map(editor->map);
+        ui_component_set_dirty(&editor->map->base);
+        log_info("variance finished");
     }
 }
 

@@ -18,12 +18,14 @@ void stw_read_tiles(Tiles8bit_t *tiles);
 
 int stw_read_map(const char* path, unsigned char map[MAP_SIZE_Y][MAP_SIZE_X]);
 
-int stw_write_map(const char* orig_path, unsigned char map[MAP_SIZE_Y][MAP_SIZE_X]);
+int stw_write_map(const char* orig_path, const unsigned char map[MAP_SIZE_Y][MAP_SIZE_X]);
 
-int is_ocean_tile(int id);
+int stw_is_ocean_tile(int id);
 
-uint8_t get_shore_tile_id_straight(int id, uint8_t sum);
+uint8_t stw_get_shore_tile_id_straight(int id, uint8_t sum);
 
-uint8_t get_shore_tile_id_angular(int id, uint8_t sum);
+uint8_t stw_get_shore_tile_id_angular(int id, uint8_t sum);
+
+void stw_randomize_tile_variants(unsigned char map[MAP_SIZE_Y][MAP_SIZE_X]);
 
 #endif//STW_MAP_EDITOR_SETTLE_THE_WORLD_UTIL_H

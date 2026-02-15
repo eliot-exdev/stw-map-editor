@@ -55,4 +55,6 @@ void ui_map_update(UIMap_t *self, long time_elapsed, const Event_t *events, int 
 
 void ui_map_update_current_tile_index(UIMap_t *self, unsigned char current_tile_index);
 
+void ui_map_render_complete_map(UIMap_t *self);
+
 #endif//STW_MAP_EDITOR_UI_MAP_H

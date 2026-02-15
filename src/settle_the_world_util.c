@@ -5,13 +5,15 @@
 #include "settle_the_world_util.h"
 #include "ui_definitions.h"
 
-#define EXDEVGFX2_LOG_LEVEL 2
+#define EXDEVGFX2_LOG_LEVEL 1
 #include <exdevgfx/logger.h>
+#include <exdevgfx/helper.h>
 
 #include <assert.h>
 #include <stdio.h>
 #include <inttypes.h>
 #include <string.h>
+#include <stdlib.h>
 
 void stw_read_tiles(Tiles8bit_t *tiles) {
     int res = 0;
@@ -561,11 +563,11 @@ static unsigned char to_tile_id(const enum MAP_TILE_IDS id, const unsigned char 
     return 0;
 }
 
-int is_ocean_tile(const int id) {
+int stw_is_ocean_tile(const int id) {
     return id == MAP_TILE_ID_OCEAN || id == MAP_TILE_ID_OCEAN + 1 || id == MAP_TILE_ID_OCEAN + 2;
 }
 
-uint8_t get_shore_tile_id_straight(const int id, const uint8_t sum) {
+uint8_t stw_get_shore_tile_id_straight(const int id, const uint8_t sum) {
     switch (sum) {
         case 1:
             return 106;
@@ -601,7 +603,7 @@ uint8_t get_shore_tile_id_straight(const int id, const uint8_t sum) {
     return id;
 }
 
-uint8_t get_shore_tile_id_angular(const int id, const uint8_t sum) {
+uint8_t stw_get_shore_tile_id_angular(const int id, const uint8_t sum) {
     switch (sum) {
         case 16:
             return 153;
@@ -637,7 +639,7 @@ uint8_t get_shore_tile_id_angular(const int id, const uint8_t sum) {
     return id;
 }
 
-int stw_write_map(const char *orig_path, unsigned char map[MAP_SIZE_Y][MAP_SIZE_X]) {
+int stw_write_map(const char *orig_path, const unsigned char map[MAP_SIZE_Y][MAP_SIZE_X]) {
     assert(orig_path);
     assert(map);
 
@@ -740,4 +742,19 @@ int stw_read_map(const char *path, unsigned char map[MAP_SIZE_Y][MAP_SIZE_X]) {
 
     fclose(fp);
     return 0;
+}
+
+void stw_randomize_tile_variants(unsigned char map[MAP_SIZE_Y][MAP_SIZE_X]) {
+    assert(map);
+
+    srand(now());
+
+    MapInfo_t map_info;
+    for (int y = 0; y < MAP_SIZE_Y; ++y) {
+        for (int x = 0; x < MAP_SIZE_X; ++x) {
+            update_map_info(&map_info, map[y][x]);
+            map_info.variance = rand() % 3;
+            map[y][x] = to_tile_id(map_info.id, map_info.variance);
+        }
+    }
 }
