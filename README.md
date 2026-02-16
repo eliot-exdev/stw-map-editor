@@ -66,6 +66,6 @@ see: [stw_map_editor.readme](dist/stw_map_editor.readme)
 
 ## Todo
 
-- Finish stw_map_editor.readme
+- Fix save when no map was loaded
 - Fix 030 build
 - Implement "Undo/Redo" button/functionality

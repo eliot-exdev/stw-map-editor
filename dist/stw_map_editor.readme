@@ -16,24 +16,87 @@ Simple map editor for the Amiga strategy game Settle The World
 
 * MorphOs:
   Any MorphOs system should work.
-  Tested it on a Mac Mini G4 Silent Upgrade with MorphOs 3.14.
+  Tested it on a Mac Mini G4 Silent Upgrade with MorphOs 3.19.
   You will need a 640x480x8 screen mode.
 * AmigaOs:
   Tested on: Amiga 4000T, 060, Cybervision 64/3D, Aos 3.2.3
              Amiga 1200, 060, AGA, Aos 3.2.3.
-  AGA requires c2p.library from aminet (see https://aminet.net/dev/misc/c2plib.lha).
+  AGA requires c2p.library from aminet, see:
+  https://aminet.net/dev/misc/c2plib.lha
 
 # Usage
 
-TODO
+There are three different Amiga executables.
+Depending on your system, choose one of them:
+
+- stw_map_editor_aos_060:
+  For Amiga with 68060 cpu and graphics card.
+  Resolution will be SVGA (640x480x8).
+- stw_map_editor_aos_060_c2p
+  For Amiga with 68060 cpu and AGA.
+  Resolution will be PAL (320x256x8).
+- stw_map_editor_aos_030_fpu_c2p
+  For Amiga with 68030 cpu with fpu and AGA.
+  Resolution will be PAL (320x256x8).
 
 ## Program arguments
 
 stw_map_editor [ARGUMENTS]...
 arguments:
 -h, --help              print help message and exit
+-v, --version           print version and exit
 -m --map <path to map>  load map in path
--v, --version           print version
+
+Call the executable with the path to an existing map
+which you want to modify.
+Example:
+  stw_map_editor_aos_060 -m maps/001.map
+
+## Main screen
+
+The main screen is split into 3 different areas:
+- status bar on the top
+- tile view on the right
+- map view in the center
+
+---------------------------------------------------------------
+| Status bar                                      | Tile view |
+|-------------------------------------------------|           |
+|                                                 |           |
+|                                                 |           |
+| Map view                                        |           |
+|                                                 |           |
+|                                                 |           |
+|                                                 |           |
+|                                                 |           |
+|                                                 |           |
+|                                                 |           |
+---------------------------------------------------------------
+
+### The status bar
+The status bar is on the top and shows the current selected tile, x and y
+coordinates, variance button, save button and quit button.
+
+Selected tile will change if you select another tile on tile view.
+The x and y coordinates show your current position under the mouse pointer
+in the map view. To shuffle all tile variants on the map,
+you can press the variance button.
+This operation will take some time depending on your cpu performance.
+To save your current map, press the save button. Your given map file won't
+overwritten. Instead a new file with suffix ".mod" will be created.
+You can leave the editor by pressing the quit button or hit "ESC" key.
+
+## The tile view
+
+Here you can select you map tile which you want to place on map view.
+For each tile there are three different variants.
+Use the scroll bar on the right, to scroll up down to see all available tiles.
+
+## The map view
+
+Show your current map. You can look around by holding down the right mouse
+button and move your mouse.
+To place the current selected tile on map, press the left mouse button.
 
 # History
 - 0.1.1 2026-xx-yy
