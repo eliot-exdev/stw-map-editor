@@ -706,6 +706,47 @@ int stw_write_map(const char *orig_path, const unsigned char map[MAP_SIZE_Y][MAP
     return 0;
 }
 
+int stw_write_new_map(const char *path, const unsigned char map[MAP_SIZE_Y][MAP_SIZE_X]) {
+    assert(path);
+    assert(map);
+
+    // open out file
+    FILE *out = fopen(path, "w");
+    if (!out) {
+        log_warning_fmt("could not open map from path: %s", path);
+        return 2;
+    }
+    log_info_fmt("writing new map to: %s", path);
+
+    MapInfo_t map_info;
+    int x = 0;
+    int y = 0;
+
+    for (int i = 0; i < MAP_SIZE_TOTAL; i++) {
+        // update
+        update_map_info(&map_info, map[y][x]);
+
+        // write
+        const size_t w_num = fwrite(&map_info, sizeof(MapInfo_t), 1, out);
+        if (w_num != 1) {
+            log_warning_fmt("could not write new map info number: %d", i);
+            fclose(out);
+            return 4;
+        }
+
+        // update x & y
+        ++x;
+        if (x == MAP_SIZE_X) {
+            ++y;
+            x = 0;
+        }
+    }
+
+    fclose(out);
+
+    return 0;
+}
+
 int stw_read_map(const char *path, unsigned char map[MAP_SIZE_Y][MAP_SIZE_X]) {
     assert(path);
     assert(map);

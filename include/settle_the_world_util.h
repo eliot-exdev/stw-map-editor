@@ -18,7 +18,9 @@ void stw_read_tiles(Tiles8bit_t *tiles);
 
 int stw_read_map(const char* path, unsigned char map[MAP_SIZE_Y][MAP_SIZE_X]);
 
-int stw_write_map(const char* orig_path, const unsigned char map[MAP_SIZE_Y][MAP_SIZE_X]);
+int stw_write_map(const char* path, const unsigned char map[MAP_SIZE_Y][MAP_SIZE_X]);
+
+int stw_write_new_map(const char* orig_path, const unsigned char map[MAP_SIZE_Y][MAP_SIZE_X]);
 
 int stw_is_ocean_tile(int id);
 

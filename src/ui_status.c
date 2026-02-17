@@ -41,7 +41,15 @@ static void on_save_clicked(struct UIIcon *self, UIApplication_t *app, void *usr
 
     if (self->flags.clicked) {
         STWMapEditor_t *editor = (STWMapEditor_t *) usr_ptr;
-        const int res = stw_write_map(editor->map_path, editor->map->map);
+        int res = 0;
+        if (editor->map_path) {
+            log_info("writing existing map");
+            res = stw_write_map(editor->map_path, editor->map->map);
+        } else {
+            log_info("writing new map");
+            res = stw_write_new_map("maps/new.map", editor->map->map);
+        }
+
         if (res) {
             log_warning("could not write map!");
         } else {
