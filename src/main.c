@@ -14,13 +14,20 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define VERSION "stw_map_editor 0.1 (29.12.2025)"
+#define VERSION "stw_me 0.1 (19.02.2026)"
 
 #ifndef __linux__
 #ifdef __VBCC__
 __entry
 #endif
         unsigned char versiontag[] = "\0$VER: " VERSION;
+#endif
+
+#if defined(__MORPHOS__) || defined(__AMIGAOS__)
+#ifdef __VBCC__
+__entry
+#endif
+size_t __stack = 65536;// 64 kb
 #endif
 
 static STWMapEditor_t editor;// this is our usr_ptr
@@ -51,10 +58,6 @@ static void parse_args(int argc, char **argv) {
         editor.map_path = ptr;
     }
 }
-
-#if defined(__MORPHOS__) || defined(__AMIGAOS__)
-unsigned long __stack = (32768);// 32 kb
-#endif
 
 int main(int argc, char **argv) {
     editor.map_path = NULL;
