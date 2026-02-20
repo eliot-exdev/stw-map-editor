@@ -25,9 +25,9 @@ __entry
 
 #if defined(__MORPHOS__) || defined(__AMIGA__)
 #ifdef __VBCC__
-__entry size_t __stack = 65536;// 64 kb
+__entry size_t __stack = 32768;// 32 kb
 #else
-size_t __stack = 65536;// 64 kb
+size_t __stack = 32768;// 32 kb
 #endif
 #endif
 
