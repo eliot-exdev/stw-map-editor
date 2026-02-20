@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define VERSION "stw_me 0.1 (19.02.2026)"
+#define VERSION "stw_me 0.1 (20.02.2026)"
 
 #ifndef __linux__
 #ifdef __VBCC__
@@ -23,11 +23,12 @@ __entry
         unsigned char versiontag[] = "\0$VER: " VERSION;
 #endif
 
-#if defined(__MORPHOS__) || defined(__AMIGAOS__)
+#if defined(__MORPHOS__) || defined(__AMIGA__)
 #ifdef __VBCC__
-__entry
-#endif
+__entry size_t __stack = 65536;// 64 kb
+#else
 size_t __stack = 65536;// 64 kb
+#endif
 #endif
 
 static STWMapEditor_t editor;// this is our usr_ptr
