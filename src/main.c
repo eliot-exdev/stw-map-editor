@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define VERSION "stw_me 0.1 (20.02.2026)"
+#define VERSION "stw_me 0.1 (21.02.2026)"
 
 #ifndef __linux__
 #ifdef __VBCC__
@@ -25,9 +25,9 @@ __entry
 
 #if defined(__MORPHOS__) || defined(__AMIGA__)
 #ifdef __VBCC__
-__entry size_t __stack = 32768;// 32 kb
+__entry size_t __stack = 32768; // 32 kb
 #else
-size_t __stack = 32768;// 32 kb
+size_t __stack = 32768; // 32 kb
 #endif
 #endif
 
