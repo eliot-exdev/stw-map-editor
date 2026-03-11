@@ -66,6 +66,6 @@ see: [stw_map_editor.readme](dist/stw_map_editor.readme)
 
 ## Todo
 
-- Fix save when no map was loaded
-- Fix 030 build
+- Handle bonus objects on map tiles
+- Implement progress view for longer lasting tasks
 - Implement "Undo/Redo" button/functionality
