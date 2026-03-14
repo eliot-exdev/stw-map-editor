@@ -33,7 +33,7 @@ void stw_read_tiles(Tiles8bit_t *tiles) {
 
     // extract valid tiles
     tiles_8bit_init(tiles, TILES_TOTAL_NUM, TILE_WIDTH, TILE_HEIGHT);
-    for (int i = 0; i < TILES_TOTAL_NUM; i++) {
+    for (int i = 0; i < TILES_TOTAL_NUM; ++i) {
         framebuffer_8bit_copy_to(all_tiles.tiles + i, tiles->tiles + i);
     }
 
@@ -94,8 +94,99 @@ struct MapInfo {
 };
 typedef struct MapInfo MapInfo_t;
 
-static void update_map_info(MapInfo_t *info, const uint8_t id) {
+enum BONUS_IDS {
+    BONUS_ID_NONE = 0,
+    BONUS_ID_GOLD,
+    BONUS_ID_GRAPES,
+    BONUS_ID_GRAIN,
+    BONUS_ID_SUGAR,
+    BONUS_ID_WOOL,
+    BONUS_ID_TABACCO,
+    BONUS_ID_COFFEE_BEANS,
+    BONUS_ID_FURS,
+    BONUS_ID_CRAPS,
+    BONUS_ID_LUMBER,
+    BONUS_ID_ORE,
+    BONUS_ID_SHIP_WRECK_1,
+    BONUS_ID_SHIP_WRECK_2,
+    BONUS_ID_ABANDONED_SETTLEMENT_1,
+    BONUS_ID_ABANDONED_SETTLEMENT_2
+};
+
+static enum BONUS_IDS to_bonus_id(const uint8_t id) {
     switch (id) {
+        case 15:
+            return BONUS_ID_GOLD;
+        case 17:
+            return BONUS_ID_GRAPES;
+        case 1:
+            return BONUS_ID_GRAIN;
+        case 6:
+            return BONUS_ID_SUGAR;
+        case 4:
+            return BONUS_ID_WOOL;
+        case 7:
+            return BONUS_ID_TABACCO;
+        case 8:
+            return BONUS_ID_COFFEE_BEANS;
+        case 5:
+            return BONUS_ID_FURS;
+        case 3:
+            return BONUS_ID_CRAPS;
+        case 11:
+            return BONUS_ID_LUMBER;
+        case 12:
+            return BONUS_ID_ORE;
+        case 19:
+            return BONUS_ID_SHIP_WRECK_1;
+        case 20:
+            return BONUS_ID_ABANDONED_SETTLEMENT_1;
+        case 21:
+            return BONUS_ID_SHIP_WRECK_2;
+        case 22:
+            return BONUS_ID_ABANDONED_SETTLEMENT_2;
+    }
+    return BONUS_ID_NONE;
+}
+
+static uint8_t from_bonus_id(const enum BONUS_IDS id) {
+    switch (id) {
+        case BONUS_ID_GOLD:
+            return 15;
+        case BONUS_ID_GRAPES:
+            return 17;
+        case BONUS_ID_GRAIN:
+            return 1;
+        case BONUS_ID_SUGAR:
+            return 6;
+        case BONUS_ID_WOOL:
+            return 4;
+        case BONUS_ID_TABACCO:
+            return 7;
+        case BONUS_ID_COFFEE_BEANS:
+            return 8;
+        case BONUS_ID_FURS:
+            return 5;
+        case BONUS_ID_CRAPS:
+            return 3;
+        case BONUS_ID_LUMBER:
+            return 11;
+        case BONUS_ID_ORE:
+            return 12;
+        case BONUS_ID_SHIP_WRECK_1:
+            return 19;
+        case BONUS_ID_SHIP_WRECK_2:
+            return 21;
+        case BONUS_ID_ABANDONED_SETTLEMENT_1:
+            return 20;
+        case BONUS_ID_ABANDONED_SETTLEMENT_2:
+            return 22;
+    }
+    return 0;
+}
+
+static void update_map_info(MapInfo_t *info, const MapTile_t *tile) {
+    switch (tile->tile_id) {
         case 0:
             info->id = 0;
             info->variance = 1;
@@ -481,9 +572,11 @@ static void update_map_info(MapInfo_t *info, const uint8_t id) {
             info->variance = 3;
             break;
         default:
-            log_warning_fmt("could not convert id: %d to MapInfo", (int) id);
+            log_warning_fmt("could not convert id: %d to MapInfo", (int) tile->tile_id);
             break;
     }
+
+    info->object_id = from_bonus_id(tile->bonus_id);
 }
 
 static int check_id(const uint8_t id) {
@@ -493,7 +586,7 @@ static int check_variance(const uint8_t variance) {
     return variance > 0 && variance < 4;
 }
 
-static unsigned char to_tile_id(const enum MAP_TILE_IDS id, const unsigned char variance) {
+static uint8_t to_tile_id(const enum MAP_TILE_IDS id, const uint8_t variance) {
     switch (id) {
         case MAP_TILE_ID_OCEAN:
             return 0 + variance;
@@ -639,7 +732,7 @@ uint8_t stw_get_shore_tile_id_angular(const int id, const uint8_t sum) {
     return id;
 }
 
-int stw_write_map(const char *orig_path, const unsigned char map[MAP_SIZE_Y][MAP_SIZE_X]) {
+int stw_write_map(const char *orig_path, const MapTileArray_t(map)) {
     assert(orig_path);
     assert(map);
 
@@ -676,7 +769,7 @@ int stw_write_map(const char *orig_path, const unsigned char map[MAP_SIZE_Y][MAP
         }
 
         // update
-        update_map_info(&map_info, map[y][x]);
+        update_map_info(&map_info, &map[y][x]);
 
         // write
         const size_t w_num = fwrite(&map_info, sizeof(MapInfo_t), 1, out);
@@ -706,7 +799,7 @@ int stw_write_map(const char *orig_path, const unsigned char map[MAP_SIZE_Y][MAP
     return 0;
 }
 
-int stw_write_new_map(const char *path, const unsigned char map[MAP_SIZE_Y][MAP_SIZE_X]) {
+int stw_write_new_map(const char *path, const MapTileArray_t(map)) {
     assert(path);
     assert(map);
 
@@ -724,7 +817,7 @@ int stw_write_new_map(const char *path, const unsigned char map[MAP_SIZE_Y][MAP_
 
     for (int i = 0; i < MAP_SIZE_TOTAL; i++) {
         // update
-        update_map_info(&map_info, map[y][x]);
+        update_map_info(&map_info, &map[y][x]);
 
         // write
         const size_t w_num = fwrite(&map_info, sizeof(MapInfo_t), 1, out);
@@ -747,7 +840,7 @@ int stw_write_new_map(const char *path, const unsigned char map[MAP_SIZE_Y][MAP_
     return 0;
 }
 
-int stw_read_map(const char *path, unsigned char map[MAP_SIZE_Y][MAP_SIZE_X]) {
+int stw_read_map(const char *path, MapTileArray_t(map)) {
     assert(path);
     assert(map);
 
@@ -774,18 +867,20 @@ int stw_read_map(const char *path, unsigned char map[MAP_SIZE_Y][MAP_SIZE_X]) {
         if (!check_variance(map_info.variance)) {
             log_warning_fmt("invalid variance found: %d", i);
         }
-        map_info.variance -= 1;
+
+        map_info.variance -= 1;// stw variance is from 1 to 3, but we use 0 to 2
 
         const int y = i / MAP_SIZE_X;
         const int x = i % MAP_SIZE_X;
-        map[y][x] = to_tile_id(map_info.id, map_info.variance);
+        map[y][x].tile_id = to_tile_id(map_info.id, map_info.variance);
+        map[y][x].bonus_id = to_bonus_id(map_info.object_id);
     }
 
     fclose(fp);
     return 0;
 }
 
-void stw_randomize_tile_variants(unsigned char map[MAP_SIZE_Y][MAP_SIZE_X]) {
+void stw_randomize_tile_variants(MapTileArray_t(map)) {
     assert(map);
 
     srand(now());
@@ -793,9 +888,9 @@ void stw_randomize_tile_variants(unsigned char map[MAP_SIZE_Y][MAP_SIZE_X]) {
     MapInfo_t map_info;
     for (int y = 0; y < MAP_SIZE_Y; ++y) {
         for (int x = 0; x < MAP_SIZE_X; ++x) {
-            update_map_info(&map_info, map[y][x]);
+            update_map_info(&map_info, &map[y][x]);
             map_info.variance = rand() % 3;
-            map[y][x] = to_tile_id(map_info.id, map_info.variance);
+            map[y][x].tile_id = to_tile_id(map_info.id, map_info.variance);
         }
     }
 }

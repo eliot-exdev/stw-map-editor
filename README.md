@@ -66,6 +66,6 @@ see: [stw_map_editor.readme](dist/stw_map_editor.readme)
 
 ## Todo
 
-- Handle bonus objects on map tiles
+- Edit bonus objects
 - Implement progress view for longer lasting tasks
 - Implement "Undo/Redo" button/functionality

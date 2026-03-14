@@ -29,7 +29,7 @@ struct UIMap {
 
     Tiles8bit_t *tiles;
 
-    unsigned char map[MAP_SIZE_Y][MAP_SIZE_X];
+    MapTileArray_t(map);
 
     Framebuffer8Bit_t *fb_map;
 

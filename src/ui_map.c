@@ -14,35 +14,42 @@
 #include <string.h>
 
 #define SHORE_BORDER 2
-static void draw_tile(UIMap_t *self, const int x, const int y, const uint8_t id) {
-    const Framebuffer8Bit_t *tile = &self->tiles->tiles[id];
-    if (!stw_is_ocean_tile(id)) {
+static void draw_tile(UIMap_t *self, const int x, const int y, const MapTile_t *mt) {
+    const Framebuffer8Bit_t *tile = &self->tiles->tiles[mt->tile_id];
+    if (!stw_is_ocean_tile(mt->tile_id)) {
         framebuffer_8bit_draw_framebuffer(self->fb_map, x * TILE_WIDTH, y * TILE_HEIGHT, tile);
+        if (mt->bonus_id != 0) {
+            framebuffer_8bit_draw_framebuffer_with_alpha(self->fb_map, x * TILE_WIDTH, y * TILE_HEIGHT, &self->tiles->tiles[bonus_id_to_tile_id(mt->bonus_id)], PEN_INDEX_CYAN + 8);
+        }
     } else if (x < SHORE_BORDER || y < SHORE_BORDER || x >= MAP_SIZE_X - SHORE_BORDER || y >= MAP_SIZE_Y - SHORE_BORDER) {
         framebuffer_8bit_draw_framebuffer(self->fb_map, x * TILE_WIDTH, y * TILE_HEIGHT, tile);
     } else {
         // look straight
-        uint8_t sum = stw_is_ocean_tile(self->map[y - 1][x]) ? 0 : 1;
-        sum += stw_is_ocean_tile(self->map[y][x + 1]) ? 0 : 2;
-        sum += stw_is_ocean_tile(self->map[y + 1][x]) ? 0 : 4;
-        sum += stw_is_ocean_tile(self->map[y][x - 1]) ? 0 : 8;
+        uint8_t sum = stw_is_ocean_tile(self->map[y - 1][x].tile_id) ? 0 : 1;
+        sum += stw_is_ocean_tile(self->map[y][x + 1].tile_id) ? 0 : 2;
+        sum += stw_is_ocean_tile(self->map[y + 1][x].tile_id) ? 0 : 4;
+        sum += stw_is_ocean_tile(self->map[y][x - 1].tile_id) ? 0 : 8;
 
-        uint8_t new_id = stw_get_shore_tile_id_straight(id, sum);
-        if (new_id != id) {
+        uint8_t new_id = stw_get_shore_tile_id_straight(mt->tile_id, sum);
+        if (new_id != mt->tile_id) {
             tile = &self->tiles->tiles[new_id];
         } else {
             // look angular
             sum = 0;
-            sum += stw_is_ocean_tile(self->map[y - 1][x + 1]) ? 0 : 16;
-            sum += stw_is_ocean_tile(self->map[y + 1][x + 1]) ? 0 : 32;
-            sum += stw_is_ocean_tile(self->map[y + 1][x - 1]) ? 0 : 64;
-            sum += stw_is_ocean_tile(self->map[y - 1][x - 1]) ? 0 : 128;
-            new_id = stw_get_shore_tile_id_angular(id, sum);
-            if (new_id != id) {
+            sum += stw_is_ocean_tile(self->map[y - 1][x + 1].tile_id) ? 0 : 16;
+            sum += stw_is_ocean_tile(self->map[y + 1][x + 1].tile_id) ? 0 : 32;
+            sum += stw_is_ocean_tile(self->map[y + 1][x - 1].tile_id) ? 0 : 64;
+            sum += stw_is_ocean_tile(self->map[y - 1][x - 1].tile_id) ? 0 : 128;
+            new_id = stw_get_shore_tile_id_angular(mt->tile_id, sum);
+            if (new_id != mt->tile_id) {
                 tile = &self->tiles->tiles[new_id];
             }
         }
         framebuffer_8bit_draw_framebuffer(self->fb_map, x * TILE_WIDTH, y * TILE_HEIGHT, tile);
+
+        if (mt->bonus_id != 0) {
+            framebuffer_8bit_draw_framebuffer_with_alpha(self->fb_map, x * TILE_WIDTH, y * TILE_HEIGHT, &self->tiles->tiles[bonus_id_to_tile_id(mt->bonus_id)], PEN_INDEX_CYAN + 8);
+        }
     }
 }
 
@@ -51,7 +58,7 @@ void ui_map_render_complete_map(UIMap_t *self) {
 
     for (int y = 0; y < MAP_SIZE_Y; y++) {
         for (int x = 0; x < MAP_SIZE_X; x++) {
-            draw_tile(self, x, y, self->map[y][x]);
+            draw_tile(self, x, y, &self->map[y][x]);
         }
     }
 }
@@ -109,10 +116,11 @@ void ui_map_prepare(UIMap_t *self, void *usr_ptr) {
 
     ui_component_prepare(&self->base, usr_ptr);
 
-    // init tiles with water
+    // init tiles
     for (int y = 0; y < MAP_SIZE_Y; y++) {
         for (int x = 0; x < MAP_SIZE_X; x++) {
-            self->map[y][x] = self->properties.current_tile_index;
+            self->map[y][x].tile_id = self->properties.current_tile_index;
+            self->map[y][x].bonus_id = 0;
         }
     }
 
@@ -189,15 +197,15 @@ void ui_map_update(UIMap_t *self, const long time_elapsed, const Event_t *events
                         }
 
                         // update tile
-                        if (self->map[y][x] == self->properties.current_tile_index) {
+                        if (self->map[y][x].tile_id == self->properties.current_tile_index) {
                             continue;
                         }
-                        self->map[y][x] = self->properties.current_tile_index;
+                        self->map[y][x].tile_id = self->properties.current_tile_index;
 
                         // render 3*3 tiles around current pos
                         for (int yy = 0; yy < 3; ++yy) {
                             for (int xx = 0; xx < 3; ++xx) {
-                                draw_tile(self, x - 1 + xx, y - 1 + yy, self->map[y - 1 + yy][x - 1 + xx]);
+                                draw_tile(self, x - 1 + xx, y - 1 + yy, &self->map[y - 1 + yy][x - 1 + xx]);
                             }
                         }
 
@@ -254,15 +262,15 @@ void ui_map_update(UIMap_t *self, const long time_elapsed, const Event_t *events
                     }
 
                     // update tile
-                    if (self->map[tile_y][tile_x] == self->properties.current_tile_index) {
+                    if (self->map[tile_y][tile_x].tile_id == self->properties.current_tile_index) {
                         continue;
                     }
-                    self->map[tile_y][tile_x] = self->properties.current_tile_index;
+                    self->map[tile_y][tile_x].tile_id = self->properties.current_tile_index;
 
                     // render 3*3 tiles around current pos
                     for (int yy = 0; yy < 3; ++yy) {
                         for (int xx = 0; xx < 3; ++xx) {
-                            draw_tile(self, tile_x - 1 + xx, tile_y - 1 + yy, self->map[tile_y - 1 + yy][tile_x - 1 + xx]);
+                            draw_tile(self, tile_x - 1 + xx, tile_y - 1 + yy, &self->map[tile_y - 1 + yy][tile_x - 1 + xx]);
                         }
                     }
 

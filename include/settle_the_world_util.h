@@ -13,14 +13,24 @@
 #define TILES_MAP_NUM 96
 #define TILES_MAP_COAST_NUM 70
 #define TILES_ICON_NUM 4
-#define TILES_TOTAL_NUM (TILES_MAP_NUM + TILES_MAP_COAST_NUM + TILES_ICON_NUM)
+#define TILES_BONUS_NUM 15
+#define TILES_TOTAL_NUM (TILES_MAP_NUM + TILES_MAP_COAST_NUM + TILES_ICON_NUM + TILES_BONUS_NUM)
+
+struct MapTile {
+    uint8_t tile_id;
+    uint8_t bonus_id;
+};
+typedef struct MapTile MapTile_t;
+
+#define MapTileArray_t(n) MapTile_t n[MAP_SIZE_Y][MAP_SIZE_X]
+
 void stw_read_tiles(Tiles8bit_t *tiles);
 
-int stw_read_map(const char* path, unsigned char map[MAP_SIZE_Y][MAP_SIZE_X]);
+int stw_read_map(const char *path, MapTileArray_t(map));
 
-int stw_write_map(const char* path, const unsigned char map[MAP_SIZE_Y][MAP_SIZE_X]);
+int stw_write_map(const char *path, const MapTileArray_t(map));
 
-int stw_write_new_map(const char* orig_path, const unsigned char map[MAP_SIZE_Y][MAP_SIZE_X]);
+int stw_write_new_map(const char *orig_path, const MapTileArray_t(map));
 
 int stw_is_ocean_tile(int id);
 
@@ -28,6 +38,8 @@ uint8_t stw_get_shore_tile_id_straight(int id, uint8_t sum);
 
 uint8_t stw_get_shore_tile_id_angular(int id, uint8_t sum);
 
-void stw_randomize_tile_variants(unsigned char map[MAP_SIZE_Y][MAP_SIZE_X]);
+void stw_randomize_tile_variants(MapTileArray_t(map));
+
+#define bonus_id_to_tile_id(b) (TILES_MAP_NUM + TILES_MAP_COAST_NUM + TILES_ICON_NUM + b - 1)
 
 #endif//STW_MAP_EDITOR_SETTLE_THE_WORLD_UTIL_H
