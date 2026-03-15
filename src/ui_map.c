@@ -202,6 +202,12 @@ void ui_map_update(UIMap_t *self, const long time_elapsed, const Event_t *events
                         }
                         self->map[y][x].tile_id = self->properties.current_tile_index;
 
+                        // check bonus
+                        if (!stw_has_valid_bonus(&self->map[y][x])) {
+                            self->map[y][x].bonus_id = 0;
+                            log_warning_fmt("invalid bonus found on x: %d, y=%d, removing it", x, y);
+                        }
+
                         // render 3*3 tiles around current pos
                         for (int yy = 0; yy < 3; ++yy) {
                             for (int xx = 0; xx < 3; ++xx) {
@@ -266,6 +272,12 @@ void ui_map_update(UIMap_t *self, const long time_elapsed, const Event_t *events
                         continue;
                     }
                     self->map[tile_y][tile_x].tile_id = self->properties.current_tile_index;
+
+                    // check bonus
+                    if (!stw_has_valid_bonus(&self->map[y][x])) {
+                        self->map[y][x].bonus_id = 0;
+                        log_warning_fmt("invalid bonus found on x: %d, y=%d, removing it", x, y);
+                    }
 
                     // render 3*3 tiles around current pos
                     for (int yy = 0; yy < 3; ++yy) {

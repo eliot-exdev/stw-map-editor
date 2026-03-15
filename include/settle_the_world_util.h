@@ -40,6 +40,8 @@ uint8_t stw_get_shore_tile_id_angular(int id, uint8_t sum);
 
 void stw_randomize_tile_variants(MapTileArray_t(map));
 
+int stw_has_valid_bonus(const MapTile_t *tile);
+
 #define bonus_id_to_tile_id(b) (TILES_MAP_NUM + TILES_MAP_COAST_NUM + TILES_ICON_NUM + b - 1)
 
 #endif//STW_MAP_EDITOR_SETTLE_THE_WORLD_UTIL_H

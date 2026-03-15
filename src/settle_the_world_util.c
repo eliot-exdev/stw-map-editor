@@ -894,3 +894,16 @@ void stw_randomize_tile_variants(MapTileArray_t(map)) {
         }
     }
 }
+
+int stw_has_valid_bonus(const MapTile_t *tile) {
+    assert(tile);
+
+    if (tile->bonus_id == 0) {
+        return 1;
+    }
+
+    if (stw_is_ocean_tile(tile->tile_id)) {
+        return tile->bonus_id == BONUS_ID_SHIP_WRECK_1 || tile->bonus_id == BONUS_ID_SHIP_WRECK_2 || tile->bonus_id == BONUS_ID_CRAPS;
+    }
+    return tile->bonus_id != BONUS_ID_SHIP_WRECK_1 & tile->bonus_id != BONUS_ID_SHIP_WRECK_2 && tile->bonus_id != BONUS_ID_CRAPS;
+}
