@@ -40,16 +40,18 @@ exdev-gfx/exdev_gfx_ui_aos_030.lib:
 	$(MAKE) -C exdev-gfx exdev_gfx_ui_aos_030.lib
 
 #--- Editor ---#
-stw_me_mos: src/main.c src/ui_map.c src/ui_tile.c src/settle_the_world_util.c src/ui_status.c exdev-gfx/exdev_gfx_ui_mos_gcc.a exdev-gfx/exdev_gfx_mos_gcc.a
+EDITOR_SOURCES=src/main.c src/ui_map.c src/ui_tile.c src/settle_the_world_util.c src/ui_status.c src/ui_bonus.c
+
+stw_me_mos: $(EDITOR_SOURCES) exdev-gfx/exdev_gfx_ui_mos_gcc.a exdev-gfx/exdev_gfx_mos_gcc.a
 	$(CC_GCC) -o ${@} ${INCLUDES_MOS} $(^) ${C_FLAGS_MOS_GCC} ${LD_FLAGS_MOS_GCC}
 
-stw_me_060: src/main.c src/ui_map.c src/ui_tile.c src/settle_the_world_util.c src/ui_status.c exdev-gfx/exdev_gfx_ui_aos_060.lib exdev-gfx/exdev_gfx_aos_060.lib
+stw_me_060: $(EDITOR_SOURCES) exdev-gfx/exdev_gfx_ui_aos_060.lib exdev-gfx/exdev_gfx_aos_060.lib
 	$(CC) -o ${@} ${INCLUDES_AOS} $(^) ${C_FLAGS_060} ${LD_FLAGS_060}
 
-stw_me_060_c2p: src/main.c src/ui_map.c src/ui_tile.c src/settle_the_world_util.c src/ui_status.c exdev-gfx/exdev_gfx_ui_aos_060.lib exdev-gfx/exdev_gfx_aos_060_c2p.lib
+stw_me_060_c2p: $(EDITOR_SOURCES) exdev-gfx/exdev_gfx_ui_aos_060.lib exdev-gfx/exdev_gfx_aos_060_c2p.lib
 	$(CC) -o ${@} ${INCLUDES_AOS} $(^) ${C_FLAGS_060} -DLOW_RESOLUTION ${LD_FLAGS_060} -LWork:workspace/c2plib/sdk -lc2p
 
-stw_me_030_c2p: src/main.c src/ui_map.c src/ui_tile.c src/settle_the_world_util.c src/ui_status.c exdev-gfx/exdev_gfx_ui_aos_030.lib exdev-gfx/exdev_gfx_aos_030_c2p.lib
+stw_me_030_c2p: $(EDITOR_SOURCES) exdev-gfx/exdev_gfx_ui_aos_030.lib exdev-gfx/exdev_gfx_aos_030_c2p.lib
 	$(CC) -o ${@} ${INCLUDES_AOS} $(^) ${C_FLAGS_030} -DLOW_RESOLUTION ${LD_FLAGS_030} -LWork:workspace/c2plib/sdk -lc2p
 
 stw_map_editor: stw_me_mos stw_me_060 stw_me_060_c2p stw_me_030_c2p
