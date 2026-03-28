@@ -66,16 +66,17 @@ void ui_status_init(UIStatus_t *self, const int x, const int y, const int width,
     self->base.subtype = UI_STATUS_SUBTYPE;
     self->base.functions.destroy_func = (void (*)(void *)) &ui_status_destroy;
 
-    self->properties.current_tile_index = 0;// water
+    self->properties.tile_index = 0; // water
     self->tiles = tiles;
 
-    self->current_tile = ui_icon_create(2, 2, framebuffer_8bit_copy(tiles->tiles), NULL);
-    self->current_tile->properties.clickable = 0;
-    ui_component_connect(self, self->current_tile);
+    self->tile = ui_icon_create(2, 2, framebuffer_8bit_copy(tiles->tiles), NULL);
+    self->tile->properties.clickable = 0;
+    self->tile->properties.alpha = PEN_INDEX_CYAN + 8;
+    ui_component_connect(self, self->tile);
 
     font_init(&self->font, FONT_TYPE_TOPAZ_8);
 
-    self->current_tile_coordinates = ui_text_create(2 + self->current_tile->base.properties.width + 2, 2, 150, self->current_tile->base.properties.height, "X: 000 Y: 000", &self->font);
+    self->current_tile_coordinates = ui_text_create(2 + self->tile->base.properties.width + 2, 2, 150, self->tile->base.properties.height, "X: 000 Y: 000", &self->font);
     self->current_tile_coordinates->base.flags.draw_border = 0;
     ui_component_connect(self, self->current_tile_coordinates);
 
@@ -113,12 +114,22 @@ void ui_status_destroy(UIStatus_t *self) {
     font_deinit(&self->font);
 }
 
-void ui_status_update_current_tile_index(UIStatus_t *self, const unsigned char current_tile_index) {
+void ui_status_set_tile_index(UIStatus_t *self, const unsigned char tile_index) {
     assert(self);
 
-    if (current_tile_index != self->properties.current_tile_index) {
-        self->properties.current_tile_index = current_tile_index;
-        framebuffer_8bit_copy_to(self->tiles->tiles + current_tile_index, self->current_tile->icon_enabled);
+    if (tile_index != self->properties.tile_index) {
+        self->properties.tile_index = tile_index;
+        framebuffer_8bit_copy_to(self->tiles->tiles + tile_index, self->tile->icon_enabled);
+        ui_component_set_dirty(&self->base);
+    }
+}
+
+void ui_status_set_bonus_index(UIStatus_t *self, unsigned char tile_index) {
+    assert(self);
+
+    if (tile_index != self->properties.tile_index) {
+        self->properties.tile_index = tile_index;
+        framebuffer_8bit_copy_to(self->tiles->tiles + TILES_MAP_NUM + TILES_MAP_COAST_NUM + TILES_ICON_NUM + tile_index, self->tile->icon_enabled);
         ui_component_set_dirty(&self->base);
     }
 }

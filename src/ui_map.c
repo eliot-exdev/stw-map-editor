@@ -78,8 +78,9 @@ void ui_map_init(UIMap_t *self, const int x, const int y, const int width, const
 
     self->properties.x_pos = 0;
     self->properties.y_pos = 0;
-    self->properties.current_tile_index = 0;// water
+    self->properties.tile_index = 0;// water
     self->flags.dragged = DRAG_NONE;
+    self->flags.paint_mode = PAINT_TILE;
 
     self->tiles = tiles;
 
@@ -119,7 +120,7 @@ void ui_map_prepare(UIMap_t *self, void *usr_ptr) {
     // init tiles
     for (int y = 0; y < MAP_SIZE_Y; y++) {
         for (int x = 0; x < MAP_SIZE_X; x++) {
-            self->map[y][x].tile_id = self->properties.current_tile_index;
+            self->map[y][x].tile_id = self->properties.tile_index;
             self->map[y][x].bonus_id = 0;
         }
     }
@@ -159,6 +160,47 @@ int ui_map_paint(UIMap_t *self, Framebuffer8Bit_t *fb, const int x_offset, const
     return res;
 }
 
+void ui_map_update_tile_or_bonus(UIMap_t *self, const int x, const int y, void *usr_ptr) {
+    if (x < SHORE_BORDER + 1 || y < SHORE_BORDER + 1 || x >= MAP_SIZE_X - SHORE_BORDER - 1 || y >= MAP_SIZE_Y - SHORE_BORDER - 1) {
+        return;
+    }
+
+    // update tile
+    if (self->flags.paint_mode == PAINT_TILE) {
+        if (self->map[y][x].tile_id == self->properties.tile_index) {
+            return;
+        }
+        self->map[y][x].tile_id = self->properties.tile_index;
+
+        // check bonus
+        if (!stw_has_valid_bonus(&self->map[y][x])) {
+            self->map[y][x].bonus_id = 0;
+            log_warning_fmt("invalid bonus found on x: %d, y=%d, removing it", x, y);
+        }
+
+        // render 3*3 tiles around current pos
+        for (int yy = 0; yy < 3; ++yy) {
+            for (int xx = 0; xx < 3; ++xx) {
+                draw_tile(self, x - 1 + xx, y - 1 + yy, &self->map[y - 1 + yy][x - 1 + xx]);
+            }
+        }
+    } else if (self->flags.paint_mode == PAINT_BONUS) {
+        if (self->map[y][x].bonus_id != 0) {
+            self->map[y][x].bonus_id = 0;
+        } else {
+            self->map[y][x].bonus_id = self->properties.tile_index + 1;
+            if (!stw_has_valid_bonus(&self->map[y][x])) {
+                self->map[y][x].bonus_id = 0;
+            }
+        }
+        draw_tile(self, x, y, &self->map[y][x]);
+    }
+
+    STWMapEditor_t *editor = (STWMapEditor_t *) usr_ptr;
+    ui_component_set_enable(&editor->status->save->base, 1);
+    self->base.flags.dirty_flag = 1;
+}
+
 void ui_map_update(UIMap_t *self, const long time_elapsed, const Event_t *events, const int num_events, UIApplication_t *app, void *usr_ptr) {
     assert(self);
 
@@ -192,32 +234,7 @@ void ui_map_update(UIMap_t *self, const long time_elapsed, const Event_t *events
                         x = (self->properties.x_pos + x) / TILE_WIDTH;
                         y = (self->properties.y_pos + y) / TILE_HEIGHT;
 
-                        if (x < SHORE_BORDER + 1 || y < SHORE_BORDER + 1 || x >= MAP_SIZE_X - SHORE_BORDER - 1 || y >= MAP_SIZE_Y - SHORE_BORDER - 1) {
-                            continue;
-                        }
-
-                        // update tile
-                        if (self->map[y][x].tile_id == self->properties.current_tile_index) {
-                            continue;
-                        }
-                        self->map[y][x].tile_id = self->properties.current_tile_index;
-
-                        // check bonus
-                        if (!stw_has_valid_bonus(&self->map[y][x])) {
-                            self->map[y][x].bonus_id = 0;
-                            log_warning_fmt("invalid bonus found on x: %d, y=%d, removing it", x, y);
-                        }
-
-                        // render 3*3 tiles around current pos
-                        for (int yy = 0; yy < 3; ++yy) {
-                            for (int xx = 0; xx < 3; ++xx) {
-                                draw_tile(self, x - 1 + xx, y - 1 + yy, &self->map[y - 1 + yy][x - 1 + xx]);
-                            }
-                        }
-
-                        self->base.flags.dirty_flag = 1;
-                        STWMapEditor_t *editor = (STWMapEditor_t *) usr_ptr;
-                        ui_component_set_enable(&editor->status->save->base, 1);
+                        ui_map_update_tile_or_bonus(self, x, y, usr_ptr);
                     }
                 } else if (self->flags.dragged == DRAG_TILE && events[i].mouse_event.event == MOUSE_EVENT_BUTTON_RELEASED) {
                     self->flags.dragged = DRAG_NONE;
@@ -263,30 +280,7 @@ void ui_map_update(UIMap_t *self, const long time_elapsed, const Event_t *events
                     const int tile_x = (self->properties.x_pos + x) / TILE_WIDTH;
                     const int tile_y = (self->properties.y_pos + y) / TILE_HEIGHT;
 
-                    if (tile_x < SHORE_BORDER + 1 || tile_y < SHORE_BORDER + 1 || tile_x >= MAP_SIZE_X - SHORE_BORDER - 1 || tile_y >= MAP_SIZE_Y - SHORE_BORDER - 1) {
-                        continue;
-                    }
-
-                    // update tile
-                    if (self->map[tile_y][tile_x].tile_id == self->properties.current_tile_index) {
-                        continue;
-                    }
-                    self->map[tile_y][tile_x].tile_id = self->properties.current_tile_index;
-
-                    // check bonus
-                    if (!stw_has_valid_bonus(&self->map[y][x])) {
-                        self->map[y][x].bonus_id = 0;
-                        log_warning_fmt("invalid bonus found on x: %d, y=%d, removing it", x, y);
-                    }
-
-                    // render 3*3 tiles around current pos
-                    for (int yy = 0; yy < 3; ++yy) {
-                        for (int xx = 0; xx < 3; ++xx) {
-                            draw_tile(self, tile_x - 1 + xx, tile_y - 1 + yy, &self->map[tile_y - 1 + yy][tile_x - 1 + xx]);
-                        }
-                    }
-
-                    self->base.flags.dirty_flag = 1;
+                    ui_map_update_tile_or_bonus(self, tile_x, tile_y, usr_ptr);
                 }
 
                 STWMapEditor_t *editor = (STWMapEditor_t *) usr_ptr;
@@ -306,8 +300,16 @@ void ui_map_update(UIMap_t *self, const long time_elapsed, const Event_t *events
     }
 }
 
-void ui_map_update_current_tile_index(UIMap_t *self, const unsigned char current_tile_index) {
+void ui_map_set_tile_index(UIMap_t *self, const unsigned char tile_index) {
     assert(self);
 
-    self->properties.current_tile_index = current_tile_index;
+    self->properties.tile_index = tile_index;
+    self->flags.paint_mode = PAINT_TILE;
+}
+
+void ui_map_set_bonus_index(UIMap_t *self, const unsigned char bonus_index) {
+    assert(self);
+
+    self->properties.tile_index = bonus_index;
+    self->flags.paint_mode = PAINT_BONUS;
 }

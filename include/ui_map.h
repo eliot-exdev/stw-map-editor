@@ -14,17 +14,23 @@ enum DRAG_MODE {
     DRAG_TILE
 };
 
+enum PAINT_MODE {
+    PAINT_TILE,
+    PAINT_BONUS
+};
+
 struct UIMap {
     UIComponent_t base;
 
     struct {
         int x_pos;
         int y_pos;
-        unsigned char current_tile_index;
+        unsigned char tile_index;
     } properties;
 
     struct {
         enum DRAG_MODE dragged;
+        enum PAINT_MODE paint_mode;
     } flags;
 
     Tiles8bit_t *tiles;
@@ -53,7 +59,9 @@ int ui_map_paint(UIMap_t *self, Framebuffer8Bit_t *fb, int x_offset, int y_offse
 
 void ui_map_update(UIMap_t *self, long time_elapsed, const Event_t *events, int num_events, UIApplication_t *app, void *usr_ptr);
 
-void ui_map_update_current_tile_index(UIMap_t *self, unsigned char current_tile_index);
+void ui_map_set_tile_index(UIMap_t *self, unsigned char tile_index);
+
+void ui_map_set_bonus_index(UIMap_t *self, unsigned char bonus_index);
 
 void ui_map_render_complete_map(UIMap_t *self);
 

@@ -8,10 +8,12 @@
 #include <ui_map.h>
 #include <ui_tile.h>
 #include <ui_status.h>
+#include <ui_bonus.h>
 
 struct stw_map_editor {
     UIMap_t *map;
     UITile_t *tile;
+    UIBonus_t *bonus;
     UIStatus_t *status;
     const char *map_path;
 };

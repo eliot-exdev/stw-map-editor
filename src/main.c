@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define VERSION "stw_me 0.2 (15.03.2026)"
+#define VERSION "stw_me 0.3 (28.03.2026)"
 
 #ifndef __linux__
 #ifdef __VBCC__
@@ -25,9 +25,9 @@ __entry
 
 #if defined(__MORPHOS__) || defined(__AMIGA__)
 #ifdef __VBCC__
-__entry size_t __stack = 32768; // 32 kb
+__entry size_t __stack = 32768;// 32 kb
 #else
-size_t __stack = 32768; // 32 kb
+size_t __stack = 32768;// 32 kb
 #endif
 #endif
 
@@ -95,8 +95,15 @@ int main(int argc, char **argv) {
     ui_component_connect(&app.root, editor.map);
 
     // tile view
-    editor.tile = ui_tile_create(UI_TILE_X_POS, UI_BORDER_SIZE, UI_TILE_WIDTH, UI_TILE_HEIGHT, &tiles);
-    ui_component_connect(&app.root, editor.tile);
+    UILayeredContainer_t *layered_container = ui_layered_container_create(UI_TILE_X_POS, UI_BORDER_SIZE, UI_TILE_WIDTH, UI_TILE_HEIGHT);
+
+    editor.tile = ui_tile_create(0, 0, UI_TILE_WIDTH, UI_TILE_HEIGHT - SCROLL_BAR_SIZE, &tiles);
+    ui_component_connect(layered_container, editor.tile);
+
+    editor.bonus = ui_bonus_create(0, 0, UI_TILE_WIDTH, UI_TILE_HEIGHT - SCROLL_BAR_SIZE, &tiles);
+    ui_component_connect(layered_container, editor.bonus);
+
+    ui_component_connect(&app.root, layered_container);
 
     ui_application_prepare(&app);
     log_info("<-- setup ui");

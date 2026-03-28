@@ -9,10 +9,10 @@
 struct UIStatus {
     UIComponent_t base;
     struct {
-        unsigned char current_tile_index;
+        unsigned char tile_index;
     } properties;
     Tiles8bit_t *tiles;
-    UIIcon_t *current_tile;
+    UIIcon_t *tile; // tile or bonus
     Font_t font;
     UIText_t *current_tile_coordinates;
     UIIcon_t *quit;
@@ -28,6 +28,8 @@ UIStatus_t *ui_status_create(int x, int y, int width, int height, Tiles8bit_t *t
 
 void ui_status_destroy(UIStatus_t *self);
 
-void ui_status_update_current_tile_index(UIStatus_t *self, unsigned char current_tile_index);
+void ui_status_set_tile_index(UIStatus_t *self, unsigned char tile_index);
+
+void ui_status_set_bonus_index(UIStatus_t *self, unsigned char tile_index);
 
 #endif//STW_MAP_EDITOR_UI_STATUS_H

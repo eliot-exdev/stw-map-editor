@@ -23,10 +23,12 @@ void ui_tile_init(UITile_t *self, const int x, const int y, const int width, con
     int row = 0;
     while (i < TILES_MAP_NUM) {
         // left
-        Framebuffer8Bit_t *left_fb = framebuffer_8bit_copy(tiles->tiles + i);
-        UIIcon_t *left = ui_icon_create(0, row * (TILE_HEIGHT + 4), left_fb, NULL);
-        left->functions.on_clicked = &ui_tile_on_icon_click;
-        ui_component_connect(self, left);
+        {
+            Framebuffer8Bit_t *left_fb = framebuffer_8bit_copy(tiles->tiles + i);
+            UIIcon_t *left = ui_icon_create(0, row * (TILE_HEIGHT + 4), left_fb, NULL);
+            left->functions.on_clicked = &ui_tile_on_icon_click;
+            ui_component_connect(self, left);
+        }
 
         // middle
         if (i + 1 < tiles->num) {
@@ -65,7 +67,7 @@ void ui_tile_destroy(UITile_t *self) {
 void ui_tile_on_icon_click(UIIcon_t *icon, UIApplication_t *app, void *usr_ptr) {
     assert(icon);
     if (icon->flags.clicked) {
-        ui_tile_on_click((UITile_t *) icon->base.parent, app,usr_ptr);
+        ui_tile_on_click((UITile_t *) icon->base.parent, app, usr_ptr);
     }
 }
 
@@ -76,10 +78,10 @@ void ui_tile_on_click(UITile_t *self, UIApplication_t *app, void *usr_ptr) {
         const UIIcon_t *icon = (UIIcon_t *) self->base.base.children.components[i];
         if (icon->flags.clicked) {
             STWMapEditor_t *editor = (STWMapEditor_t *) usr_ptr;
-            ui_map_update_current_tile_index(editor->map, i);
-            ui_status_update_current_tile_index(editor->status, i);
+            ui_map_set_tile_index(editor->map, i);
+            ui_status_set_tile_index(editor->status, i);
             return;
         }
     }
-    log_warning("could not find selected tile -  this should not happen!");
+    log_warning("could not find selected tile - this should not happen!");
 }

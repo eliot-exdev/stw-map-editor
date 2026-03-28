@@ -149,7 +149,7 @@ static enum BONUS_IDS to_bonus_id(const uint8_t id) {
     return BONUS_ID_NONE;
 }
 
-static uint8_t from_bonus_id(const enum BONUS_IDS id) {
+uint8_t from_bonus_id(const int id) {
     switch (id) {
         case BONUS_ID_GOLD:
             return 15;
