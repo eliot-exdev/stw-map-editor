@@ -15,7 +15,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-void stw_read_tiles(Tiles8bit_t *tiles) {
+void stw_read_tiles(Tiles8bit_t *tiles_map, Tiles8bit_t *tiles_map_coast, Tiles8bit_t *tiles_icon, Tiles8bit_t *tiles_bonus, Framebuffer8Bit_t *colors_mini_map) {
     int res = 0;
 
     // read framebuffer
@@ -31,10 +31,27 @@ void stw_read_tiles(Tiles8bit_t *tiles) {
     tiles_8bit_init_from_framebuffer(&all_tiles, &fb, TILE_WIDTH, TILE_HEIGHT);
     framebuffer_8bit_deinit(&fb);
 
-    // extract valid tiles
-    tiles_8bit_init(tiles, TILES_TOTAL_NUM, TILE_WIDTH, TILE_HEIGHT);
-    for (int i = 0; i < TILES_TOTAL_NUM; ++i) {
-        framebuffer_8bit_copy_to(all_tiles.tiles + i, tiles->tiles + i);
+    // extract map tiles
+    for (int i = 0; i < TILES_MAP_NUM; ++i) {
+        framebuffer_8bit_copy_to(all_tiles.tiles + i, tiles_map->tiles + i);
+    }
+
+    // extract map coast tiles
+    for (int i = 0; i < TILES_MAP_COAST_NUM; ++i) {
+        framebuffer_8bit_copy_to(all_tiles.tiles + i + TILES_MAP_NUM, tiles_map_coast->tiles + i);
+    }
+
+    // extract icon tiles
+    for (int i = 0; i < TILES_ICON_NUM; ++i) {
+        framebuffer_8bit_copy_to(all_tiles.tiles + i + TILES_MAP_NUM + TILES_MAP_COAST_NUM, tiles_icon->tiles + i);
+    }
+
+    // extract colors mini map
+    framebuffer_8bit_copy_to(all_tiles.tiles + TILES_MAP_NUM + TILES_MAP_COAST_NUM + TILES_ICON_NUM, colors_mini_map);
+
+    // extract bonus
+    for (int i = 0; i < TILES_BONUS_NUM; ++i) {
+        framebuffer_8bit_copy_to(all_tiles.tiles + i + TILES_MAP_NUM + TILES_MAP_COAST_NUM + TILES_ICON_NUM + 1 + TILES_UNUSED_NUM, tiles_bonus->tiles + i);
     }
 
     // cleanup
@@ -149,7 +166,7 @@ static enum BONUS_IDS to_bonus_id(const uint8_t id) {
     return BONUS_ID_NONE;
 }
 
-uint8_t from_bonus_id(const int id) {
+static uint8_t from_bonus_id(const int id) {
     switch (id) {
         case BONUS_ID_GOLD:
             return 15;
@@ -663,35 +680,35 @@ int stw_is_ocean_tile(const int id) {
 uint8_t stw_get_shore_tile_id_straight(const int id, const uint8_t sum) {
     switch (sum) {
         case 1:
-            return 106;
+            return 106 -TILES_MAP_NUM;
         case 2:
-            return 127;
+            return 127 - TILES_MAP_NUM;
         case 3:
-            return 107;
+            return 107 - TILES_MAP_NUM;
         case 4:
-            return 146;
+            return 146 - TILES_MAP_NUM;
         case 5:
-            return 102;
+            return 102 - TILES_MAP_NUM;
         case 6:
-            return 147;
+            return 147 - TILES_MAP_NUM;
         case 7:
-            return 103;
+            return 103 - TILES_MAP_NUM;
         case 8:
-            return 125;
+            return 125 - TILES_MAP_NUM;
         case 9:
-            return 105;
+            return 105 - TILES_MAP_NUM;
         case 10:
-            return 120;
+            return 120 - TILES_MAP_NUM;
         case 11:
-            return 100;
+            return 100 - TILES_MAP_NUM;
         case 12:
-            return 145;
+            return 145 - TILES_MAP_NUM;
         case 13:
-            return 101;
+            return 101 - TILES_MAP_NUM;
         case 14:
-            return 140;
+            return 140 - TILES_MAP_NUM;
         case 15:
-            return 104;
+            return 104 - TILES_MAP_NUM;
     }
     return id;
 }
@@ -699,35 +716,35 @@ uint8_t stw_get_shore_tile_id_straight(const int id, const uint8_t sum) {
 uint8_t stw_get_shore_tile_id_angular(const int id, const uint8_t sum) {
     switch (sum) {
         case 16:
-            return 153;
+            return 153 - TILES_MAP_NUM;
         case 32:
-            return 154;
+            return 154 - TILES_MAP_NUM;
         case 64:
-            return 111;
+            return 111 - TILES_MAP_NUM;
         case 128:
-            return 112;
+            return 112 - TILES_MAP_NUM;
         case 48:
-            return 157;
+            return 157 - TILES_MAP_NUM;
         case 96:
-            return 158;
+            return 158 - TILES_MAP_NUM;
         case 192:
-            return 163;
+            return 163 - TILES_MAP_NUM;
         case 144:
-            return 156;
+            return 156 - TILES_MAP_NUM;
         case 160:
-            return 132;
+            return 132 - TILES_MAP_NUM;
         case 80:
-            return 131;
+            return 131 - TILES_MAP_NUM;
         case 208:
-            return 119;
+            return 119 - TILES_MAP_NUM;
         case 176:
-            return 159;
+            return 159 - TILES_MAP_NUM;
         case 240:
-            return 139;
+            return 139 - TILES_MAP_NUM;
         case 224:
-            return 165;
+            return 165 - TILES_MAP_NUM;
         case 112:
-            return 164;
+            return 164 - TILES_MAP_NUM;
     }
     return id;
 }

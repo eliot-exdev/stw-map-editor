@@ -60,8 +60,34 @@ static void parse_args(int argc, char **argv) {
     }
 }
 
-int main(int argc, char **argv) {
+static void init_map_editor() {
+    editor.map = NULL;
+    editor.tile = NULL;
+    editor.bonus = NULL;
+    editor.status = NULL;
     editor.map_path = NULL;
+    tiles_8bit_init(&editor.tiles_map, TILES_MAP_NUM, TILE_WIDTH, TILE_HEIGHT);
+    tiles_8bit_init(&editor.tiles_map_coast, TILES_MAP_COAST_NUM, TILE_WIDTH, TILE_HEIGHT);
+    tiles_8bit_init(&editor.tiles_icon, TILES_ICON_NUM, TILE_WIDTH, TILE_HEIGHT);
+    tiles_8bit_init(&editor.tiles_bonus, TILES_BONUS_NUM, TILE_WIDTH, TILE_HEIGHT);
+    framebuffer_8bit_init(&editor.colors_mini_map, TILE_WIDTH, TILE_HEIGHT);
+
+    log_info("--> read tiles");
+    stw_read_tiles(&editor.tiles_map, &editor.tiles_map_coast, &editor.tiles_icon, &editor.tiles_bonus, &editor.colors_mini_map);
+    log_info("<-- read tiles");
+}
+
+static void deinit_map_editor() {
+    framebuffer_8bit_deinit(&editor.colors_mini_map);
+    tiles_8bit_deinit(&editor.tiles_bonus);
+    tiles_8bit_deinit(&editor.tiles_icon);
+    tiles_8bit_deinit(&editor.tiles_map_coast);
+    tiles_8bit_deinit(&editor.tiles_map);
+}
+
+int main(int argc, char **argv) {
+    // setup editor
+    init_map_editor();
 
     parse_args(argc, argv);
 
@@ -70,11 +96,6 @@ int main(int argc, char **argv) {
         log_warning("could not init exdevgfx");
         return res;
     }
-
-    log_info("--> read tiles");
-    Tiles8bit_t tiles;
-    stw_read_tiles(&tiles);
-    log_info("<-- read tiles");
 
     // setup application
     log_info("--> setup ui");
@@ -87,20 +108,20 @@ int main(int argc, char **argv) {
     }
 
     // status
-    editor.status = ui_status_create(UI_BORDER_SIZE, UI_BORDER_SIZE, UI_STATUS_WIDTH, UI_STATUS_HEIGHT, &tiles);
+    editor.status = ui_status_create(UI_BORDER_SIZE, UI_BORDER_SIZE, UI_STATUS_WIDTH, UI_STATUS_HEIGHT, &editor.tiles_map, &editor.tiles_bonus, &editor.tiles_icon);
     ui_component_connect(&app.root, editor.status);
 
     // map component
-    editor.map = ui_map_create(UI_BORDER_SIZE, UI_MAP_Y_POS, UI_MAP_WIDTH, UI_MAP_HEIGHT, &tiles);
+    editor.map = ui_map_create(UI_BORDER_SIZE, UI_MAP_Y_POS, UI_MAP_WIDTH, UI_MAP_HEIGHT, &editor.tiles_map, &editor.tiles_map_coast, &editor.tiles_bonus);
     ui_component_connect(&app.root, editor.map);
 
     // tile view
     UILayeredContainer_t *layered_container = ui_layered_container_create(UI_TILE_X_POS, UI_BORDER_SIZE, UI_TILE_WIDTH, UI_TILE_HEIGHT);
 
-    editor.tile = ui_tile_create(0, 0, UI_TILE_WIDTH, UI_TILE_HEIGHT - SCROLL_BAR_SIZE, &tiles);
+    editor.tile = ui_tile_create(0, 0, UI_TILE_WIDTH, UI_TILE_HEIGHT - SCROLL_BAR_SIZE, &editor.tiles_map);
     ui_component_connect(layered_container, editor.tile);
 
-    editor.bonus = ui_bonus_create(0, 0, UI_TILE_WIDTH, UI_TILE_HEIGHT - SCROLL_BAR_SIZE, &tiles);
+    editor.bonus = ui_bonus_create(0, 0, UI_TILE_WIDTH, UI_TILE_HEIGHT - SCROLL_BAR_SIZE, &editor.tiles_bonus);
     ui_component_connect(layered_container, editor.bonus);
 
     ui_component_connect(&app.root, layered_container);
@@ -116,7 +137,7 @@ int main(int argc, char **argv) {
     // cleanup
     log_info("--> cleanup");
     ui_application_destroy(&app);
-    tiles_8bit_deinit(&tiles);
+    deinit_map_editor();
     exdev_base_deinit();
     log_info("<-- cleanup");
 

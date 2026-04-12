@@ -12,9 +12,9 @@
 #define MAP_SIZE_TOTAL 20480
 #define TILES_MAP_NUM 96
 #define TILES_MAP_COAST_NUM 70
-#define TILES_ICON_NUM 4
+#define TILES_ICON_NUM 6
 #define TILES_BONUS_NUM 15
-#define TILES_TOTAL_NUM (TILES_MAP_NUM + TILES_MAP_COAST_NUM + TILES_ICON_NUM + TILES_BONUS_NUM)
+#define TILES_UNUSED_NUM 7
 
 struct MapTile {
     uint8_t tile_id;
@@ -24,7 +24,7 @@ typedef struct MapTile MapTile_t;
 
 #define MapTileArray_t(n) MapTile_t n[MAP_SIZE_Y][MAP_SIZE_X]
 
-void stw_read_tiles(Tiles8bit_t *tiles);
+void stw_read_tiles(Tiles8bit_t *tiles_map, Tiles8bit_t *tiles_map_coast, Tiles8bit_t *tiles_icon, Tiles8bit_t *tiles_bonus, Framebuffer8Bit_t *colors_mini_map);
 
 int stw_read_map(const char *path, MapTileArray_t(map));
 
@@ -41,9 +41,5 @@ uint8_t stw_get_shore_tile_id_angular(int id, uint8_t sum);
 void stw_randomize_tile_variants(MapTileArray_t(map));
 
 int stw_has_valid_bonus(const MapTile_t *tile);
-
-uint8_t from_bonus_id(int id);
-
-#define bonus_id_to_tile_id(b) (TILES_MAP_NUM + TILES_MAP_COAST_NUM + TILES_ICON_NUM + b - 1)
 
 #endif//STW_MAP_EDITOR_SETTLE_THE_WORLD_UTIL_H

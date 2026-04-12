@@ -16,6 +16,11 @@ struct stw_map_editor {
     UIBonus_t *bonus;
     UIStatus_t *status;
     const char *map_path;
+    Tiles8bit_t tiles_map;
+    Tiles8bit_t tiles_map_coast;
+    Tiles8bit_t tiles_icon;
+    Tiles8bit_t tiles_bonus;
+    Framebuffer8Bit_t colors_mini_map;
 };
 
 typedef struct stw_map_editor STWMapEditor_t;

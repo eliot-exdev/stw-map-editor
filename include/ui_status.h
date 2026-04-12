@@ -11,8 +11,9 @@ struct UIStatus {
     struct {
         unsigned char tile_index;
     } properties;
-    Tiles8bit_t *tiles;
-    UIIcon_t *tile; // tile or bonus
+    Tiles8bit_t *tiles_map;
+    Tiles8bit_t *tiles_bonus;
+    UIIcon_t *tile; // map or bonus
     Font_t font;
     UIText_t *current_tile_coordinates;
     UIIcon_t *quit;
@@ -22,9 +23,9 @@ struct UIStatus {
 
 typedef struct UIStatus UIStatus_t;
 
-void ui_status_init(UIStatus_t *self, int x, int y, int width, int height, Tiles8bit_t *tiles);
+void ui_status_init(UIStatus_t *self, int x, int y, int width, int height, Tiles8bit_t *tiles_map,Tiles8bit_t *tiles_bonus, Tiles8bit_t *tiles_icon);
 
-UIStatus_t *ui_status_create(int x, int y, int width, int height, Tiles8bit_t *tiles);
+UIStatus_t *ui_status_create(int x, int y, int width, int height, Tiles8bit_t *tiles_map,Tiles8bit_t *tiles_bonus, Tiles8bit_t *tiles_icon);
 
 void ui_status_destroy(UIStatus_t *self);
 

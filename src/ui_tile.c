@@ -21,32 +21,31 @@ void ui_tile_init(UITile_t *self, const int x, const int y, const int width, con
     // create icons for all tiles
     int i = 0;
     int row = 0;
-    while (i < TILES_MAP_NUM) {
+    while (i < tiles->num) {
         // left
         {
-            Framebuffer8Bit_t *left_fb = framebuffer_8bit_copy(tiles->tiles + i);
+            Framebuffer8Bit_t *left_fb = framebuffer_8bit_copy(tiles->tiles + i++);
             UIIcon_t *left = ui_icon_create(0, row * (TILE_HEIGHT + 4), left_fb, NULL);
             left->functions.on_clicked = &ui_tile_on_icon_click;
             ui_component_connect(self, left);
         }
 
         // middle
-        if (i + 1 < tiles->num) {
-            Framebuffer8Bit_t *middle_fb = framebuffer_8bit_copy(tiles->tiles + i + 1);
+        if (i < tiles->num) {
+            Framebuffer8Bit_t *middle_fb = framebuffer_8bit_copy(tiles->tiles + i++ );
             UIIcon_t *middle = ui_icon_create(20, row * (TILE_HEIGHT + 4), middle_fb, NULL);
             middle->functions.on_clicked = &ui_tile_on_icon_click;
             ui_component_connect(self, middle);
         }
 
         // right
-        if (i + 2 < tiles->num) {
-            Framebuffer8Bit_t *right_fb = framebuffer_8bit_copy(tiles->tiles + i + 2);
+        if (i < tiles->num) {
+            Framebuffer8Bit_t *right_fb = framebuffer_8bit_copy(tiles->tiles + i++);
             UIIcon_t *right = ui_icon_create(40, row * (TILE_HEIGHT + 4), right_fb, NULL);
             right->functions.on_clicked = &ui_tile_on_icon_click;
             ui_component_connect(self, right);
         }
         row += 1;
-        i += 3;
     }
 }
 

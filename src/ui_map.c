@@ -15,11 +15,11 @@
 
 #define SHORE_BORDER 2
 static void draw_tile(UIMap_t *self, const int x, const int y, const MapTile_t *mt) {
-    const Framebuffer8Bit_t *tile = &self->tiles->tiles[mt->tile_id];
+    const Framebuffer8Bit_t *tile = &self->tiles_map->tiles[mt->tile_id];
     if (!stw_is_ocean_tile(mt->tile_id)) {
         framebuffer_8bit_draw_framebuffer(self->fb_map, x * TILE_WIDTH, y * TILE_HEIGHT, tile);
         if (mt->bonus_id != 0) {
-            framebuffer_8bit_draw_framebuffer_with_alpha(self->fb_map, x * TILE_WIDTH, y * TILE_HEIGHT, &self->tiles->tiles[bonus_id_to_tile_id(mt->bonus_id)], PEN_INDEX_CYAN + 8);
+            framebuffer_8bit_draw_framebuffer_with_alpha(self->fb_map, x * TILE_WIDTH, y * TILE_HEIGHT, &self->tiles_bonus->tiles[mt->bonus_id - 1], PEN_INDEX_CYAN + 8);
         }
     } else if (x < SHORE_BORDER || y < SHORE_BORDER || x >= MAP_SIZE_X - SHORE_BORDER || y >= MAP_SIZE_Y - SHORE_BORDER) {
         framebuffer_8bit_draw_framebuffer(self->fb_map, x * TILE_WIDTH, y * TILE_HEIGHT, tile);
@@ -32,7 +32,7 @@ static void draw_tile(UIMap_t *self, const int x, const int y, const MapTile_t *
 
         uint8_t new_id = stw_get_shore_tile_id_straight(mt->tile_id, sum);
         if (new_id != mt->tile_id) {
-            tile = &self->tiles->tiles[new_id];
+            tile = &self->tiles_coast->tiles[new_id];
         } else {
             // look angular
             sum = 0;
@@ -42,13 +42,13 @@ static void draw_tile(UIMap_t *self, const int x, const int y, const MapTile_t *
             sum += stw_is_ocean_tile(self->map[y - 1][x - 1].tile_id) ? 0 : 128;
             new_id = stw_get_shore_tile_id_angular(mt->tile_id, sum);
             if (new_id != mt->tile_id) {
-                tile = &self->tiles->tiles[new_id];
+                tile = &self->tiles_coast->tiles[new_id];
             }
         }
         framebuffer_8bit_draw_framebuffer(self->fb_map, x * TILE_WIDTH, y * TILE_HEIGHT, tile);
 
         if (mt->bonus_id != 0) {
-            framebuffer_8bit_draw_framebuffer_with_alpha(self->fb_map, x * TILE_WIDTH, y * TILE_HEIGHT, &self->tiles->tiles[bonus_id_to_tile_id(mt->bonus_id)], PEN_INDEX_CYAN + 8);
+            framebuffer_8bit_draw_framebuffer_with_alpha(self->fb_map, x * TILE_WIDTH, y * TILE_HEIGHT, &self->tiles_bonus->tiles[mt->bonus_id - 1], PEN_INDEX_CYAN + 8);
         }
     }
 }
@@ -63,9 +63,11 @@ void ui_map_render_complete_map(UIMap_t *self) {
     }
 }
 
-void ui_map_init(UIMap_t *self, const int x, const int y, const int width, const int height, Tiles8bit_t *tiles) {
+void ui_map_init(UIMap_t *self, const int x, const int y, const int width, const int height, Tiles8bit_t *tiles_map, Tiles8bit_t *tiles_coast, Tiles8bit_t *tiles_bonus) {
     assert(self);
-    assert(tiles);
+    assert(tiles_map);
+    assert(tiles_coast);
+    assert(tiles_bonus);
 
     ui_component_init(&self->base, x, y, width, height);
 
@@ -82,7 +84,9 @@ void ui_map_init(UIMap_t *self, const int x, const int y, const int width, const
     self->flags.dragged = DRAG_NONE;
     self->flags.paint_mode = PAINT_TILE;
 
-    self->tiles = tiles;
+    self->tiles_map = tiles_map;
+    self->tiles_coast = tiles_coast;
+    self->tiles_bonus = tiles_bonus;
 
     self->fb_map = malloc(sizeof(Framebuffer8Bit_t));
     framebuffer_8bit_init(self->fb_map, MAP_SIZE_X * TILE_WIDTH, MAP_SIZE_Y * TILE_HEIGHT);
@@ -94,20 +98,22 @@ void ui_map_init(UIMap_t *self, const int x, const int y, const int width, const
     self->y_last_tile = 0;
 }
 
-UIMap_t *ui_map_create(const int x, const int y, const int width, const int height, Tiles8bit_t *tiles) {
+UIMap_t *ui_map_create(const int x, const int y, const int width, const int height, Tiles8bit_t *tiles_map, Tiles8bit_t *tiles_coast, Tiles8bit_t *tiles_bonus) {
     UIMap_t *self = malloc(sizeof(UIMap_t));
-    ui_map_init(self, x, y, width, height, tiles);
+    ui_map_init(self, x, y, width, height, tiles_map, tiles_coast, tiles_bonus);
     return self;
 }
 
 void ui_map_destroy(UIMap_t *self) {
     assert(self);
 
-    self->tiles = NULL;
-
     framebuffer_8bit_deinit(self->fb_map);
     free(self->fb_map);
     self->fb_map = NULL;
+
+    self->tiles_map = NULL;
+    self->tiles_coast = NULL;
+    self->tiles_bonus = NULL;
 
     ui_component_destroy(&self->base);
 }

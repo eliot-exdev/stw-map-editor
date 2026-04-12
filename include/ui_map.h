@@ -33,7 +33,9 @@ struct UIMap {
         enum PAINT_MODE paint_mode;
     } flags;
 
-    Tiles8bit_t *tiles;
+    Tiles8bit_t *tiles_map;
+    Tiles8bit_t *tiles_coast;
+    Tiles8bit_t *tiles_bonus;
 
     MapTileArray_t(map);
 
@@ -47,9 +49,9 @@ struct UIMap {
 
 typedef struct UIMap UIMap_t;
 
-void ui_map_init(UIMap_t *self, int x, int y, int width, int height, Tiles8bit_t *tiles);
+void ui_map_init(UIMap_t *self, int x, int y, int width, int height, Tiles8bit_t *tiles_map, Tiles8bit_t *tiles_coast, Tiles8bit_t *tiles_bonus);
 
-UIMap_t *ui_map_create(int x, int y, int width, int height, Tiles8bit_t *tiles);
+UIMap_t *ui_map_create(int x, int y, int width, int height, Tiles8bit_t *tiles_map, Tiles8bit_t *tiles_coast, Tiles8bit_t *tiles_bonus);
 
 void ui_map_destroy(UIMap_t *self);
 
