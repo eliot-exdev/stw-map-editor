@@ -23,10 +23,12 @@ These assets are copyright by Christian "theotheoderich" Wiegel.
 ## Screenshots
 
 Amiga 4000T RTG:  
-![hires](screenshots/settle_the_world_map_editor-hires.png)
+![hires](screenshots/settle_the_world_map_editor-hires-1.png)
+![hires](screenshots/settle_the_world_map_editor-hires-2.png)
 
 Amiga 1200 AGA:  
-![lores](screenshots/settle_the_world_map_editor-lores.png)
+![lores](screenshots/settle_the_world_map_editor-lores-1.png)
+![lores](screenshots/settle_the_world_map_editor-lores-2.png)
 
 ## Usage
 
