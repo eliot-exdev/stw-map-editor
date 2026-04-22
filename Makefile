@@ -40,7 +40,7 @@ exdev-gfx/exdev_gfx_ui_aos_030.lib:
 	$(MAKE) -C exdev-gfx exdev_gfx_ui_aos_030.lib
 
 #--- Editor ---#
-EDITOR_SOURCES=src/main.c src/ui_map.c src/ui_tile.c src/settle_the_world_util.c src/ui_status.c src/ui_bonus.c
+EDITOR_SOURCES=src/main.c src/ui_map.c src/ui_tile.c src/settle_the_world_util.c src/ui_status.c src/ui_bonus.c src/ui_mini_map.c
 
 stw_me_mos: $(EDITOR_SOURCES) exdev-gfx/exdev_gfx_ui_mos_gcc.a exdev-gfx/exdev_gfx_mos_gcc.a
 	$(CC_GCC) -o ${@} ${INCLUDES_MOS} $(^) ${C_FLAGS_MOS_GCC} ${LD_FLAGS_MOS_GCC}
