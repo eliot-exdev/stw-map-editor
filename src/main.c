@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define VERSION "stw_me 0.3 (28.03.2026)"
+#define VERSION "stw_me 0.4 (22.04.2026)"
 
 #ifndef __linux__
 #ifdef __VBCC__

@@ -5,6 +5,7 @@
 
 #include "settle_the_world_map_editor.h"
 #include "settle_the_world_util.h"
+#include "ui_mini_map.h"
 
 #define EXDEVGFX2_LOG_LEVEL 2
 #include "exdevgfx/logger.h"
@@ -58,6 +59,22 @@ static void on_save_clicked(struct UIIcon *self, UIApplication_t *app, void *usr
     }
 }
 
+static void on_map_clicked(struct UIIcon *self, UIApplication_t *app, void *usr_ptr) {
+    assert(self);
+    assert(app);
+    assert(usr_ptr);
+    if (self->flags.clicked) {
+        log_info("map clicked");
+        const int width = MAP_SIZE_X + 4;
+        const int height = MAP_SIZE_Y + 23;
+        const int x = (app->root.properties.width - width) / 2;
+        const int y = (app->root.properties.height - height) / 2;
+        UIMiniMap_t *mini_map = ui_mini_map_create(x, y, width, height);
+        ui_mini_map_prepare(mini_map, usr_ptr);
+        ui_application_start_modal_dialog(app, (UIComponent_t *) mini_map);
+    }
+}
+
 void ui_status_init(UIStatus_t *self, const int x, const int y, const int width, const int height, Tiles8bit_t *tiles_map, Tiles8bit_t *tiles_bonus, Tiles8bit_t *tiles_icon) {
     assert(self);
 
@@ -77,7 +94,7 @@ void ui_status_init(UIStatus_t *self, const int x, const int y, const int width,
 
     font_init(&self->font, FONT_TYPE_TOPAZ_8);
 
-    self->current_tile_coordinates = ui_text_create(2 + self->tile->base.properties.width + 2, 2, 150, self->tile->base.properties.height, "X: 000 Y: 000", &self->font);
+    self->current_tile_coordinates = ui_text_create(2 + self->tile->base.properties.width + 2, 2, 120, self->tile->base.properties.height, "X: 000 Y: 000", &self->font);
     self->current_tile_coordinates->base.flags.draw_border = 0;
     ui_component_connect(self, self->current_tile_coordinates);
 
@@ -96,6 +113,11 @@ void ui_status_init(UIStatus_t *self, const int x, const int y, const int width,
     self->variance->properties.alpha = PEN_INDEX_CYAN + 8;
     self->variance->functions.on_clicked = on_variance_clicked;
     ui_component_connect(self, self->variance);
+
+    self->map = ui_icon_create(width - 77, 2, framebuffer_8bit_copy(tiles_icon->tiles + 5), NULL);
+    self->map->properties.alpha = PEN_INDEX_CYAN + 8;
+    self->map->functions.on_clicked = on_map_clicked;
+    ui_component_connect(self, self->map);
 }
 
 UIStatus_t *ui_status_create(const int x, const int y, const int width, const int height, Tiles8bit_t *tiles_map, Tiles8bit_t *tiles_bonus, Tiles8bit_t *tiles_icon) {

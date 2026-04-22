@@ -16,9 +16,10 @@ struct UIStatus {
     UIIcon_t *tile; // map or bonus
     Font_t font;
     UIText_t *current_tile_coordinates;
-    UIIcon_t *quit;
-    UIIcon_t *save;
+    UIIcon_t *map;
     UIIcon_t *variance;
+    UIIcon_t *save;
+    UIIcon_t *quit;
 };
 
 typedef struct UIStatus UIStatus_t;
