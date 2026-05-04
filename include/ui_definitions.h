@@ -14,7 +14,7 @@
 
 #define UI_BORDER_SIZE 2
 
-#define UI_STATUS_WIDTH 241
+#define UI_STATUS_WIDTH 316
 #define UI_STATUS_HEIGHT 22
 
 #define UI_MAP_WIDTH 241
@@ -22,15 +22,16 @@
 #define UI_MAP_Y_POS 25
 
 #define UI_TILE_WIDTH 74
-#define UI_TILE_HEIGHT 252
+#define UI_TILE_HEIGHT 229
 #define UI_TILE_X_POS 244
+#define UI_TILE_Y_POS 25
 #else
 #define UI_WIDTH 640
 #define UI_HEIGHT 480
 
 #define UI_BORDER_SIZE 2
 
-#define UI_STATUS_WIDTH 561
+#define UI_STATUS_WIDTH 636
 #define UI_STATUS_HEIGHT 22
 
 #define UI_MAP_WIDTH 561
@@ -38,8 +39,9 @@
 #define UI_MAP_Y_POS 25
 
 #define UI_TILE_WIDTH 74
-#define UI_TILE_HEIGHT 476
+#define UI_TILE_HEIGHT 453
 #define UI_TILE_X_POS 564
+#define UI_TILE_Y_POS 25
 #endif
 
 #define UPDATE_INTERVAL 60// ms

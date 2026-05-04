@@ -116,7 +116,7 @@ int main(int argc, char **argv) {
     ui_component_connect(&app.root, editor.map);
 
     // tile view
-    UILayeredContainer_t *layered_container = ui_layered_container_create(UI_TILE_X_POS, UI_BORDER_SIZE, UI_TILE_WIDTH, UI_TILE_HEIGHT);
+    UILayeredContainer_t *layered_container = ui_layered_container_create(UI_TILE_X_POS, UI_TILE_Y_POS, UI_TILE_WIDTH, UI_TILE_HEIGHT);
 
     editor.tile = ui_tile_create(0, 0, UI_TILE_WIDTH, UI_TILE_HEIGHT - SCROLL_BAR_SIZE, &editor.tiles_map);
     ui_component_connect(layered_container, editor.tile);
