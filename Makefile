@@ -1,6 +1,6 @@
 #--- MorphOs ---#
 CC_GCC=ppc-morphos-gcc-15
-C_FLAGS_MOS_GCC=-Ofast -noixemul -mcpu=G4 -maltivec -mabi=altivec -DNDEBUG -D__MORPHOS__
+C_FLAGS_MOS_GCC=-Ofast -noixemul -DNDEBUG -D__MORPHOS__
 LD_FLAGS_MOS_GCC=-lm
 
 INCLUDES_MOS=-Iinclude -Iexdev-gfx/library/include
